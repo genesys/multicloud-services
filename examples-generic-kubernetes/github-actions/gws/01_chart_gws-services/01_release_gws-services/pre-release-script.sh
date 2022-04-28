@@ -1,5 +1,5 @@
 ###############################################################################
-# All secrets should be saved in secrets: deployment-secrets
+# All secrets sould be saved in secrets: deployment-secrets
 # 								Using it! 
 # We extract secrets to environment variables. It will evaluate variables in
 # override values by workflow.
@@ -33,10 +33,9 @@ function find_in_overrides {
 ###############################################################################
 # 					Postgres address and database
 ###############################################################################
-export POSTGRES_ADDR=$(find_in_overrides ".postgres.address" "adress:" "postgres")
-export DB_NAME_GWS=$(find_in_overrides ".postgres.db" "db:" "gws")
-export DB_NAME_PROV=$(find_in_overrides \
-	".gwsServices.gws-app-provisioning.postgres.db" "db:" "prov")
+export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
+export DB_NAME_GWS=$( get_secret DB_NAME_GWS )
+export DB_NAME_PROV=$( get_secret DB_NAME_PROV )
 ###############################################################################
 # 			Postgres admin credentials (uses for creating gauth db)
 ###############################################################################
@@ -91,6 +90,9 @@ export gws_ops_pass_encr=$( get_secret gws_ops_pass_encr )
 
 
 # For validation process need to evaluate release override values here
+replace_overrides POSTGRES_ADDR 		$POSTGRES_ADDR
+replace_overrides DB_NAME_GWS 			$DB_NAME_GWS
+replace_overrides DB_NAME_PROV 			$DB_NAME_PROV
 replace_overrides gws_pg_user 			$gws_pg_user
 replace_overrides gws_pg_pass 			$gws_pg_pass
 replace_overrides gws_as_pg_user 		$gws_as_pg_user

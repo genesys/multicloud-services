@@ -1,21 +1,22 @@
-gws-app-provisioning:       9.0.000.99
-gws-app-workspace:          9.0.000.94
-gws-platform-configuration: 9.0.000.84
-gws-platform-datacollector: 9.0.000.54
-gws-platform-ixn:           9.0.000.47
-gws-platform-ocs:           9.0.000.50
-gws-platform-setting:       9.0.000.56
-gws-platform-statistics:    9.0.000.65
-gws-platform-voice:         9.0.000.70
-gws-ui-crmworkspace:        9.0.000.66
-gws-ui-provisioning:        9.0.000.90
-gws-ui-workspace:           9.0.000.87
-
+gws-app-provisioning: 9.0.001.05
+gws-app-workspace: 9.0.001.00
+gws-platform-configuration: 9.0.000.91
+gws-platform-datacollector: 9.0.000.60
+gws-platform-ixn: 9.0.000.53
+gws-platform-ocs: 9.0.000.56
+gws-platform-setting: 9.0.000.62
+gws-platform-statistics: 9.0.000.71
+gws-platform-voice: 9.0.000.76
+gws-system-nginx: 9.0.000.26
+gws-ui-crmworkspace: 9.0.000.72
+gws-ui-provisioning: 9.0.000.96
+gws-platform-ucs: 9.0.000.52
+gws-platform-chat: 9.0.000.54
 
 
 postgres:
-  address:  pg-gcpe-gke1.postgres.svc.cluster.local
-  db:       gws-test
+  address:  POSTGRES_ADDR
+  db:       DB_NAME_GWS
 
 # Secrets that should be provided to GWS components:
 secrets:
@@ -81,9 +82,9 @@ gwsServices:
   gws-app-provisioning:
     clientId: gws_client_id
     postgres:
-      address: pg-gcpe-gke1.postgres.svc.cluster.local
+      address: POSTGRES_ADDR
       port: 5432
-      db: prov-test
+      db: DB_NAME_PROV
     context:
       env:
-        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: pg-gcpe-gke1.postgres.svc.cluster.local    
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: POSTGRES_ADDR    

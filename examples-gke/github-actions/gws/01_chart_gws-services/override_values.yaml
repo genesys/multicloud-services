@@ -80,8 +80,6 @@ gwsServices:
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
-        GWS_WORKSPACE_SERVICES_ENV: http://gauth-environment.gauth.svc:80
-        GWS_WORKSPACE_SERVICES_AUTH: http://gauth-auth.gauth.svc:80
         GWS_WORKSPACE_CONSUL_AUTH_ENV_DISABLED: true
         #GWS_WORKSPACE_SERVER_USE_SECURE_COOKIE: true
 
@@ -102,7 +100,6 @@ gwsServices:
     context:
       env:
         GWS_CONFIGURATION_COMMON_DISCOVERY_TENANTS: true
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_CONFIGURATION_timeouts_environmentRefreshMs: 300000
@@ -123,7 +120,6 @@ gwsServices:
 
     context:
       env:
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_DATACOLLECTOR_timeouts_environmentRefreshMs: 300000
@@ -143,9 +139,6 @@ gwsServices:
 
     context:
       env:
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
-        GWS_IXN_COMMON_ENV_SERVICE: http://gauth-environment.gauth.svc:80
-        GWS_IXN_COMMON_AUTH_SERVICE: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_IXN_timeouts_environmentRefreshMs: 60000
@@ -166,7 +159,6 @@ gwsServices:
     context:
       env:
         GWS_OCS_timeouts_environmentRefreshMs: 300000
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
 
@@ -185,9 +177,6 @@ gwsServices:
 
     context:
       env:
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
-        GWS_SETTING_COMMON_ENV_SERVICE: http://gauth-environment.gauth.svc:80
-        GWS_SETTING_COMMON_AUTH_SERVICE: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_SETTING_timeouts_environmentRefreshMs: 300000
@@ -208,7 +197,6 @@ gwsServices:
 
     context:
       env:
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_STATISTICS_timeouts_environmentRefreshMs: 300000
@@ -228,7 +216,6 @@ gwsServices:
 
     context:
       env:
-        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_VOICE_timeouts_requestTimeoutMs: 30000

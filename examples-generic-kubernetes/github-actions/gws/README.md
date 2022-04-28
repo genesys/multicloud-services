@@ -41,6 +41,9 @@ gws_client_id|sample_id
 gws_client_secret|sample_secret
 gws_ops_user|opsUser
 gws_ops_pass_encr|opsPass
+POSTGRES_ADDR|pgHostAddress
+DB_NAME_GWS|gws_db
+DB_NAME_PROV|prov_db
 
 ## Additional Information
 

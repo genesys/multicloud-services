@@ -251,7 +251,7 @@ gwsServices:
 
 elasticSearch:
   # FQDN or IP of ElasticSearch cluster
-  address: elastic-es-http.infra-test.svc.cluster.local
+  address: elastic-es-http.infra
   # ElasticSearch port
   port: 9200
   # Enable/disable TLS connection to Elasticsearch cluster
@@ -260,7 +260,7 @@ elasticSearch:
 
 redis:
   # Redis cluster host name
-  address: infra-redis-redis-cluster.infra-test.svc.cluster.local
+  address: infra-redis-redis-cluster.infra
   # Redis port
   port: 6379
   # Enable/disable TLS connection to Redis cluster

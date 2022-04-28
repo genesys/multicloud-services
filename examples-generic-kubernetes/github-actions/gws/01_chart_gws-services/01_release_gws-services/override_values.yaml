@@ -14,8 +14,8 @@ gws-ui-workspace:           9.0.000.87
 
 
 postgres:
-  address:  infra-postgres-postgresql.infra.svc.cluster.local
-  db:       gws-test
+  address:  POSTGRES_ADDR
+  db:       DB_NAME_GWS
 
 # Secrets that should be provided to GWS components:
 secrets:
@@ -23,10 +23,10 @@ secrets:
   gws-screen-recording-private-secret: test
 
 ###############################################################################
-# Values below recommended to save in secrets/deployment-secrets for privacy 
+# Values below recommended to save in secrets/deployment-secrets for pricacy 
 # 
 # Don`t change values below if using secrets/deployment-secrets. 
-# It will be read and replace by values from secrets/deployment-secrets
+# It will be readed and replace by values from secrets/deployment-secrets
 ###############################################################################
 
   # Password to access Redis cluster
@@ -81,9 +81,9 @@ gwsServices:
   gws-app-provisioning:
     clientId: gws_client_id
     postgres:
-      address: infra-postgres-postgresql.infra.svc.cluster.local
+      address: POSTGRES_ADDR
       port: 5432
-      db: prov-test
+      db: DB_NAME_PROV
     context:
       env:
-        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: infra-postgres-postgresql.infra.svc.cluster.local    
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: POSTGRES_ADDR    
