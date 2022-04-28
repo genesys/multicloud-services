@@ -2,6 +2,8 @@
 # Global UCSX image parameters
 # https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Configure
 ###############################################################################
+image:
+  registry: ucsx_registry
 gauth:
   auth:
     clientId: ucsx_gauth_client_id

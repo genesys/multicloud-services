@@ -6,7 +6,7 @@
 replicaCount: 1
 
 image:
-  registry: pureengage-docker-staging.jfrog.io
+  registry: ucsx_registry
   # repository: ucsx/ucsx  
   pullPolicy: IfNotPresent
   pullSecrets: 

@@ -2,6 +2,9 @@
 # Global ucsx-addtenent image parameters
 # https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
 ###############################################################################
+tenant:
+  id: ucsx_sid
+  ccid: ucsx_tenant_id
 gauth:
   auth:
     clientId: ucsx_gauth_client_id

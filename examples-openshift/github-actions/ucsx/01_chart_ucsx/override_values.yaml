@@ -6,7 +6,7 @@
 replicaCount: 1
 
 image:
-  registry: repository.path
+  registry: ucsx_registry
   # repository: ucsx/ucsx  
   pullPolicy: IfNotPresent
   pullSecrets: 

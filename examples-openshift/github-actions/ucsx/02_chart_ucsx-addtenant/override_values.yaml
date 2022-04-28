@@ -10,8 +10,8 @@ image:
 command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
 
 tenant:
-  id: "100"
-  ccid: "9350e2fc-a1dd-4c65-8d40-1f75a2e080dd"
+  id: ucsx_sid
+  ccid: ucsx_tenant_id
        
 ucsx:
   addr: ucsx.${NS}.svc.cluster.local:8500

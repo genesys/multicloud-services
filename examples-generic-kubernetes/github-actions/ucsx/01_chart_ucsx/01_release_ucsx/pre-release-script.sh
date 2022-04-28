@@ -49,12 +49,22 @@ export ucsx_gauth_client_secret=$( get_secret ucsx_gauth_client_secret )
 # export ucsx_tenant_100_db_name=$( get_secret ucsx_tenant_100_db_name )
 # export ucsx_tenant_100_db_password=$( get_secret ucsx_tenant_100_db_password )
 # export ucsx_tenant_100_db_user=$( get_secret ucsx_tenant_100_db_user )
+###############################################################################
+# Tenant details
+###############################################################################
+export ucsx_sid=$( get_secret ucsx_sid)
+export ucsx_tenant_id=$( get_secret ucsx_tenant_id)
+export ucsx_registry=$( get_secret ucsx_registry)
+
 
 # For validation process need to evaluate release override values here
 replace_overrides ucsx_gauth_client_id 			$ucsx_gauth_client_id
 replace_overrides ucsx_gauth_client_secret 		$ucsx_gauth_client_secret
 replace_overrides ucsx_master_db_user 			$ucsx_master_db_user
 replace_overrides ucsx_master_db_password 		$ucsx_master_db_password
+replace_overrides ucsx_sid				$ucsx_sid
+replace_overrides ucsx_tenant_id			$ucsx_tenant_id
+replace_overrides ucsx_registry				$ucsx_registry
 
 ###############################################################################
 # Creating UCSX DB if not exist and init
