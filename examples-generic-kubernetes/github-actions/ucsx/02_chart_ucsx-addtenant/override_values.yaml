@@ -1,0 +1,47 @@
+###############################################################################
+# Global ucsx-addtenent image parameters
+# https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
+###############################################################################
+
+image:
+  pullSecrets: 
+    - name: pullsecret
+
+command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
+
+tenant:
+  id: "100"
+  ccid: "9350e2fc-a1dd-4c65-8d40-1f75a2e080dd"
+       
+ucsx:
+  addr: ucsx.${NS}.svc.cluster.local:8500
+  restaddr: http://ucsx.${DOMAIN}
+
+configNameBase: ucsx-config
+secretNameBase: ucsx-secret
+
+wwe:
+  skipRegistration: true
+  
+keepPod: true
+
+gauth:
+  auth:
+    url: http://gauth-auth.gauth.svc.cluster.local
+    regions: westus2
+  env:
+    url: http://gauth-environment.gauth.svc.cluster.local
+
+resources: {}
+#  requests:
+#    memory: "500Mi"
+#    cpu: "300m"
+#  limits:
+#    memory: "1000Mi"
+#    cpu: "2000m"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 500
+  runAsGroup: 500
+  fsGroup: 500

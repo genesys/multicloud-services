@@ -1,6 +1,6 @@
 
 ###############################################################################
-# All secrets sould be saved in secrets: deployment-sectets
+# All secrets sould be saved in secrets: deployment-secrets
 #                 Using it! 
 # We extract secrets to environment variables. It will evaluate variables in
 # override values by workflow.

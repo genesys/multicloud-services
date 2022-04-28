@@ -1,0 +1,50 @@
+###############################################################################
+# Global UCSX image parameters
+# https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Configure
+###############################################################################
+
+replicaCount: 1
+
+image:
+  registry: pureengage-docker-staging.jfrog.io
+  # repository: ucsx/ucsx  
+  pullPolicy: IfNotPresent
+  pullSecrets: 
+    - name: pullsecret
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 1000Mi
+  requests:
+    cpu: 300m
+    memory: 500Mi
+
+existingSecret:
+existingConfig:
+
+gauth:
+  auth:
+    url: http://gauth-auth.gauth.svc.cluster.local
+  env:
+    url: http://gauth-environment.gauth.svc.cluster.local
+
+service:
+  enabled: true
+  name: ucsx
+  type: ClusterIP
+  port: 8080
+  env: {}
+  annotations: {}
+
+elasticsearch:
+  url: http://elastic-es-http.infra.svc.cluster.local:9200
+
+# * Monitoring
+monitoring:
+  # Deploy ServiceMonitor
+  enabled: true
+  # Create PrometheusRule k8s object with alarm definitions
+  alarms: true
+  # Create ConfigMaps with Grafana Dashboards
+  dashboards: true

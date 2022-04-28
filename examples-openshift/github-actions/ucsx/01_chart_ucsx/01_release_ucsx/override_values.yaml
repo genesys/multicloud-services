@@ -1,0 +1,16 @@
+###############################################################################
+# Global UCSX image parameters
+# https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Configure
+###############################################################################
+gauth:
+  auth:
+    clientId: ucsx_gauth_client_id
+    clientSecret: ucsx_gauth_client_secret
+
+db:
+  user: ucsx_master_db_user
+  password: ucsx_master_db_password
+  host: postgres-rw.infra.svc
+  name: ucsx
+  port: "5432"
+  ssl: "false"
