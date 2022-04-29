@@ -1,0 +1,17 @@
+###############################################################################
+# Additional GIM parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGIM
+###############################################################################
+
+image:
+  tag: 100.0.116.2900  
+
+tenant_id: t${tenant_sid}
+tenant_uuid: $tenant_id
+
+db:
+  jdbcUrl: jdbc:postgresql://{db_hostname}:{{.Values.db.port}}/{db_name}?{db_username}&sslmode=prefer
+  host: postgresql-1-postgresql-svc.default
+  name: ${gim_pgdb_etl_name}
+  username: ${gim_pgdb_etl_user}
+  password: ${gim_pgdb_etl_password}

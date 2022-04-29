@@ -1,0 +1,49 @@
+###############################################################################
+# Global GIM parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGIM
+###############################################################################
+
+replicaCount: 1
+
+image:
+  registry: repository.path
+  repository: gim/gim
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  pullsecret: {}
+
+monitoring:
+  enabled: true
+  port: 8249
+
+volumes: |
+  - name: kafka-secrets
+    secret:
+      secretName: kafka-secrets
+  - name: gim-secrets
+    secret:
+      secretName: gim-secrets
+  - name: gim-config
+    configMap:
+      name: {{ template "fullname" . }}-gim-config
+
+initContainers: ""
+extraVolumeMounts: ""
+kafka:
+  bootstrap: infra-kafka-cp-kafka.infra.svc:9092
+  security:
+    protocol: plaintext
+  sasl:
+    mechanism: PLAIN
+
+resources:
+  requests:
+    memory:    "350Mi"
+    cpu:       "0.05"
+  limits:
+    memory:    "3Gi"
+    cpu:       "2"
+
+gim_export:
+  days_to_keep_output_files:              "14"
