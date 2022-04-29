@@ -1,6 +1,6 @@
 # Additional override_values
 image:
-  tag: "100.0.000.0006"
+  tag: "100.0.000.0012"
 
 lds:
   params:

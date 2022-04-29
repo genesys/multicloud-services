@@ -148,7 +148,9 @@ monitoring:
     # namespace of the alert rules, defaults to the namespace of the POD
     namespace:
     additionalLabels: {}
-
+  goldenSignals:
+    enabled: false
+    
 ##########################################################################
 
 # * Configuration for the Collector container
@@ -246,6 +248,8 @@ csproxy:
     runAsGroup: null
 
 # volumeClaims contains persistent volume claims for services
+# All available storage classes can be found here:
+# https://github.com/genesysengage/tfm-azure-core-aks/blob/master/k8s-module/storage.tf
 volumeClaims:
   # statserverBackup is storage for statserver backup data
   statserverBackup:

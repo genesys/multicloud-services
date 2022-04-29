@@ -42,6 +42,8 @@ config:
 
 # * Configuration for the Configuration Server Proxy container
 csproxy:
+  params:
+    cfgHost: tenant-${tenant_id}.voice.svc.cluster.local
   # resource limits for container
   resources:
     # minimum resource requirements to start container
@@ -60,7 +62,7 @@ csproxy:
       cpu: "1000m"
   securityContext:
     runAsUser:  null
-    runAsGroup: null
+    runAsGroup: 0
 
 # * Common log configuration
 log:
@@ -85,12 +87,12 @@ log:
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: null
-  runAsGroup: null
+  runAsGroup: 0
   fsGroup: null
 
 securityContext:
   runAsUser:  null
-  runAsGroup: null
+  runAsGroup: 0
 
 ## Resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/

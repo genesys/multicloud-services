@@ -114,6 +114,8 @@ monitoring:
     # namespace of the alert rules, defaults to the namespace of the POD
     namespace:
     additionalLabels: {}
+  goldenSignals:
+    enabled: false
 
 # limit the number of concurrent disruptions
 podDisruptionBudget:

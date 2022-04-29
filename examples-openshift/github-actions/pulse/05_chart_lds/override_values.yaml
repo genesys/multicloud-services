@@ -67,12 +67,12 @@ podLabels: {}
 
 podSecurityContext:
   runAsUser: null
-  runAsGroup: null
+  runAsGroup: 0
   fsGroup: null
 
 securityContext:
   runAsUser:  null
-  runAsGroup: null
+  runAsGroup: 0
 
 priorityClassName: ""
 
@@ -114,6 +114,8 @@ monitoring:
     # namespace of the alert rules, defaults to the namespace of the POD
     namespace:
     additionalLabels: {}
+  goldenSignals:
+    enabled: false
 
 # limit the number of concurrent disruptions
 podDisruptionBudget:
@@ -168,7 +170,7 @@ lds:
       cpu: "4000m"
   securityContext:
     runAsUser:  null
-    runAsGroup: null
+    runAsGroup: 0
 
 ##########################################################################
 
@@ -214,8 +216,9 @@ monitorSidecar:
       cpu: "10m"
   securityContext:
     runAsUser: null
-    runAsGroup: null
-
+    runAsGroup: 0
+config:
+  mountSecrets: false
 # configuration for the Configuration Server Proxy container
 csproxy:
   image:
@@ -224,7 +227,7 @@ csproxy:
   params:
     # Hostname of the Configuration Server
     # If empty, use hostname based on naming conventions
-    cfgHost: tenant-${tenant_id}.voice.svc.cluster.local.
+    cfgHost: tenant-${tenant_id}.voice.svc.cluster.local
   # resource limits for container
   resources:
     # disabled: true
@@ -244,4 +247,4 @@ csproxy:
       cpu: "1000m"
   securityContext:
     runAsUser: null
-    runAsGroup: null
+    runAsGroup: 0

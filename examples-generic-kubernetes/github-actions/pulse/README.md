@@ -40,17 +40,38 @@ Create the following secrets to store confidential information you may not want 
 |-|-|
 gws_ClientId|pulse_client
 gws_Client_Secret|secret
-postgres_host|infra-postgres-postgresql.infra.svc.cluster.local
+postgres_host|infra-postgres-postgresql.infra
 postgres_password|somepass
 postgres_port|5432
 postgres_user|postgres
-redis_host|pulse-redis-master.pulse.svc.cluster.local
+redis_host|pulse-redis-master.pulse
 redis_key|secret
 redis_port|6379
 tenant_id|9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
 tenant_sid|100
 
-
+Example `.yaml`
+```
+apiVersion: v1
+stringData:
+  gws_ClientId: pulse_client
+  gws_Client_Secret: secret
+  postgres_host: infra-postgres-postgresql.infra
+  postgres_password: somepass
+  postgres_port: "5432"
+  postgres_user: postgres
+  redis_host: pulse-redis-master.pulse
+  redis_key: secret
+  redis_port: "6379"
+  tenant_namespace: voice
+  tenant_id: "9350e2fc-a1dd-4c65-8d40-1f75a2e080dd"
+  tenant_sid: "100"
+kind: Secret
+metadata:
+  name: deployment-secrets
+  namespace: pulse
+type: Opaque
+```
  
 
 ## Additional Information

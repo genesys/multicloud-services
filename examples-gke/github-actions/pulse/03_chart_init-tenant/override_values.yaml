@@ -34,6 +34,23 @@ config:
   # Postgres secret key for password
   postgresSecretPassword: "META_DB_ADMINPWD"
 
+configurator:
+  enabled: false
+  # set service domain used to access voice service
+  voiceDomain: voice.svc.cluster.local
+  # set service domain used to access ixn service
+  ixnDomain: ixn.svc.cluster.local
+  # set service domain used to access pulse service
+  pulseDomain: pulse.svc.cluster.local
+  # set configration server password, used when create secrets
+  cfgUser: "default"
+  # set configration server user, used when create secrets
+  cfgPassword: "password"
+  # common log configuration
+  cfgHost: tenant-${tenant_id}.voice.svc.cluster.local
+log:
+  # log volume type: none | hostpath | pvc
+  volumeType: none
 ## Service account settings
 serviceAccount:
   # Specifies whether a service account should be created

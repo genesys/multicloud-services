@@ -91,12 +91,12 @@ podAnnotations: {}
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: null
-  runAsGroup: null
+  runAsGroup: 0
   fsGroup: null
 
 securityContext:
   runAsUser:  null
-  runAsGroup: null
+  runAsGroup: 0
 
 ## Resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
