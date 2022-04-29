@@ -1,0 +1,55 @@
+###############################################################################
+# Additional IXN parameters
+# https://all.docs.genesys.com/IXN/Current/IXNPEGuide/Configure
+###############################################################################
+tenant:
+  id: "tenant_id"
+  sid: "tenant_sid"
+
+ixnService:
+  image:
+    ixnServer:
+      repository: "ixn/interaction_server"
+      tag: 100.0.005.1205
+    logSidecar:
+      enabled: true
+      repository: "fluent/fluent-bit"
+      tag: "1.8.5"
+    ixnNode:
+      repository: "ixn/ixn_node"
+      tag: 100.0.005.1200
+
+  ixnServer:
+    secrets:
+      db:
+        enabled: true
+        secretName: "ixn-db-secret-tenant_sid"
+        username: "${ixn_db_user}"
+        password: "${ixn_db_password}"
+    db:
+      name: "ixn-tenant_sid"
+      host: postgres-rw.infra
+  
+  ixnNode:
+    secrets:
+      db:
+        enabled: true
+        secretName: "ixn-node-db-secret-tenant_sid"
+        username: "${ixn_db_user}"
+        password: "${ixn_db_password}"
+    db:
+      name: "ixn-node-tenant_sid"
+      host: postgres-rw.infra
+    redis:
+    - host: infra-redis-redis-cluster.infra
+      port: 6379
+      is_redis_cluster: "true"
+
+ixnVQNode:
+  image:
+    ixnVQNode:
+      repository: "ixn/ixn_vq_node"
+      tag: 100.0.005.0510
+
+# Custom override-values for usage in pre-release-script
+kafkaAddress: infra-kafka-cp-kafka.infra

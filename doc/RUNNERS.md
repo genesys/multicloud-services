@@ -39,7 +39,7 @@ JFROG_USER=xxx
 JFROG_TOKEN=zzz
 
 docker build . -t $TOOLS_GHRUNNER_IMAGE:$STAG
-docker login -u $JFROG_USER -p $JFROG_TOKEN pureengage-docker-staging.jfrog.io
+docker login -u $JFROG_USER -p $JFROG_TOKEN repository.path
 docker push $TOOLS_GHRUNNER_IMAGE:$STAG
 ```
 

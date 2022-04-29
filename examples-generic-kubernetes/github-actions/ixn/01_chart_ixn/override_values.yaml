@@ -1,0 +1,190 @@
+###############################################################################
+# Global IXN parameters
+# https://all.docs.genesys.com/IXN/Current/IXNPEGuide/Configure
+###############################################################################
+image:
+  registry: "repository.path"
+  pullPolicy: Always
+  imagePullSecrets:
+    - name: pullsecret
+
+ixnService:
+
+  service:
+    enabled: true
+
+  volumes: |-
+    - name: redis-ors-secret
+      secret:
+        secretName: redis-ors-secret
+    - name: kafka-shared-secret
+      secret:
+        secretName: kafka-shared-secret
+
+  # securityContext:
+  #   fsGroup: null
+  #   runAsGroup: 0
+  #   runAsNonRoot: true
+  #   runAsUser: null
+
+  annotations: |-
+      "consul.hashicorp.com/connect-inject": "true"
+      "consul.hashicorp.com/connect-service": {{ include "ixn.consulIxnServerName" . | quote }}
+      "consul.hashicorp.com/connect-service-port": server-default
+      "consul.hashicorp.com/connect-service-upstreams": |-
+        voice-config:{{ .Values.ixnService.ixnNode.configNode.port }},
+        {{ printf "tenant-%s:%d" .Values.tenant.id (int .Values.ixnService.ixnServer.confServer.port) }}
+      consul.hashicorp.com/service-tags: 'service-ixn'
+      consul.hashicorp.com/service-meta-tenant-id: {{ .Values.tenant.id }}
+      consul.hashicorp.com/service-meta-tenant-sid: {{ .Values.tenant.sid | quote }}
+
+  prometheus:
+    podMonitor:
+      enabled: true
+      targetLabels:
+        - service
+        - servicename
+        - tenant
+
+  ixnServer:
+
+    serviceq:
+      create: true
+      name:
+
+    ports:
+      default: 7120
+      health: 9100
+
+    confServer:
+      host: "localhost"
+      port: 8888
+      appName: InteractionServer
+
+    db:
+      engine: "postgre"
+      port: 5432
+      connectionString: "KeepaliveInterval=1;KeepaliveTime=60;"
+
+    dbinit:
+      enabled: true
+
+    logStorage:
+      mountPath: "/mnt/logs"
+      storageSize: 1Gi
+      storageClassName:
+      volume:
+        emptyDir: {}
+
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "512Mi"
+      limits:
+        cpu: "200m"
+        memory: "2Gi"
+
+    volumeMounts:
+      kafka-shared-secret:
+        readOnly: true
+        mountPath: "/mnt/env-secrets/kafka-secrets"
+
+  ixnNode:
+
+    settings:
+      mountPath: "/mnt/settings"
+      file: "settings.json"
+
+    storingSessions:
+      enabled: true
+    db:
+      port: 5432
+      options:
+        keepAlive: true
+        keepAliveInitialDelayMillis: 300000
+        ssl:
+
+    ports:
+      default: 6120
+
+    configNode:
+      host: "localhost"
+      port: 11100
+
+    dbinit:
+      enabled: true
+
+    redisOptions:
+      tls:
+        enabled: false
+        rejectUnauthorized: false
+
+    consul:
+      host:
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+      port: 8500
+      sslMode: false
+
+    resources:
+      requests:
+        cpu: "40m"
+        memory: "128Mi"
+      limits:
+        cpu: "300m"
+        memory: "320Mi"
+
+    volumeMounts:
+      redis-ors-secret:
+        readOnly: true
+        mountPath: "/mnt/env-secrets/redis-secrets"
+
+ixnVQNode:
+
+  serviceAccount:
+    create: true
+    name:
+
+  ports:
+    default: 7122
+    health: 9102
+
+  resources:
+    requests:
+      cpu: "30m"
+      memory: "128Mi"
+    limits:
+      cpu: "300m"
+      memory: "160Mi"
+
+  # securityContext:
+  #   fsGroup: null
+  #   runAsGroup: 0
+  #   runAsNonRoot: true
+  #   runAsUser: null
+
+  annotations: |-
+    "consul.hashicorp.com/connect-inject": "true"
+    "consul.hashicorp.com/connect-service": {{ include "ixn.consulIxnVQNodeName" . | quote }}
+    "consul.hashicorp.com/connect-service-port": vqnode-default
+
+  prometheus:
+    podMonitor:
+      enabled: true
+      targetLabels:
+        - service
+        - servicename
+        - tenant
+
+  volumes : |-
+    - name: kafka-shared-secret
+      secret:
+        secretName: kafka-shared-secret
+
+  volumeMounts:
+    kafka-shared-secret:
+      readOnly: true
+      mountPath: "/mnt/env-secrets/kafka-secrets"
+
+replicaCount: 1
