@@ -1,0 +1,35 @@
+###############################################################################
+# Global GCA parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGCA
+###############################################################################
+
+log:
+  level:   "debug"
+
+image:
+  registry: repository.path
+
+imagePullSecrets:
+  pullsecret: {}
+
+
+kafka:
+  bootstrap: infra-kafka-cp-kafka.infra.svc:9092
+
+volumes: |
+  - name: kafka-secrets
+    secret:
+      secretName: {{.Release.Name}}-kafka-secrets
+  - name: storage-account-secrets
+    secret:
+      secretName: {{ .Release.Name }}-storage-secret
+  - name: cfg-db-secrets
+    secret:
+      secretName: {{.Release.Name}}-cfgdb-secrets
+  - name: gim-db-secrets
+    secret:
+      secretName: {{.Release.Name}}-gimdb-secrets
+
+ssl_db_connection: false
+
+containerSecurityContext: {}

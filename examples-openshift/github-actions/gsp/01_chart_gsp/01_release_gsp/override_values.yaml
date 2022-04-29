@@ -1,0 +1,16 @@
+###############################################################################
+# Additional GSP parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGSP
+###############################################################################
+image:
+  tag: 100.0.100.1400
+
+job:
+  storage:
+    gspPrefix:    gsp_prefix
+    gcaSnapshots: gca_snapshots
+    s3:
+      endpoint:   s3_endpoint
+      accessKey:  s3_access_key
+      secretKey:  s3_secret_key
+      pathStyleAccess: "true"

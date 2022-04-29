@@ -1,0 +1,37 @@
+###############################################################################
+# Additional GCA parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGCA
+###############################################################################
+
+image:
+  tag: 100.0.100.2300 
+
+tenant_id: t{tenant_sid}
+tenant_uuid: {tenant_id}
+
+cfgdb:              #is taken from tenant's deployment-secrets
+  host:     postgres-rw.infra.svc
+  port:     5432
+  engine:   "postgre"
+  name:     tenant_pg_db_name
+  username: tenant_pg_db_user
+  password: tenant_pg_db_password
+
+gimdb:              #is taken from GIM deployment-secrets
+  host:     postgres-rw.infra.svc
+  port:     5432
+  engine:   "postgre"
+  name:     gim_pgdb_etl_name
+  username: gim_pgdb_etl_user
+  password: gim_pgdb_etl_password
+
+storage:
+  s3:              #is taken from GSP cm & secrets
+    bucket:        bucket_name
+    gcaSnapshots:  "/gca"
+    accessKey:     s3_access_key
+    secretKey:     s3_secret_key
+    useSSL:        true
+    endPoint:      "s3.openshift-storage.svc"
+    port:          443
+    Insecure:      true

@@ -1,0 +1,49 @@
+###############################################################################
+# Global GSP parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGSP
+###############################################################################
+
+image:
+  registry: repository.path
+  repository: gim/gsp
+  pullPolicy: IfNotPresent
+  
+imagePullSecrets:
+  pullsecret: {}
+
+azure:
+  enabled: false
+
+job:
+  storage:
+    host: gspstate{{.Values.short_location}}{{.Values.environment}}.blob.core.windows.net
+    checkpoints: '{{ tpl .Values.job.storage.gspPrefix . }}checkpoints'
+    savepoints: '{{ tpl .Values.job.storage.gspPrefix . }}savepoints'
+    highAvailability: '{{ tpl .Values.job.storage.gspPrefix . }}ha'
+  log:
+    level: INFO
+    loggers:
+      org.apache.kafka: INFO
+monitoring:
+  enabled: true
+  port: 9249
+  dashboards:
+    targetDirectory: /var/lib/grafana/dashboards/{{ .Release.Namespace }}
+
+containerSecurityContext: {}
+securityContext:
+  fsGroup: null
+  runAsGroup: 0
+  runAsNonRoot: true
+  runAsUser: null
+
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: false
+  annotations: {}
+  hosts: []
+  tls: []
+kafka:
+  bootstrap: infra-kafka-cp-kafka.infra.svc:9092
