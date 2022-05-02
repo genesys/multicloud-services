@@ -1,0 +1,71 @@
+###############################################################################
+# Global GCXI-RAA parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GCXIPEGuide/ConfigureRAA
+###############################################################################
+raa:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: null
+    runAsGroup: null
+    fsGroup: null
+  deployment:
+    targetPlatform: "local"
+
+
+  # set by default except database
+  env:
+    # {"db_hostname":"postgres-rw.infra.svc.cluster.local","db_name":"etl","db_password":"..","db_username":".."}
+    GCXI_GIM_DB__JSON: ${GCXI_GIM_DB__JSON}
+    XML_CONF: "default_conf.xml"
+    STAT_SCRAPE_INTERVAL: 15
+  image:
+    # your secret
+    registry: repo.path
+    pullSecrets:
+      - pullsecret
+
+  statefulset:
+    containers:
+      # creates a default configuration if not specified on a mounted volume.
+      configDelivery:
+        name: "{{ $.Chart.Name }}-conf-delivery"
+      monitor:
+        name: "{{$.Chart.Name }}-monitor"
+        metrics:
+          portName: "metrics"
+          containerPort: "9100"
+        health:
+          portName: "health"
+          containerPort: "9101"
+
+  volumes:
+    config:
+      # line below not works accroding to GCXI-5147
+      # use --set raa.volumes.config.pv=false helm option
+      pv: {}
+      storageClassName: azure-files
+      pvc:
+        name: "gcxi-raa-config-pvc"
+        volumeName: ""
+    health:
+      # line below not works accroding to GCXI-5147
+      # use --set raa.volumes.health.pv=false helm option
+      pv: {}
+      storageClassName: azure-files
+      pvc:
+        name: "gcxi-raa-health-pvc"
+        volumeName: ""
+
+  podMonitor:
+    name : "{{ tpl $.Values.raa.serviceName $ }}-monitor"
+    podMetricsEndpoints:
+      - port: "{{ $.Values.raa.statefulset.containers.monitor.metrics.portName }}"
+        path: "/{{ tpl $.Values.raa.statefulset.containers.monitor.metrics.portName $ }}"
+        interval: "{{ $.Values.raa.env.STAT_SCRAPE_INTERVAL }}s"
+      - port: "{{ tpl $.Values.raa.statefulset.containers.monitor.health.portName $ }}"             
+        path: "/{{ tpl $.Values.raa.statefulset.containers.monitor.health.portName $ }}"
+        interval: 4m
+        scrapeTimeout: 3m
+    podTargetLabels:
+      - service
+      - servicename

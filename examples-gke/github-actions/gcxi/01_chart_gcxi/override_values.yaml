@@ -1,0 +1,90 @@
+###############################################################################
+# Global GCXI parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GCXIPEGuide/Configure
+###############################################################################
+gcxi:
+  app:
+    namespace: gcxi 
+  imagePullSecrets:
+    - pullsecret
+  configMaps:
+  - name: gcxi-config-pg
+
+  deployment:
+    code: 100
+    deployFluentbitSidecar: true
+    deployGrafanaDashboard: true
+    deployPostgresConfig: false
+    deployPrometheusRules: true
+    deployServiceMonitor: true
+    hostIPC: false
+    useDynamicLogPV: false
+    useEmptyDirLogPV: true
+
+  env:
+    GCXI_AUTH_MODE: oauth
+    GAUTH_API_INT: http://gauth-auth.gauth.svc.cluster.local.:80
+    GAUTH_API_INT_ENV: http://gauth-environment.gauth.svc.cluster.local.:80/environment/v3/environments
+    GAUTH_REDIRECT_PROTO: https
+    GAUTH_UI_EXT: https://gauth.$DOMAIN
+
+  images:
+    init: alpine
+    gcxi:
+      control: gcxi_control
+      worker: gcxi
+    postgres: postgres:11
+    repository: repo.path/gcxi
+
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/affinity: cookie
+      nginx.ingress.kubernetes.io/affinity-mode: persistent
+      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+      nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    domain:
+    external:
+      annotations:
+      host: web-gcxi.${DOMAIN}
+      tls:
+        enabled: true
+        secretName: gcxi-ingress-ext
+    internal:
+      annotations:
+      host: web-gcxi-int.${DOMAIN}
+      tls:
+        enabled: true
+        secretName: gcxi-ingress-int
+    path: /
+
+  replicas:
+    postgres: 1
+    worker: 2
+
+  resources:
+    worker:
+      requests:
+        cpu: 1
+        memory: 2Gi
+      limits:
+        cpu: 2
+        memory: 6Gi
+
+  secrets:
+  - name: gcxi-secret-pg
+  - name: gcxi-secret-gauth
+
+  pvc:
+    backup:
+      capacity: 1Gi
+      storageClassName: nfs-client
+    log:
+      capacity: 1Gi
+      storageClassName: nfs-client
+    postgres:
+      capacity: 1Gi
+      storageClassName: nfs-client
+    share:
+      capacity: 1Gi
+      storageClassName: nfs-client
