@@ -55,7 +55,7 @@ genesys/multicloud-services
 </pre>
 
 ## Related Sites
-All service and product documentation can be found at [docs.genesys.com](https://docs.genesys.com). 
+All service and product documentation can be found at [all.docs.genesys.com](https://all.docs.genesys.com). 
 
 For sample platform reference architectures, please checkout [Genesys Multicloud Platform repository](https://github.com/genesys/multicloud-platform).
 
