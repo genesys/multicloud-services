@@ -3,8 +3,8 @@ gws-core-environment: 100.0.002.1864
 gws-core-auth:        100.0.002.3491
 
 postgres:
-  host:     ${POSTGRES_ADDR
-  db:       ${DB_NAME} 
+  host:     postgres-rw.infra.svc.cluster.local
+  db:       gauth
 
 ###############################################################################
 # Values below recommended to save in secrets/deployment-secrets for pricacy 
