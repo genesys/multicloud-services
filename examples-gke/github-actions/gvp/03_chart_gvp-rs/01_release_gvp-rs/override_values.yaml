@@ -7,6 +7,6 @@ context:
   env:
     GVP_RS_SERVICE_HOSTNAME: gvp-rs.gvp.svc.cluster.local
     CFG_HOST: gvp-configserver.gvp.svc.cluster.local
-    DBUSER: mssql
+    DBUSER: $gvp_rs_mssql_db_user
     rsDbSharedUsername: mssqlreader
     MSSQLHOST: mssql-mssql-latest.infra.svc.cluster.local

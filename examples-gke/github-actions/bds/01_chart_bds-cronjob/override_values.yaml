@@ -1,0 +1,37 @@
+# Default values for bds-cronjob
+
+nameSpace: ${NS}
+tenantName: t100-100
+serviceAccount:
+   name: genesys
+bdsApp:
+  secrets:
+    manual:
+      secretName: bds-manual-secrets
+    gim:
+      volumes:
+        tenantID: ""
+      mounts:
+        name: ""
+    gvp:
+      mounts:
+        name: ""
+    consul:
+      mounts:
+        name: ""
+  volumes:
+     pvc:
+       claim: bds-pvc
+  container:
+    env:
+      ## Description of the BDS mode type
+      modeValue: MULTICLOUD_PE
+  image:
+    registry: $IMAGE_REGISTRY/
+    pullSecrets:
+      name: pullsecret
+#   securityContext:
+#     runAsUser: null
+#     runAsGroup: 0
+#     fsGroup: null
+#     runAsNonRoot: true

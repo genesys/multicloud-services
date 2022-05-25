@@ -15,26 +15,18 @@ gcxi:
 
     GCXI_GIM_DB:
       ## GCXI_GIM_DB.DSNDEF: definition for GCXI_GIM_DB DSN (connection to GIM database); format: DSN_NAME=GCXI_GIM_DB;DB_TYPE=;DB_TYPE_EX=;HOST=;PORT=;DB_NAME=;LOGIN=;PASSWORD=
-      DSNDEF: DSN_NAME=GCXI_GIM_DB;DB_TYPE=POSTGRESQL;DB_TYPE_EX=PostgreSQL;HOST=${gim_db_host};PORT=5432;DB_NAME=${gim_db_name};LOGIN=;PASSWORD=;DRV_TYPE=JDBC;GCXI_QENGINE=ON
+      DSNDEF: DSN_NAME=GCXI_GIM_DB;DB_TYPE=POSTGRESQL;DB_TYPE_EX=PostgreSQL;HOST=postgresql-1-postgresql-svc.default;PORT=5432;DB_NAME=${gim_db_name};LOGIN=;PASSWORD=;DRV_TYPE=JDBC;GCXI_QENGINE=ON
       LOGIN: $gim_db_user
       PASSWORD: $gim_db_pass
 
     IWD_DB:
       ## IWD_DB.DSNDEF: definition for IWD_DB DSN (connection to IWD database); format: DSN_NAME=IWD_DB;DB_TYPE=;DB_TYPE_EX=;HOST=;PORT=;DB_NAME=;LOGIN=;PASSWORD=
-      DSNDEF: DSN_NAME=IWD_DB;DB_TYPE=POSTGRESQL;DB_TYPE_EX=PostgreSQL;HOST=${iwd_db_host};PORT=5432;DB_NAME=${iwd_db_name};LOGIN=;PASSWORD=;DRV_TYPE=JDBC;GCXI_QENGINE=ON
+      DSNDEF: DSN_NAME=IWD_DB;DB_TYPE=POSTGRESQL;DB_TYPE_EX=PostgreSQL;HOST=postgresql-1-postgresql-svc.default;PORT=5432;DB_NAME=${iwd_db_name};LOGIN=;PASSWORD=;DRV_TYPE=JDBC;GCXI_QENGINE=ON
       LOGIN: $iwd_db_user
       PASSWORD: $iwd_db_pass
-  images:
-    gcxi:
-    repository: ${repository}/gcxi
 
   ingress:
     external:
       host: web-gcxi-$tenant_sid.${DOMAIN}
     internal:
       host: web-gcxi-$tenant_sid-int.${DOMAIN}
-
-# custom value for pre-release-script only
-db:
-  host: postgresql-1-postgresql-svc.default
-  META_DB_ADMINDB: postgres

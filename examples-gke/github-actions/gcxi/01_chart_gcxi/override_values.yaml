@@ -34,7 +34,7 @@ gcxi:
       control: gcxi_control
       worker: gcxi
     postgres: postgres:11
-    repository: repo.path/gcxi
+    repository: $IMAGE_REGISTRY/gcxi
 
   ingress:
     annotations:

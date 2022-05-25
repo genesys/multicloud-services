@@ -5,7 +5,7 @@
 echo "Validate that CoTurn LB obtained public IP"
 
 for i in {1..24}; do
-  TURNIP=$(kubectl get svc | grep coturn | awk '{print $4}')
+  TURNIP=$(kubectl get svc -l "servicename=webrtc-coturn,color=blue"  --no-headers  | awk '{print $4}')
   echo "$TURNIP"
   [[ $TURNIP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] && break
   [[ $i == 24 ]] && echo "ERROR: can't obtain CoTurn LB public IP" && exit 1

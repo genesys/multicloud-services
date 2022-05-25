@@ -31,13 +31,13 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   gvprsrepository: gvp/gvp_rs
   snmprepository: gvp/multicloud/gvp_snmp
   rsinitrepository: gvp/gvp_rs_init
   rstag:
   rsinittag:
-  snmptag: 100.0.100.0012
+  snmptag: 100.0.100.0027
   pullPolicy: Always
   imagePullSecrets:
     - name: pullsecret

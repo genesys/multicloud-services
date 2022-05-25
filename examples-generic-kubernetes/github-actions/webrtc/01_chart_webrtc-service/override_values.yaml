@@ -1,4 +1,8 @@
-# Override values for WebRTC service deployment
+###############################################################################
+# Global Webrtc parameters
+# https://all.docs.genesys.com/WebRTC/Current/WebRTCPEGuide/Configure
+###############################################################################
+
 deployment:
   coturnService:
     annotations: {}
@@ -43,8 +47,8 @@ image:
   pullPolicy: Always
   imagePullSecrets: 
     - pullsecret
-  webrtc: repository.path/webrtc
-  coturn: repository.path/webrtc
+  webrtc: $IMAGE_REGISTRY/webrtc
+  coturn: $IMAGE_REGISTRY/webrtc
   webrtcVersion: 100.0.016.0000
   coturnVersion: 100.0.016.0000
 
@@ -73,11 +77,11 @@ gateway:
 
   authRedirectUri:          https://gauth.${DOMAIN}
   # GWS9.0 Auth service address
-  authService:              https://gauth.${DOMAIN}
+  authService:              http://gauth-auth.gauth:80
   # GWS9.0 Environment service address
-  envService:               https://gauth.${DOMAIN}
+  envService:               http://gauth-environment.gauth:80
   # GWS9.0 Configuration service address
-  cfgService:                http://gws-service-proxy.gws.svc.cluster.local:80
+  cfgService:               http://gws-service-proxy.gws.svc.cluster.local:80
 
   # Enable or disable transoding on gateway side - true/false. Transcoding is enabled by default
   # If transcoding is disabled - then Gateway can handle more agent sessions but OPUS codec is not supported

@@ -11,16 +11,29 @@ Consult with our [documentation](https://all.docs.genesys.com/AUTH/Current/AuthP
 ## Configuration
 
 Be sure to update the values defined to align with your environment.
-To use the scripting for service deployment, create a deployment secret (deployment-secrets) to store confidential information you may not want held in your repository, or `.yaml` files. 
+To use the scripting for service deployment, create a deployment secret (`deployment-secrets`) to store confidential information you may not want held in your repository, or `.yaml` files. 
 
-- `secrets/pullsecret`
-- `secrets/deployment_secrets`
+*Note!* The example includes a Java KeyStore to use [JSON Web Token authentication](https://all.docs.genesys.com/AUTH/Current/AuthPEGuide/Configure). Replace the `<key content>` variable found within the `override_values.yaml`.
+
+```
+  auth:
+    jks:
+      keyStoreFileData: <key content>	
+```
+## Secrets 
+
+Create the following secrets within the namespace of the service.
+
+`secrets/pullsecret`  -  [standard pullsecret](../#-considerations) for the workflow 
+
+`secrets/deployment_secrets`  -  Include the following key/value data.
 
 |Key|Sample Value|
 |-|-|
+POSTGRES_ADDR|pgdb-gws-postgresql.infra.svc.cluster.local
+DB_NAME|gauth
 POSTGRES_ADMIN_USER|pgADMIN
 POSTGRES_ADMIN_PASS|pgPASS
-INGRESS_DOMAIN|yourcompany.example.com
 gauth_admin_password|gadminPASS
 gauth_admin_password_plain|
 gauth_admin_username|gadminUSER

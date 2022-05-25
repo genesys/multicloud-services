@@ -5,7 +5,7 @@ deployment:
 
 # override the registry from where the image will be deployed
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   pullPolicy: Always
   imagePullSecrets: "pullsecret"
 

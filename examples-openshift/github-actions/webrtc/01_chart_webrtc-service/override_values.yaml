@@ -1,4 +1,7 @@
-# Override values for WebRTC service deployment
+###############################################################################
+# Global Webrtc parameters
+# https://all.docs.genesys.com/WebRTC/Current/WebRTCPEGuide/Configure
+###############################################################################
 deployment:
   coturnService:
     annotations: {}
@@ -42,8 +45,8 @@ networkPolicies:
 image:
   pullPolicy: Always
   imagePullSecrets: []
-  webrtc: repository.path/webrtc
-  coturn: repository.path/webrtc
+  webrtc: $IMAGE_REGISTRY/webrtc
+  coturn: $IMAGE_REGISTRY/webrtc
   webrtcVersion: 100.0.016.0000
   coturnVersion: 100.0.016.0000
 
@@ -118,7 +121,7 @@ gateway:
     k8s:
       gws: webrtc-gws-secret
     env:
-     gwsClient: webrtc-clientid
+     gwsClient: external_api_client
      gwsSecret: secret
 
 coturn:

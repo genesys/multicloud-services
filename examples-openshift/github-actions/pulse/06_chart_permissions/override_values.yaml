@@ -5,7 +5,7 @@
 # * Image configuration
 image:
   pullPolicy: IfNotPresent
-  registry: "repository.path"
+  registry: "$IMAGE_REGISTRY"
   imagePullSecrets:
     - name: pullsecret
 

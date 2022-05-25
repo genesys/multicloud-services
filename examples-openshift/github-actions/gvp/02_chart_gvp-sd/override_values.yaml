@@ -30,7 +30,7 @@ partOf: ${NS}
 serviceName: gvp-sd
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   repository: gvp/gvp_sd
   tag: "{{ .Chart.AppVersion }}"
   pullPolicy: IfNotPresent

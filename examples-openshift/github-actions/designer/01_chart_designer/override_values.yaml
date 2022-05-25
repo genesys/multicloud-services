@@ -3,7 +3,7 @@ designer:
     color: "blue"
     strategy: rollingupdate
   image:
-    repository: repository.path/designer/
+    repository: $IMAGE_REGISTRY/designer/
     tag:  100.0.101.0034
     imagePullSecrets: [name: pullsecret]
   designerSecrets:

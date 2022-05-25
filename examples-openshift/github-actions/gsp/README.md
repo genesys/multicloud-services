@@ -17,7 +17,7 @@ To use the scripting for service deployment, create a deployment secret (deploym
 OpenShift supports dynamic binding using an [Object Bucket Claim](https://access.redhat.com/documentation/en-us/red_hat_openshift_container_storage/4.6/html/managing_hybrid_and_multicloud_resources/object-bucket-claim). The Object Bucket is created in OpenShift on-the-fly in the `pre-release-script`. 
 
 ## Secrets 
-Create the standard [pullsecret](../github-actions#-considerations) for the workflow: 
+Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 

@@ -31,7 +31,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   gvprsrepository: gvp/gvp_rs
   snmprepository: gvp/multicloud/gvp_snmp
   rsinitrepository: gvp/gvp_rs_init

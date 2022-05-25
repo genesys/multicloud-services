@@ -19,7 +19,7 @@
 # Image registry should be added to cluster in coresponding namespace before workflow run
 # Example:    
 #     kubectl create secret docker-registry pullsecret \
-#       --docker-server=repository.path \
+#       --docker-server=$IMAGE_REGISTRY \
 #       --docker-username=user --docker-password=token
 
 
@@ -29,13 +29,14 @@ name: Deploy service
 
 env:
   # 🖊️ EDIT your repository secrets to log into your MicroK8s cluster and set up the context.
-  MK8S_SERVER:   "mk8s.test"
+  MK8S_SERVER:   "mk8s.dev"
 
   # 🖊️ EDIT to change the helm registry settings.
   # Registries such as Jfrog, GHCR, Quay.io, and Docker Hub are supported.
-  HELM_REGISTRY:           "https://pureengage.jfrog.io/artifactory/"
-  HELM_REGISTRY_USER:      ${{ secrets.HELM_REGISTRY_USER }}          
+  HELM_REGISTRY:            ${{ secrets.HELM_REGISTRY }}
+  HELM_REGISTRY_USER:       ${{ secrets.HELM_REGISTRY_USER }}          
   HELM_REGISTRY_TOKEN:      ${{ secrets.HELM_REGISTRY_TOKEN }}
+  IMAGE_REGISTRY:           ${{ secrets.IMAGE_REGISTRY }}
 
 
 on:
@@ -43,13 +44,41 @@ on:
   workflow_dispatch:
     inputs:
       service:
+        type: choice
         description: service(s) for deployment
         required: true
-        default: "webrtc"
+        default: webrtc
+        options:
+        - infra
+        - gauth
+        - voice
+        - tenant
+        - gws
+        - wwe        
+        - webrtc
+        - webrtc-blue-green
+        - gvp
+        - gsp
+        - gim
+        - gca
+        - designer
+        - designer-blue-green
+        - ucsx
+        - tlm
+        - nexus
+        - iwd
+        - iwdem
+        - iwddm
+        - cxc
+        - ges
+        - pulse
+        - bds
+        - ixn
+        - gcxi
       namespace:
         description: namespace (if not default)
         required: false
-        default: "webrtc"
+        default: webrtc
       helmrepo:
         description: helm repo name in HELM_REGISTRY
         required: true
@@ -166,9 +195,17 @@ jobs:
         export NS=${{ github.event.inputs.namespace }}
         export SERVICE=${{ github.event.inputs.service }}
         export DOMAIN=${{ env.MK8S_SERVER }}
+        export IMAGE_REGISTRY=${{ env.IMAGE_REGISTRY }}
 
 
         cd $SERVICE
+
+        FULLCOMMAND="${{ github.event.inputs.command }}"
+        COMMAND=$(echo $FULLCOMMAND | cut -d' ' -f1)
+        if [[ "$FULLCOMMAND" == *" "* ]]; then
+          CHART_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f2)
+          RL_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f3)
+        fi
 
         # FOR EVERY HELM CHART ############################################################
         # ℹ️ Notice: in application folder should be exist subfolder with name in format: 
@@ -178,7 +215,7 @@ jobs:
         # The chart-name using in command:
         #     helm install RELEASE-NAME helm-repo/chart-name
         # ##################################################################################
-        for DIR in [0-9][0-9]_chart_*/; do
+        for DIR in [0-9][0-9]_chart_*$CHART_NAME*/; do
           
           CHART=$([[ -d "$DIR" ]] && echo $DIR | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
           
@@ -192,7 +229,6 @@ jobs:
           
           FLAGS="helm_repo/$CHART --install --version=$VER -n $NS -f $(pwd)/overrides.yaml"
           
-          COMMAND=${{ github.event.inputs.command }}
           case $COMMAND in
 
             install)
@@ -214,6 +250,7 @@ jobs:
 
             *)
               echo "❌ Wrong command"
+              exit 1
               ;;
 
           esac
@@ -237,7 +274,7 @@ jobs:
           # If you want to run some post-installing script (for ex: validate something),
           # place you code in post-relese-script.sh in release subfolder
           # ##################################################################################
-          for DIR_RL in [0-9][0-9]_release_*/; do
+          for DIR_RL in [0-9][0-9]_release_*$RL_NAME*/; do
 
                 RELEASE=$([[ -d "$DIR_RL" ]] && echo $DIR_RL | sed 's/[0-9][0-9]_release_//' | sed 's/\///')
 

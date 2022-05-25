@@ -1,0 +1,1257 @@
+{
+    "tenants": {
+        "MultiRegionExampleTenant": {
+            "audit_watermark": "2020-06-01",
+            "business_units": [],
+            "contact_center_id": "BDS_CFG_CONTACT_CENTER_ID_PLACEHOLDER",
+            "cs_backup_host": "",
+            "cs_port": 2020,
+            "cs_primary_host": "BDS_CFG_CS_CONSUL_PLACEHOLDER",
+            "enabled": true,
+            "extract_watermark": "2016-09-28",
+            "gim_filters": {
+                "AGENT-DBID-FILTER": "",
+                "ITF-DNIS-FILTER": "itf.TARGET_ADDRESS not in ('+11111111111','+22222222222')",
+                "PARTY-DBID-FILTER": " ",
+                "RESOURCE-DBID-FILTER": "",
+                "TEST-AGENTS-DBIDS": ""
+            },
+            "gimdb": {
+                "database": "BDS_CFG_GLOBALS_GIM_DB_NAME_PLACEHOLDER",
+                "db_type": "postgre",
+                "driver_name": "PostgreSQL",
+                "password": "BDS_CFG_GLOBALS_GIM_DB_PSW_PLACEHOLDER",
+                "port": 5432,
+                "server": "BDS_CFG_GLOBALS_GIM_DB_HOST_PLACEHOLDER",
+                "username": "BDS_CFG_GLOBALS_GIM_DB_USR_PLACEHOLDER"
+            },
+            "load_watermark": "2016-09-29",
+            "loader_sftp": {
+                "hostname": "BDS_CFG_SFTP_HOST_PLACEHOLDER",
+                "password": "BDS_CFG_LEGACY_GLOBALS_SFTP_PSW_PLACEHOLDER",
+                "path": "BDS_CFG_SFTP_PATH_PLACEHOLDER",
+                "username": "BDS_CFG_LEGACY_GLOBALS_SFTP_USR_PLACEHOLDER"
+            },
+            "metrics": {
+                "chatbot_interactions": {
+                    "enabled": false
+                },
+                "cx_contact_interactions": {
+                    "enabled": true
+                },
+                "gtr_interactions": {
+                    "enabled": true
+                },
+                "gvp_asr_minutes": {
+                    "enabled": true
+                },
+                "gvp_minutes": {
+                    "enabled": true
+                },
+                "gvp_tts_minutes": {
+                    "enabled": true
+                },
+                "seats_callback": {
+                    "enabled": true
+                },
+                "seats_chat": {
+                    "enabled": true
+                },
+                "seats_email": {
+                    "enabled": true
+                },
+                "seats_facebook": {
+                    "enabled": true
+                },
+                "seats_outbound": {
+                    "enabled": true
+                },
+                "seats_sms": {
+                    "enabled": true
+                },
+                "seats_third_party": {
+                    "enabled": false
+                },
+                "seats_twitter": {
+                    "enabled": true
+                },
+                "seats_voice": {
+                    "enabled": true
+                },
+                "seats_whatsapp": {
+                    "enabled": false
+                },
+                "voicebot_minutes": {
+                    "enabled": true
+                },
+                "voicemail_boxes_gim": {
+                    "enabled": true
+                }
+            },
+            "primary_location": "ash",
+            "production_date": "2021-06-01",
+            "regions": {
+                "us": {
+                    "ash": {
+                        "consul": {
+                            "token": "BDS_CFG_CONSUL_TOKEN_PLACEHOLDER",
+                            "url_api": "BDS_CFG_CONSUL_URL_API_PLACEHOLDER"
+                        },
+                        "dc_aliases": [
+                            "USEAST2",
+                            "eastus2-prod001",
+                            "eastus2"
+                        ],
+                        "dc_name": "US:Ashburn",
+                        "enabled": true,
+                        "gir_elastic_search": {
+                            "es_host": "BDS_CFG_GIR_ES_PLACEHOLDER:9200",
+                            "gir_region": "region3"
+                        },
+                        "gvp": {
+                            "database": "BDS_CFG_GLOBALS_GVP_DB_PL_EASTUS2_NAME_PLACEHOLDER",
+                            "db_type": "sql_server",
+                            "driver_name": "FreeTDS",
+                            "gvp_primary_rs_name": "GVP",
+                            "password": "BDS_CFG_GLOBALS_GVP_DB_PL_EASTUS2_PSW_PLACEHOLDER",
+                            "port": 1433,
+                            "server": "BDS_CFG_GLOBALS_GVP_DB_PL_EASTUS2_HOST_PLACEHOLDER",
+                            "shared_cs_backup_host": "gvp-configserver.gvp.svc.cluster.local.",
+                            "shared_cs_port": "8888",
+                            "shared_cs_primary_host": "gvp-configserver.gvp.svc.cluster.local.",
+                            "username": "BDS_CFG_GLOBALS_GVP_DB_PL_EASTUS2_USR_PLACEHOLDER"
+                        },
+                        "gws": {
+                            "auth_host": "BDS_CFG_GWS_AUTH_HOST_PLACEHOLDER",
+                            "client_id": "BDS_CFG_BDS_GWS_CLIENTID_PLACEHOLDER",
+                            "client_secret": "BDS_CFG_BDS_GWS_CLIENT_SECRET_PLACEHOLDER",
+                            "grant_type": "client_credentials",
+                            "host": "BDS_CFG_GWS_HOST_PLACEHOLDER"
+                        },
+                        "ivr_usage_profiles": [
+                            "000"
+                        ],
+                        "outbound_calling_number": "put_phone_number_here_",
+                        "switches": [
+                            "MultiMediaSwitch"
+                        ]
+                    },
+                    "contracted_ports": 0,
+                    "enabled": true,
+                    "location_name": "US",
+                    "rate_table_filename": "t100_2014-09-29.csv",
+                    "region_name": "US",
+                    "sjc": {
+                        "consul": {
+                            "token": "BDS_CFG_CONSUL_WESTUS2_TOKEN_PLACEHOLDER",
+                            "url_api": "BDS_CFG_CONSUL_URL_API_REGION_PLACEHOLDER"
+                        },
+                        "dc_aliases": [
+                            "USWEST2",
+                            "westus2-prod001",
+                            "westus2"
+                        ],
+                        "dc_name": "US:San Jose",
+                        "enabled": true,
+                        "gir_elastic_search": {
+                            "es_host": "BDS_CFG_GIR_ES_PLACEHOLDER:9200",
+                            "gir_region": "region3"
+                        },
+                        "gvp": {
+                            "database": "BDS_CFG_GLOBALS_GVP_DB_WESTUS2_NAME_PLACEHOLDER",
+                            "db_type": "sql_server",
+                            "driver_name": "FreeTDS",
+                            "gvp_primary_rs_name": "GVP",
+                            "password": "BDS_CFG_GLOBALS_GVP_DB_WESTUS2_PSW_PLACEHOLDER",
+                            "port": 1433,
+                            "server": "BDS_CFG_GLOBALS_GVP_DB_WESTUS2_HOST_PLACEHOLDER",
+                            "shared_cs_backup_host": "gvp-configserver.gvp.svc.cluster.local.",
+                            "shared_cs_port": "8888",
+                            "shared_cs_primary_host": "gvp-configserver.gvp.svc.cluster.local.",
+                            "username": "BDS_CFG_GLOBALS_GVP_DB_WESTUS2_USR_PLACEHOLDER"
+                        },
+                        "ivr_usage_profiles": [
+                            "000"
+                        ],
+                        "outbound_calling_number": "put_phone_number_here_",
+                        "sbc": {
+                            "logs": "",
+                            "logs_bucket_name": "",
+                            "pattern": "",
+                            "type": "",
+                            "watermark": "1970-01-01"
+                        },
+                        "switches": []
+                    }
+                }
+            },
+            "sbc_validate_watermark": "1970-01-01",
+            "seat_model": "enabled",
+            "shared_gvp": true,
+            "tenant_id": "100",
+            "tenant_name": "t100",
+            "transform_watermark": "2016-09-29"
+        }
+    },
+    "metrics": {
+        "chatbot_interactions": {
+            "datasets": [
+                "bot_sessions"
+            ],
+            "bu_datasets": [
+                "mm_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "global",
+            "frequency": "daily",
+            "activity_type": "12",
+            "channel_type": "8",
+            "status": "TRANSACTION",
+            "service_class": "23",
+            "product_id": "PE1006TRA",
+            "load": true,
+            "direction": ""
+        },
+        "cx_contact_interactions": {
+            "datasets": [
+                "caf_records"
+            ],
+            "bu_datasets": [
+                "folder"
+            ],
+            "scope": "global",
+            "frequency": "daily",
+            "activity_type": "12",
+            "channel_type": "12",
+            "status": "TRANSACTION",
+            "service_class": "36",
+            "product_id": "PE1020TRA",
+            "load": true,
+            "direction": ""
+        },
+        "gpm_calls": {
+            "datasets": [
+                "gpm_fact",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "global",
+            "frequency": "daily",
+            "activity_type": "12",
+            "channel_type": "12",
+            "status": "TRANSACTION",
+            "service_class": "37",
+            "load": true,
+            "direction": ""
+        },
+        "gtr_interactions": {
+            "datasets": [
+                "workitem_interactions",
+                "test_mm_interactions"
+            ],
+            "bu_datasets": [
+                "folder"
+            ],
+            "scope": "global",
+            "frequency": "daily",
+            "activity_type": "12",
+            "channel_type": "12",
+            "status": "TRANSACTION",
+            "service_class": "38",
+            "product_id": "PE1025TRA",
+            "load": true,
+            "direction": ""
+        },
+        "gvp_asr_minutes": {
+            "datasets": [
+                "gvp_cdrs_db_asr_tts",
+                "gvp_asr_tts_events",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "0",
+            "channel_type": "1",
+            "status": "DELIVEREDPERSON",
+            "service_class": "28",
+            "direction": "1",
+            "product_id": "PE1003MIN",
+            "load": true
+        },
+        "gvp_asr_ports": {
+            "datasets": [
+                "gvp_cdrs_db_asr_tts",
+                "gvp_asr_tts_events",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "6",
+            "channel_type": "1",
+            "status": "PORT",
+            "service_class": "24",
+            "load": true,
+            "direction": ""
+        },
+        "gvp_minutes": {
+            "datasets": [
+                "gvp_cdrs_db",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "0",
+            "channel_type": "1",
+            "status": "INBOUND_IVR_COMPLETED",
+            "service_class": "21",
+            "direction": "1",
+            "product_id": "PE1018MIN",
+            "load": true
+        },
+        "gvp_ports": {
+            "datasets": [
+                "gvp_cdrs_db",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "6",
+            "channel_type": "1",
+            "status": "PORT",
+            "service_class": "20",
+            "load": true,
+            "direction": ""
+        },
+        "gvp_tts_minutes": {
+            "datasets": [
+                "gvp_cdrs_db_asr_tts",
+                "gvp_asr_tts_events",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "7",
+            "channel_type": "3",
+            "status": "TEXT_MSG_SENT",
+            "service_class": "8",
+            "direction": "1",
+            "product_id": "PE1026MIN",
+            "load": true
+        },
+        "gvp_tts_ports": {
+            "datasets": [
+                "gvp_cdrs_db_asr_tts",
+                "gvp_asr_tts_events",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "6",
+            "channel_type": "3",
+            "status": "PORT",
+            "service_class": "7",
+            "load": true,
+            "direction": ""
+        },
+        "pstn_inbound_cdr": {
+            "datasets": [
+                "cdr_durations",
+                "dn",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "folder",
+                "voice_party",
+                "agent_resource"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "0",
+            "channel_type": "1",
+            "status": "INBOUND_IVR_COMPLETED",
+            "service_class": "",
+            "direction": "1",
+            "load": true
+        },
+        "pstn_outbound_cdr": {
+            "datasets": [
+                "cdr_durations",
+                "dn",
+                "test_voice_interactions"
+            ],
+            "bu_datasets": [
+                "folder",
+                "voice_party",
+                "agent_resource"
+            ],
+            "scope": "region",
+            "frequency": "daily",
+            "activity_type": "0",
+            "channel_type": "1",
+            "status": "DELIVEREDPERSON",
+            "service_class": "",
+            "direction": "0",
+            "load": true
+        },
+        "seats_callback": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "25",
+            "product_id": "PE1030CON",
+            "product_id_named": "PE1030NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_call_recording": {
+            "datasets": [
+                "test_voice_interactions",
+                "call_recordings",
+                "agent_resource"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "30",
+            "load": true,
+            "direction": ""
+        },
+        "seats_chat": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "8",
+            "status": "AGENT_SEATS",
+            "service_class": "19",
+            "product_id": "PE1010CON",
+            "product_id_named": "PE1010NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_email": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "2",
+            "status": "AGENT_SEATS",
+            "service_class": "19",
+            "product_id": "PE1011CON",
+            "product_id_named": "PE1011NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_facebook": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "12",
+            "status": "AGENT_SEATS",
+            "service_class": "22",
+            "product_id": "PE1036CON",
+            "product_id_named": "PE1036NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_outbound": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "4",
+            "status": "AGENT_SEATS",
+            "service_class": "23",
+            "product_id": "PE1031CON",
+            "product_id_named": "PE1031NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_quality_management": {
+            "datasets": [
+                "test_voice_interactions",
+                "call_recordings",
+                "agent_resource"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "0",
+            "status": "AGENT_SEATS",
+            "service_class": "25",
+            "load": true,
+            "direction": ""
+        },
+        "seats_screen_recording": {
+            "datasets": [
+                "test_voice_interactions",
+                "screen_recordings",
+                "agent_resource"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "26",
+            "load": true,
+            "direction": ""
+        },
+        "seats_sms": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "3",
+            "status": "AGENT_SEATS",
+            "service_class": "4",
+            "product_id": "PE1009CON",
+            "product_id_named": "PE1009NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_supervisor": {
+            "datasets": [
+                "sm_fact",
+                "agent_resource"
+            ],
+            "bu_datasets": [
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "0",
+            "status": "AGENT_SEATS",
+            "service_class": "21",
+            "load": true,
+            "direction": ""
+        },
+        "seats_third_party": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "12",
+            "status": "AGENT_SEATS",
+            "service_class": "11",
+            "product_id": "PE1013CON",
+            "product_id_named": "PE1013NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_twitter": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "12",
+            "status": "AGENT_SEATS",
+            "service_class": "24",
+            "product_id": "PE1037CON",
+            "product_id_named": "PE1037NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_voice": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "19",
+            "product_id": "PE1029CON",
+            "product_id_named": "PE1029NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_webrtc": {
+            "datasets": [
+                "sm_fact",
+                "dn",
+                "endpoint_place"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "32",
+            "product_id": "PE1039CON",
+            "product_id_named": "PE1039NAM",
+            "load": true,
+            "direction": ""
+        },
+        "seats_wfm_shifts": {
+            "datasets": [
+                "agent_resource",
+                "wfm_agent_schedules"
+            ],
+            "bu_datasets": [
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "32",
+            "product_id": "",
+            "product_id_named": "",
+            "load": true,
+            "direction": ""
+        },
+        "seats_whatsapp": {
+            "datasets": [
+                "sm_fact"
+            ],
+            "bu_datasets": [
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "region",
+            "frequency": "daily+daily",
+            "activity_type": "5",
+            "channel_type": "3",
+            "status": "AGENT_SEATS",
+            "service_class": "10",
+            "product_id": "PE1038CON",
+            "product_id_named": "PE1038NAM",
+            "load": true,
+            "direction": ""
+        },
+        "voicebot_minutes": {
+            "datasets": [
+                "bot_sessions"
+            ],
+            "bu_datasets": [
+                "voice_party",
+                "dn",
+                "agent_resource",
+                "folder"
+            ],
+            "scope": "global",
+            "frequency": "daily",
+            "activity_type": "12",
+            "channel_type": "1",
+            "status": "TRANSACTION",
+            "service_class": "33",
+            "product_id": "PE1032MIN",
+            "load": true,
+            "direction": ""
+        },
+        "voicemail_boxes_gim": {
+            "datasets": [
+                "dn",
+                "agent_group",
+                "agent_login",
+                "folder"
+            ],
+            "bu_datasets": [],
+            "scope": "global",
+            "frequency": "daily",
+            "activity_type": "5",
+            "channel_type": "0",
+            "status": "AGENT_SEATS",
+            "service_class": "26",
+            "product_id": "PE1034MBX",
+            "load": true,
+            "direction": ""
+        }
+    },
+    "regions": {
+        "ap": {
+            "region_name": "AP",
+            "sin": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "MY",
+                "dc_aliases": [
+                    "APS1"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "aps1_es_host:9200",
+                    "gir_region": "region1"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "SG",
+                "switches": [
+                    "ap-east-1",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            },
+            "syd": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "AU",
+                "dc_aliases": [
+                    "APS2"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "aps2_es_host:9200",
+                    "gir_region": "region1"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "SY",
+                "switches": [
+                    "ap-east-2",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            }
+        },
+        "eu": {
+            "region_name": "EU",
+            "ams": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "ND",
+                "dc_aliases": [
+                    "EUW2"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "euw2_es_host:9200",
+                    "gir_region": "region2"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "ND",
+                "switches": [
+                    "eu-west-2",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            },
+            "dub": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "IE",
+                "dc_aliases": [
+                    "northeurope-prod002"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "ne1_es_host:9200",
+                    "gir_region": "region2"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "IE",
+                "switches": [
+                    "northeurope",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            },
+            "lon": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "UK",
+                "dc_aliases": [
+                    "EUW1"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "euw1_es_host:9200",
+                    "gir_region": "region2"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "UK",
+                "switches": [
+                    "eu-west-1",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            }
+        },
+        "us": {
+            "enabled": false,
+            "region_name": "US",
+            "ash": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "US",
+                "dc_aliases": [
+                    "USE1"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "use2_es_host:9200",
+                    "gir_region": "region3"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "",
+                "switches": [
+                    "us-east-1",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            },
+            "sjc": {
+                "consul": {
+                    "token": "",
+                    "url_api": ""
+                },
+                "country": "US",
+                "dc_aliases": [
+                    "USW1"
+                ],
+                "gir_elastic_search": {
+                    "es_host": "usw2_es_host:9200",
+                    "gir_region": "region3"
+                },
+                "gvp": {
+                    "database": "",
+                    "db_type": "sql_server",
+                    "driver_name": "FreeTDS",
+                    "gvp_primary_rs_name": "put_primary_rs_name_here_",
+                    "password": "",
+                    "port": "",
+                    "server": "",
+                    "shared_cs_backup_host": "put_backup_cs_hostname_here_",
+                    "shared_cs_port": "put_port_number_here_",
+                    "shared_cs_primary_host": "put_primary_cs_hostname_here_",
+                    "username": ""
+                },
+                "state_province": "CA",
+                "switches": [
+                    "us-west-1",
+                    "SIP_Cluster"
+                ],
+                "zip_code": ""
+            }
+        }
+    },
+    "metric_joins": {
+        "bundle_component_digital_1": {
+            "argument_1": [
+                "seats_sms",
+                "seats_chat",
+                "seats_email"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 1
+        },
+        "bundle_component_digital_2": {
+            "argument_1": [
+                "seats_facebook",
+                "seats_twitter",
+                "seats_whatsapp"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 2
+        },
+        "bundle_component_gir_sta": {
+            "argument_1": [
+                "bundle_component_gir",
+                "bundle_component_sta_virtual"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 1
+        },
+        "bundle_component_gir": {
+            "argument_1": [
+                "seats_screen_recording",
+                "seats_call_recording"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 1
+        },
+        "bundle_component_gir_wfm": {
+            "argument_1": [
+                "bundle_component_wfm_virtual"
+            ],
+            "argument_2": [
+                "bundle_component_gir"
+            ],
+            "operation": "intersect",
+            "level": 1
+        },
+        "bundle_component_sta_virtual": {
+            "argument_1": [
+                "bundle_component_gir"
+            ],
+            "argument_2": [],
+            "flag": "STA_flag",
+            "operation": "switch",
+            "level": 1
+        },
+        "bundle_component_sta_wfm": {
+            "argument_1": [
+                "bundle_component_sta_virtual",
+                "bundle_component_wfm_virtual"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 1
+        },
+        "bundle_component_voice_1": {
+            "argument_1": [
+                "seats_voice",
+                "seats_callback"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 1
+        },
+        "bundle_component_voice_2": {
+            "argument_1": [
+                "seats_outbound"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "level": 2
+        },
+        "bundle_component_wfm_virtual": {
+            "argument_1": [
+                "seats_wfm_shifts"
+            ],
+            "argument_2": [],
+            "flag": "WFM_flag",
+            "operation": "switch",
+            "level": 1
+        },
+        "bundle_digital_one": {
+            "argument_1": [
+                "bundle_component_digital_1"
+            ],
+            "argument_2": [
+                "bundle_component_digital_2"
+            ],
+            "operation": "subtract",
+            "activity_type": "5",
+            "channel_type": "12",
+            "status": "AGENT_SEATS",
+            "service_class": "51",
+            "product_id": "3GP114000ABAA-C",
+            "product_id_named": "3GP114000ABAA"
+        },
+        "bundle_digital_two": {
+            "argument_1": [
+                "bundle_component_digital_2"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "activity_type": "5",
+            "channel_type": "12",
+            "status": "AGENT_SEATS",
+            "service_class": "52",
+            "product_id": "3GP113999ABAA-C",
+            "product_id_named": "3GP113999ABAA"
+        },
+        "bundle_voice_one": {
+            "argument_1": [
+                "bundle_component_voice_1"
+            ],
+            "argument_2": [
+                "bundle_component_voice_2"
+            ],
+            "operation": "subtract",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "40",
+            "product_id": "3GP113997ABAA-C",
+            "product_id_named": "3GP113997ABAA"
+        },
+        "bundle_voice_two": {
+            "argument_1": [
+                "bundle_component_voice_2"
+            ],
+            "argument_2": [],
+            "operation": "union",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "41",
+            "product_id": "3GP113998ABAA-C",
+            "product_id_named": "3GP113998ABAA"
+        },
+        "bundle_wfo_1a": {
+            "argument_1": [
+                "bundle_component_gir"
+            ],
+            "argument_2": [
+                "bundle_component_sta_wfm"
+            ],
+            "operation": "subtract",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "40",
+            "product_id": "3GP114890ABAA",
+            "product_id_named": "3GP114889ABAA"
+        },
+        "bundle_wfo_1b": {
+            "argument_1": [
+                "bundle_component_wfm_virtual"
+            ],
+            "argument_2": [
+                "bundle_component_gir_sta"
+            ],
+            "operation": "subtract",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "40",
+            "product_id": "3GP114892ABAA",
+            "product_id_named": "3GP114891ABAA"
+        },
+        "bundle_wfo_2": {
+            "argument_1": [
+                "bundle_component_gir_wfm"
+            ],
+            "argument_2": [
+                "bundle_component_sta_virtual"
+            ],
+            "operation": "union",
+            "activity_type": "5",
+            "channel_type": "1",
+            "status": "AGENT_SEATS",
+            "service_class": "40",
+            "product_id": "3GP114894ABAA",
+            "product_id_named": "3GP114893ABAA"
+        }
+    },
+    "globals": {
+        "cme_credentials": {
+            "password": "",
+            "username": ""
+        },
+        "gimdb": {
+            "db_type": "sql_server",
+            "driver_name": "FreeTDS",
+            "password": "",
+            "username": ""
+        },
+        "gvpdb": {
+            "db_type": "sql_server",
+            "driver_name": "FreeTDS",
+            "password": "",
+            "username": ""
+        },
+        "gws": {
+            "auth_host": "",
+            "client_id": "",
+            "client_secret": "",
+            "grant_type": "",
+            "host": ""
+        },
+        "loader_sftp": {
+            "hostname": "",
+            "password": "",
+            "path": "",
+            "username": ""
+        },
+        "mode_settings": {
+            "local_cache": "/genesys/data/",
+            "local_extract_path": "extract",
+            "local_transform_path": "transform"
+        },
+        "SourceId": "MultiCloudPE"
+    }
+}

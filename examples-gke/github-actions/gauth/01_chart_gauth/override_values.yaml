@@ -1,60 +1,268 @@
+# Docker image configuration
 image:
-  registry: repository.path/auth
-  imagePullSecrets:		  
+  registry: $IMAGE_REGISTRY/auth
+  # Configure imagePullSecrets if docker registry requires authentication
+  # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials
+  imagePullSecrets:
     - name: pullsecret
+  pullPolicy: IfNotPresent
+COLOR: blue
 postgres:
+  deploy: false
   secret:
+    name_override:
     create: true
   configmap:
+    name_override:
     create: true
+  image: postgres:11-alpine
+  # REQUIRED FIELDS:
   username: gauth_pg_username
   password: gauth_pg_password
   db: gauth
   host: POSTGRES_ADDR
   port: 5432
+
 redis:
+  deploy: false
   secret:
     name_override: gauth-redis
     create: true
   configmap:
+    name_override:
     create: true
-  cluster_nodes: infra-redis-redis-cluster.infra.svc.cluster.local:6379
+  image: redis:5-stretch
+  cluster_nodes: infra-redis-redis-cluster.infra.svc.gke1-uswest1.gcpe002.gencpe.com:6379
+  use_tls: false
+  # REDIS AUTH
   password_required: true
   password: gauth_redis_password
+
 services:
+  secrets:
+    useSecretProviderClass: false
+    aadpodidbinding: gauth-identity
+    secretProviderClassNames:
+      jks_keyvault: keyvault-gauth-jks-keyvault
+      jks_credentials: keyvault-gauth-jks-credentials
+      admin_user: keyvault-gauth-admin-user
+      pg_user: keyvault-gauth-pg-user
+      redis_password: keyvault-gauth-redis-password
+      client_credentials: keyvault-gauth-client-credentials
+      consul_token: keyvault-consul-consul-gauth-token
+  # Number of pod replicas, recommended to be N+1
   replicas: 2
+  location: /USW1
+  db:
+    init: true
+    poolSize: 3
+    poolCheckoutTimeout: 3000
+    ssl: disable
   secret:
+    name_override:
+    create: true
+    # REQUIRED FIELDS:
     admin_username: gauth_admin_username
     admin_password: gauth_admin_password
     client_id: gauth_gws_client_id
     client_secret: gauth_gws_client_secret
+
+  auth_ui:
+    # Pod resources requests and limits
+    resources:
+      limits:
+        cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 512Mi
+
   auth:
     jks:
       enabled: true
+      sso:
+        enabled: true
+      secret:
+        create: true
+
       # Convert keystore.jks file content to base64 ( cat keystore.jks | base64 ) and put the output here
       keyStore: jksStorage.jks
 
       keyStoreFileData: |-
-        <key content>					  
+        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
+      # Keystore password
       keyStorePassword: gauth_jks_keyStorePassword
+      # SSL key alias
       keyAlias: gws-auth-key
+      # SSL key password
       keyPassword: gauth_jks_keyPassword
+    # Number of pod replicas, recommended to be N+1, defaults to services.replica if empty
+    replicas:
+    # Pod resources requests and limits
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        cpu: 200m
+        memory: 2Gi
+    # readiness probe.
+    # To disable readinessProbe - set readinessProbe: {}
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: management
+      initialDelaySeconds: 30
+      timeoutSeconds: 3
+      periodSeconds: 10
+    # liveness probe
+    # To disable livenessProbe - set livenessProbe: {}
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: management
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 3
+      failureThreshold: 3
+
+  environment:
+    # Number of pod replicas, recommended to be N+1, defaults to services.replica if empty
+    replicas:
+    force_writable: true
+    # Pod resources requests and limits
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        cpu: 200m
+        memory: 1Gi
+    # readiness probe.
+    # To disable readinessProbe - set readinessProbe: {}
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: management
+      initialDelaySeconds: 30
+      timeoutSeconds: 3
+      periodSeconds: 10
+    # liveness probe
+    # To disable livenessProbe - set livenessProbe: {}
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: management
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 3
+      failureThreshold: 3
+
+# Optional Deployment/ReplicaSet parameters
+optional:
+  # https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
+  priorityClassName: ''
+  #  https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  securityContext: {}
+
+  #  https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  nodeSelector: {}
+  #  https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  tolerations: []
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                gauth: '{{ .gauth }}'
+                app.kubernetes.io/name: '{{ include "auth.name" . }}'
+                app.kubernetes.io/instance: '{{ .Release.Name }}'
+            topologyKey: failure-domain.beta.kubernetes.io/zone
+          weight: 100
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 10
+      maxUnavailable: 0
+
+
+# Ingress config
+# tps://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  frontend: gauth.${DOMAIN}
-  tls:
-    - hosts:
-        - gauth.${DOMAIN}  
-internal_ingress:
-  frontend: gauth.${DOMAIN}
-  tls:
-    - hosts:
-        - gauth.${DOMAIN} 
-monitoring:
   enabled: true
+  # Host that will be used by ingress.
+  # Applies to all inbound traffic through the host specified
+  frontend: gauth.${DOMAIN}
+  annotations:
+    # Default annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  # HTTPS configuration
+  tls_enabled: true
+  tls:
+    - hosts:
+        - gauth.${DOMAIN}
+      secretName: letsencrypt
+
+
+# Internal  config
+# tps://kubernetes.io/docs/concepts/services-networking/ingress/
+internal_ingress:
+  enabled: true
+  # Host that will be used by ingress.
+  # Applies to all inbound traffic through the host specified
+  frontend: gauth-int.${DOMAIN}
+  annotations:
+    # Default annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  # HTTPS configuration
+  tls_enabled: true
+  tls:
+    - hosts:
+        - gauth-int.${DOMAIN}
+      #secretName: letsencrypt
+
+monitoring:
+  # Deploy ServiceMonitor
+  enabled: true
+  # Metrics Scraping Interval
+  interval: 15s
+  # Create ConfigMap with Grafana Dashboards
   dashboards: true
+  # Create PrometheusRule k8s object with alarm definitions
+  alarms: false
+  # Create rules with CRITICAL severity for Pager Duty integration.
+  # `false` will change severity to HIGH (email notifications)
+  pagerduty: true
+
+services:
+  auth:
+    replicas: 1
+  environment:
+    replicas: 1
+  auth_ui:
+    replicas: 1
 
 pod_autoscaler:
   auth:
-    enabled: true
+    enabled: false
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 350
   environment:
-    enabled: true
+    enabled: false
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 350

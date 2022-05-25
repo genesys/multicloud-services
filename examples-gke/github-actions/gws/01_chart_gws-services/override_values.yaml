@@ -1,6 +1,6 @@
 imageGlobals:
   # Docker registry address
-  registry: repository.path/gws
+  registry: $IMAGE_REGISTRY/gws
   # Specifies whether chart will pull images
   pullPolicy: Always
   # Secrets for pulling image
@@ -53,7 +53,7 @@ gwsServices:
         PGSSLMODE: disable
         GWS_PROVISIONING_OBJECTCACHE_DB_TYPE: postgres
         GWS_PROVISIONING_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
-        WS_PROVISIONING_OBJECTCACHE_POSTGRES_USER: prov
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USER: prov
         GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PASSWORD: prov
         GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PORT: 5432
         GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USE_SSL: false
@@ -81,7 +81,6 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
         GWS_WORKSPACE_CONSUL_AUTH_ENV_DISABLED: true
-        #GWS_WORKSPACE_SERVER_USE_SECURE_COOKIE: true
 
   gws-platform-configuration:
 
@@ -104,6 +103,7 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_CONFIGURATION_timeouts_environmentRefreshMs: 300000
         GWS_CONFIGURATION_cache_tenantRefreshIntervalMin: 1
+        GWS_CS_CLUSTER_SUPPORT: true
 
   gws-platform-datacollector:
 
@@ -180,7 +180,6 @@ gwsServices:
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_SETTING_timeouts_environmentRefreshMs: 300000
-        #GWS_SETTING_db_readOnly: true
 
   gws-platform-statistics:
 
@@ -220,7 +219,6 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_VOICE_timeouts_requestTimeoutMs: 30000
         GWS_VOICE_timeouts_environmentRefreshMs: 10000
-        #GWS_PSDK_ENHANCED_PROTOCOL_SECURITY: true
 
   gws-ui-crmworkspace:
     deployment:

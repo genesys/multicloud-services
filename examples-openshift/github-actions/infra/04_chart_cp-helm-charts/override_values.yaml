@@ -13,15 +13,10 @@ cp-zookeeper:
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
-  #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
 
-  # TODO: find correct security context for user in this zk-image
   securityContext:
     runAsUser: 0
-
-  persistence:
-    enabled: true
 
   resources:
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
@@ -43,7 +38,6 @@ cp-kafka:
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
-  #  - name: "regcred"
 
   ## Kafka Server properties
   ## ref: https://kafka.apache.org/documentation/#configuration

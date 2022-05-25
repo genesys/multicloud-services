@@ -1,7 +1,10 @@
 das:
+  deployment:
+    replicaCount: 1
   image:
-    repository: "repository.path/designer/"
-    imagePullSecrets: [] # Common to a pod, Can only be specified under .Values.das.image.imagePullSecrets
+    repository: "$IMAGE_REGISTRY/designer/"
+    imagePullSecrets:
+      - name: pullsecret
     tag: 100.0.001.0008
   service:
     type: ClusterIP
@@ -19,7 +22,7 @@ das:
       enabled: true
     alerts:
       enabled: true
-  securityContext:
+  securityContext:  
     runAsUser: 500
     runAsGroup: 500
     fsGroup: 500

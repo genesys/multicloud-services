@@ -20,7 +20,7 @@ raa:
     STAT_SCRAPE_INTERVAL: 15
   image:
     # your secret
-    registry: repo.path
+    registry: $IMAGE_REGISTRY
     pullSecrets:
       - pullsecret
 

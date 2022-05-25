@@ -1,16 +1,16 @@
-gws-ui-auth:          100.0.002.1325
-gws-core-environment: 100.0.002.1864
-gws-core-auth:        100.0.002.3491
+gws-ui-auth:          100.0.006.1353
+gws-core-environment: 100.0.006.1907
+gws-core-auth:        100.0.006.3638
 
 postgres:
-  host:     postgres-rw.infra.svc.cluster.local
-  db:       gauth
+  host:     POSTGRES_ADDR
+  db:       DB_NAME 
 
 ###############################################################################
-# Values below recommended to save in secrets/deployment-secrets for pricacy 
+# Values below recommended to save in secrets/deployment-secrets for privacy 
 # 
 # Don`t change values below if using secrets/deployment-secrets. 
-# It will be readed and replace by values from secrets/deployment-secrets
+# It will be read and replaced by values from secrets/deployment-secrets
 ###############################################################################
   username: gauth_pg_username
   password: gauth_pg_password

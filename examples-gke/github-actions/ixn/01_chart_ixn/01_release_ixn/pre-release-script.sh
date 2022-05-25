@@ -29,15 +29,21 @@ function find_in_overrides {
 	[[ ! "$res" ]] && res="not found"
 	echo $res
 }
+
 ###############################################################################
 # 					Postgres address
 ###############################################################################
-export POSTGRES_ADDR=$(find_in_overrides ".ixnService.ixnServer.db.host" "host:" "host")
+export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
 ###############################################################################
 # 			Posgress admin credentials (uses for creating iwd db)
 ###############################################################################
 export pg_admin_user=$( get_secret pg_admin_user )
 export pg_admin_pass=$( get_secret pg_admin_pass )
+###############################################################################
+# 					IXN DB names - reading from overrides
+###############################################################################
+export IXN_DB=$( get_secret IXN_DB )
+export IXN_NODE_DB=$( get_secret IXN_NODE_DB )
 ###############################################################################
 # 			IXN postgres credentials
 ###############################################################################
@@ -55,14 +61,12 @@ export tenant_id=$( get_secret tenant_id )
 ###############################################################################
 
 # For validation process need to evaluate release override values here
-replace_overrides tenant_id 		$tenant_id
-replace_overrides tenant_sid 		$tenant_sid
+replace_overrides POSTGRES_ADDR 	$POSTGRES_ADDR
+replace_overrides IXN_DB 					$IXN_DB
+replace_overrides IXN_NODE_DB 		$IXN_NODE_DB
+replace_overrides tenant_id 			$tenant_id
+replace_overrides tenant_sid 			$tenant_sid
 
-###############################################################################
-# 					IXN DB names - reading from overrides
-###############################################################################
-export IXN_DB=$(find_in_overrides ".ixnService.ixnServer.db.name" "name:" "name")
-export IXN_NODE_DB=$(find_in_overrides ".ixnService.ixnNode.db.name" "name:" "ixn-node")
 ###############################################################################
 # 					Redis and Kafka addresses - reading from overrides
 ###############################################################################

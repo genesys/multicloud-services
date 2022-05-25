@@ -1,0 +1,13 @@
+###############################################################################
+# Additional Telemetry-service parameters
+# https://all.docs.genesys.com/TLM/Current/TLMPEGuide/Configure#Override_Helm_chart_values
+###############################################################################
+tlm:
+  image:
+    tag: "100.0.003.1501"
+
+  secrets:
+      TELEMETRY_AUTH_CLIENT_SECRET: $TELEMETRY_AUTH_CLIENT_SECRET
+  context:
+    envs:
+      TELEMETRY_AUTH_CLIENT_ID: $TELEMETRY_AUTH_CLIENT_ID

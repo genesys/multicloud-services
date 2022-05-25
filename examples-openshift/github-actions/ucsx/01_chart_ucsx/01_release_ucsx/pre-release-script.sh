@@ -18,24 +18,11 @@ function replace_overrides {
 }
 
 
-function find_in_overrides {
-	# Using: find_in_overrides yaml_path [lookup_arg1, lookup_arg2]
-	#
-	# try to parse by yq (if installed) then by awk (if false set to default)
-	
-	res=$(cat override_values.yaml | yq eval $1 - 2>/dev/null)
-	if [[ ! "$res" ]] && [[ $2 ]] && [[ $3 ]]; then
-		res=$(cat override_values.yaml | grep "$2" | grep "$3" \
-				| awk '{print $2}')
-	fi
-	[[ ! "$res" ]] && res="not found"
-	echo $res
-}
 ###############################################################################
 # 					Postgres address and database
 ###############################################################################
-export POSTGRES_ADDR=$(find_in_overrides ".db.host" "host:" "postgres")
-export DB_NAME_UCSX=$(find_in_overrides ".db.name" "name:" "ucsx")
+export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
+export DB_NAME_UCSX=$( get_secret DB_NAME_UCSX )
 ###############################################################################
 # 			Postgres admin credentials (uses for creating gauth db)
 export ucsx_master_db_user=$( get_secret ucsx_master_db_user )
@@ -46,30 +33,17 @@ export ucsx_master_db_password=$( get_secret ucsx_master_db_password )
 export ucsx_gauth_client_id=$( get_secret ucsx_gauth_client_id )
 export ucsx_gauth_client_secret=$( get_secret ucsx_gauth_client_secret )
 ###############################################################################
-# export ucsx_tenant_100_db_name=$( get_secret ucsx_tenant_100_db_name )
-# export ucsx_tenant_100_db_password=$( get_secret ucsx_tenant_100_db_password )
-# export ucsx_tenant_100_db_user=$( get_secret ucsx_tenant_100_db_user )
-###############################################################################
-# Tenant details
-###############################################################################
-export ucsx_sid=$( get_secret ucsx_sid)
-export ucsx_tenant_id=$( get_secret ucsx_tenant_id)
-export ucsx_registry=$( get_secret ucsx_registry)
 
 # For validation process need to evaluate release override values here
+replace_overrides POSTGRES_ADDR 				$POSTGRES_ADDR
+replace_overrides DB_NAME_UCSX 					$DB_NAME_UCSX
 replace_overrides ucsx_gauth_client_id 			$ucsx_gauth_client_id
 replace_overrides ucsx_gauth_client_secret 		$ucsx_gauth_client_secret
 replace_overrides ucsx_master_db_user 			$ucsx_master_db_user
 replace_overrides ucsx_master_db_password 		$ucsx_master_db_password
-replace_overrides ucsx_sid						$ucsx_sid
-replace_overrides ucsx_tenant_id				$ucsx_tenant_id
-replace_overrides ucsx_registry					$ucsx_registry
 
 ###############################################################################
 # Creating UCSX DB if not exist and init
 ###############################################################################
 envsubst < init_db.sh > init_db.sh_
-kubectl delete pods busybox || true
-kubectl run busybox --image=alpine --restart=Never -- sh -c "$(<init_db.sh_)"
-sleep 15
-kubectl delete pods busybox || true
+kubectl run busybox -i --rm --image=alpine --restart=Never -- sh -c "$(<init_db.sh_)"

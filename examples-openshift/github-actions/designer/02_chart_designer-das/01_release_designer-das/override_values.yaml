@@ -1,6 +1,6 @@
 das:
   image:
-    repository: "repository.path/designer/"
+    repository: "$IMAGE_REGISTRY/designer/"
     imagePullSecrets: [] # Common to a pod, Can only be specified under .Values.das.image.imagePullSecrets
     tag: 100.0.001.0008
   service:

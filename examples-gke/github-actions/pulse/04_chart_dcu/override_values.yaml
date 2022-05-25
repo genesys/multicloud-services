@@ -53,7 +53,7 @@ config:
 # container image common settings
 image:
   pullPolicy: IfNotPresent
-  registry: "repository.path"
+  registry: "$IMAGE_REGISTRY"
   imagePullSecrets:
     - name: pullsecret
 

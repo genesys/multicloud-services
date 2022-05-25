@@ -1,0 +1,4 @@
+# Additional override values
+bdsApp:
+  image:
+    tag: 100.0.004.0009  

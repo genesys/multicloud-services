@@ -40,27 +40,27 @@ partOf: ${NS}
 ## Container image repo settings.
 image:
   mcp:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/multicloud/gvp_mcp
     tag: "{{ .Chart.AppVersion }}"
     pullPolicy: IfNotPresent
   serviceHandler:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/multicloud/gvp_mcp_servicehandler
     tag: "{{ .Chart.AppVersion }}"
     pullPolicy: IfNotPresent
   configHandler:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/multicloud/gvp_mcp_confighandler
     tag: "{{ .Chart.AppVersion }}"
     pullPolicy: IfNotPresent
   snmp:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/multicloud/gvp_snmp
-    tag: 100.0.100.0012
+    tag: 100.0.100.0027
     pullPolicy: IfNotPresent
   rup:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: cce/recording-provider
     tag: 100.0.1001610
     pullPolicy: IfNotPresent
@@ -203,7 +203,7 @@ rup:
   cpUrl: "http://cce-conversation-provider.cce.svc.cluster.local"
   unrecoverableLostAction: "uploadtodefault"
   unrecoverableDestType: "Azure"
-  unrecoverableDestAzureAccountName: ""
+  unrecoverableDestAzureAccountName: "gvpwestus2dev"
   unrecoverableDestAzureContainerName: "ccerp-unrecoverable"
   logJsonEnable: true
   logLevel: INFO

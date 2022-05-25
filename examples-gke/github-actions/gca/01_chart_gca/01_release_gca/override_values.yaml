@@ -10,7 +10,7 @@ tenant_id: t{tenant_sid}
 tenant_uuid: {tenant_id}
 
 cfgdb:              #is taken from tenant's deployment-secrets
-  host:     postgresql-1-postgresql-svc.default
+  host:     POSTGRES_ADDR_TENANT
   port:     5432
   engine:   "postgre"
   name:     tenant_pg_db_name
@@ -18,7 +18,7 @@ cfgdb:              #is taken from tenant's deployment-secrets
   password: tenant_pg_db_password
 
 gimdb:              #is taken from GIM deployment-secrets
-  host:     postgresql-1-postgresql-svc.default
+  host:     POSTGRES_ADDR_GIM
   port:     5432
   engine:   "postgre"
   name:     gim_pgdb_etl_name
@@ -27,7 +27,7 @@ gimdb:              #is taken from GIM deployment-secrets
 
 storage:
   s3:              #is taken from GSP cm & secrets
-    bucket:        obc-gsp-gim
+    bucket:        bucket_name
     gcaSnapshots:  "/gca"
     accessKey:     s3_access_key
     secretKey:     s3_secret_key

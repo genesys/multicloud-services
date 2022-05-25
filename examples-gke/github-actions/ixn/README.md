@@ -33,6 +33,9 @@ Create the following secrets to store confidential information you may not want 
 
 |Key|Value|
 |-|-|
+POSTGRES_ADDR| pgdb-dgt-postgresql.infra
+IXNDB| ixn-100
+IXN_NODE_DB| ixn-node-100
 pg_admin_pass| pgAdminPASS
 pg_admin_user| pgAdminUSER
 ixn_db_user| ixnUSER

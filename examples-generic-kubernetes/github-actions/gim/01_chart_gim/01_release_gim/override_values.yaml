@@ -11,7 +11,7 @@ tenant_uuid: $tenant_id
 
 db:
   jdbcUrl: jdbc:postgresql://{db_hostname}:{{.Values.db.port}}/{db_name}?{db_username}&sslmode=prefer
-  host: infra-postgres-postgresql.infra
+  host: ${POSTGRES_ADDR}
   name: ${gim_pgdb_etl_name}
   username: ${gim_pgdb_etl_user}
   password: ${gim_pgdb_etl_password}

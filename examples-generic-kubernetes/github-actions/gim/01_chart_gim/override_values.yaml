@@ -6,7 +6,7 @@
 replicaCount: 1
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   repository: gim/gim
   pullPolicy: IfNotPresent
 

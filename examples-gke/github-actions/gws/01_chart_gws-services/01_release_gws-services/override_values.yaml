@@ -24,10 +24,10 @@ secrets:
   gws-screen-recording-private-secret: test
 
 ###############################################################################
-# Values below recommended to save in secrets/deployment-secrets for pricacy 
+# Values below recommended to save in secrets/deployment-secrets for privacy 
 # 
 # Don`t change values below if using secrets/deployment-secrets. 
-# It will be readed and replace by values from secrets/deployment-secrets
+# It will be read and replaced by values from secrets/deployment-secrets
 ###############################################################################
 
   # Password to access Redis cluster

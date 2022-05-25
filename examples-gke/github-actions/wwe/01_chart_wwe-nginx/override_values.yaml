@@ -13,7 +13,7 @@ podAnnotations: {}
 
 wwe:
   image:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gws       
     name: gws-ui-workspace
     pullPolicy: IfNotPresent

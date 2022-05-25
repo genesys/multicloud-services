@@ -50,6 +50,8 @@ Create the following secrets to store confidential information you may not want 
 
 |Key|Value|
 |-|-|
+POSTGRES_ADDR|pgdb-dgt-postgresql.infra.svc
+DB_NAME_UCSX|ucsx
 ucsx_gauth_client_id| ucsx_api_client
 ucsx_gauth_client_secret| secret
 ucsx_master_db_password| postgresPASS

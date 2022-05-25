@@ -53,7 +53,7 @@ config:
 # container image common settings
 image:
   pullPolicy: IfNotPresent
-  registry: "repository.path"
+  registry: "$IMAGE_REGISTRY"
   imagePullSecrets:
     - name: pullsecret
 
@@ -248,6 +248,7 @@ csproxy:
     runAsGroup: 0
 
 # volumeClaims contains persistent volume claims for services
+
 volumeClaims:
   # statserverBackup is storage for statserver backup data
   statserverBackup:

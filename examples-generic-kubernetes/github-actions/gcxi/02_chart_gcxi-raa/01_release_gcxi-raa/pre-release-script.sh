@@ -18,35 +18,16 @@ function replace_overrides {
      && mv override_values.tmp override_values.yaml 
 }
 
-function find_in_overrides {
-  # Using: find_in_overrides yaml_path [lookup_arg1, lookup_arg2]
-  #
-  # try to parse by yq (if installed) then by awk (if false set to default)
-  
-  res=$(cat override_values.yaml | yq eval $1 - 2>/dev/null)
-  if [[ ! "$res" ]] && [[ $2 ]] && [[ $3 ]]; then
-    res=$(cat override_values.yaml | grep "$2" | grep "$3" \
-        | awk '{print $2}')
-  fi
-  [[ ! "$res" ]] && res="not found"
-  echo $res
-}
-
 ###############################################################################
 #       GIM database parameters from GIM deployment secrets
 ###############################################################################
-export gim_db_host=$( get_secret gim_db_host )
 export gim_db_name=$( get_secret gim_db_name )
 export gim_db_user=$( get_secret gim_db_user )
 export gim_db_pass=$( get_secret gim_db_pass )
 ###############################################################################
 #           Postgres address
 ###############################################################################
-export POSTGRES_ADDR=$( get_secret gcxi_db_host )
-###############################################################################
-#           Repository address
-###############################################################################
-export repository=$( get_secret repo_path )
+export POSTGRES_ADDR=$( get_secret gim_db_host )
 ###############################################################################
 #      GCXI_GIM_DB__JSON
 ###############################################################################

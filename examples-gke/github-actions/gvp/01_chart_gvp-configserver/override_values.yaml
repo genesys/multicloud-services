@@ -33,17 +33,17 @@ partOf: ${NS}
 ## Container image repo settings.
 image:
   confserv:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/gvp_confserv
     pullPolicy: IfNotPresent
     tag: "{{ .Chart.AppVersion }}"
   serviceHandler:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/gvp_configserver_servicehandler
     pullPolicy: IfNotPresent
     tag: "{{ .Chart.AppVersion }}"
   dbInit:
-    registry: repository.path
+    registry: $IMAGE_REGISTRY
     repository: gvp/gvp_configserver_configserverinit
     pullPolicy: IfNotPresent
     tag: "{{ .Chart.AppVersion }}"

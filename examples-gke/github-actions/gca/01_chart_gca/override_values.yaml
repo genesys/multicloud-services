@@ -7,7 +7,7 @@ log:
   level:   "debug"
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
 
 imagePullSecrets:
   pullsecret: {}

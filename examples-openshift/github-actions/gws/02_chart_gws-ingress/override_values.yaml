@@ -23,7 +23,7 @@ gwsServiceProxy:
 
   image:
     # Docker registry address
-    registry: "repository.path/gws"
+    registry: "$IMAGE_REGISTRY/gws"
     # Name of docker registry repository
     repository: gws-system-nginx
     # Specifies whether chart will pull images

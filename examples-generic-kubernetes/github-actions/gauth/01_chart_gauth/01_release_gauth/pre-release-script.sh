@@ -19,24 +19,11 @@ function replace_overrides {
 	   && mv override_values.tmp override_values.yaml	
 }
 
-function find_in_overrides {
-	# Using: find_in_overrides yaml_path [lookup_arg1, lookup_arg2]
-	#
-	# try to parse by yq (if installed) then by awk (if false set to default)
-	
-	res=$(cat override_values.yaml | yq eval $1 - 2>/dev/null)
-	if [[ ! "$res" ]] && [[ $2 ]] && [[ $3 ]]; then
-		res=$(cat override_values.yaml | grep "$2" | grep "$3" \
-				| awk '{print $2}')
-	fi
-	[[ ! "$res" ]] && res="not found"
-	echo $res
-}
 ###############################################################################
 # 					Posgress address and database
 ###############################################################################
-export POSTGRES_ADDR=$(find_in_overrides ".postgres.host" "host:" "postgres")
-export DB_NAME=$(find_in_overrides ".postgres.db" "db:" "db:")
+export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
+export DB_NAME=$( get_secret DB_NAME )
 ###############################################################################
 # 					Posgress gauth credentials
 ######### gauth_pg_username/gauth_pg_password #################################
@@ -69,6 +56,8 @@ export gauth_jks_keyStorePassword=$( get_secret gauth_jks_keyStorePassword )
 ###############################################################################
 
 # For validation process need to evaluate release override values here
+replace_overrides POSTGRES_ADDR $POSTGRES_ADDR
+replace_overrides DB_NAME $DB_NAME
 replace_overrides gauth_pg_username $gauth_pg_username
 replace_overrides gauth_pg_password $gauth_pg_password
 replace_overrides gauth_redis_password $gauth_redis_password
@@ -83,7 +72,4 @@ replace_overrides gauth_jks_keyStorePassword $gauth_jks_keyStorePassword
 # Creating gauth DB if not exist
 ###############################################################################
 envsubst < create_gauth_db.sh > create_gauth_db.sh_
-kubectl delete pods busybox || true
-kubectl run busybox --image=alpine --restart=Never -- sh -c "$(<create_gauth_db.sh_)"
-sleep 15
-kubectl delete pods busybox || true
+kubectl run busybox -i --rm --image=alpine --restart=Never -- sh -c "$(<create_gauth_db.sh_)"

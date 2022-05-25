@@ -1,9 +1,7 @@
 images:
   tenant:
-    tag: 100.0.1000015
+    tag: 100.0.1000060
   pgdbInit:
-    tag: 100.0.1000015
-  rcsInit:
-    tag: 8.5.001.34
+    tag: 100.0.1000060
   pulseInit:
-    tag: 100.0.1000015
+    tag: 100.0.1000060

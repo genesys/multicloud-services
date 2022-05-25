@@ -6,7 +6,7 @@
 # Replace for your values: registry and secret
 image:
   pullPolicy: IfNotPresent
-  registry: "repository.path"
+  registry: "$IMAGE_REGISTRY"
   imagePullSecrets:
     - name: pullsecret
 

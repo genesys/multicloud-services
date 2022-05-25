@@ -19,7 +19,7 @@ deployment:
   upstreamServices: voice-config:9100
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   repository: voice/voicemail_node
   pullPolicy: IfNotPresent
   imagePullSecrets: "pullsecret"

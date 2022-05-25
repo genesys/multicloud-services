@@ -23,7 +23,7 @@ image:
 :memo: Optionally, **gcxi** deployment can be populated with `deployment secrets` of **gim**, and **iwd** in their corresponding namespaces to automatically connect to their databases. See the `pre-release-script.sh` for more details.
 
 ## Secrets 
-Create the standard [pullsecret](../github-actions#-considerations) for the workflow: 
+Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 `secrets/deployment_secrets`
 
@@ -46,7 +46,6 @@ pg_admin_user| postgres
 pg_admin_pass| somepass
 GAUTH_CLIENT| gcxi_client
 GAUTH_KEY| secret
-repo_path| repository.path
 
 
 
@@ -70,7 +69,6 @@ stringData:
   pg_admin_pass: somepass
   GAUTH_CLIENT: gcxi_client
   GAUTH_KEY: secret
-  repo_path: repository.path
 kind: Secret
 metadata:
   name: deployment-secrets

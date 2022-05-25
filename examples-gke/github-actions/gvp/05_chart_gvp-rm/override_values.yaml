@@ -23,7 +23,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  registry: repository.path
+  registry: $IMAGE_REGISTRY
   gvprmrepository: gvp/gvp_rm
   cfghandlerrepository: gvp/gvp_rm_cfghandler
   snmprepository: gvp/multicloud/gvp_snmp

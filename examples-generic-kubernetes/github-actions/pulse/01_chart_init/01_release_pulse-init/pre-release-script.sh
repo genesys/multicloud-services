@@ -42,10 +42,7 @@ export tenant_sid=$( get_secret tenant_sid )
 # Creating gauth pulse if not exist
 ###############################################################################
 envsubst < create_pulse_db.sh > create_pulse_db.sh_
-kubectl delete pods busybox || true
-kubectl run busybox --image=alpine --restart=Never -- sh -c "$(<create_pulse_db.sh_)"
-sleep 15
-kubectl delete pods busybox || true
+kubectl run busybox -i --rm --image=alpine --restart=Never -- sh -c "$(<create_pulse_db.sh_)"
 
 
 ###############################################################################

@@ -2,16 +2,12 @@
 # Global ucsx-addtenent image parameters
 # https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
 ###############################################################################
-
 image:
+  registry: $IMAGE_REGISTRY
   pullSecrets: 
     - name: pullsecret
 
 command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
-
-tenant:
-  id: ucsx_sid
-  ccid: ucsx_tenant_id
        
 ucsx:
   addr: ucsx.${NS}.svc.cluster.local:8500
@@ -30,12 +26,6 @@ gauth:
     url: http://gauth-environment.gauth.svc
 
 resources: {}
-#  requests:
-#    memory: "500Mi"
-#    cpu: "300m"
-#  limits:
-#    memory: "1000Mi"
-#    cpu: "2000m"
 
 podSecurityContext:
   fsGroup: null

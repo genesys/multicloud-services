@@ -14,7 +14,7 @@ Be sure to update the values defined to align with your environment.
 To use the scripting for service deployment, create a deployment secret (deployment-secrets) to store confidential information you may not want held in your repository, or `.yaml` files. 
 
 ## Secrets 
-Create the standard [pullsecret](../github-actions#-considerations) for the workflow: 
+Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
