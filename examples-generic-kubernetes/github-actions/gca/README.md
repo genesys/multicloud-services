@@ -16,7 +16,7 @@ To use the scripting for service deployment, create a deployment secret (deploym
 :memo: **gca** deployment relies on `deployment secrets` of **tenant**, **gim**, and **gsp** in their corresponding namespaces.
 
 ## Secrets 
-Create the standard [pullsecret](../github-actions#-considerations) for the workflow: 
+Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 
 ## Additional Information
