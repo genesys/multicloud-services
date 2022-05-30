@@ -1,0 +1,64 @@
+###############################################################################
+# Global Telemetry-service parameters
+# https://all.docs.genesys.com/TLM/Current/TLMPEGuide/Configure#Override_Helm_chart_values
+###############################################################################
+namespace: $NS
+
+grafanaDashboard:
+  enabled: true
+
+imagePullSecrets:
+    - name: pullsecret
+
+tlm:
+  nodeSelector:
+    genesysengage.com/nodepool:
+  service:
+    type: ClusterIP
+    port_external: 8107
+    port_internal: 9107
+  priorityClassName:
+  context:
+    envs:
+      TELEMETRY_SERVICES_AUTH: "http://gauth-auth.gauth.svc"
+      TELEMETRY_TRACES_THRESHOLD: 200000
+      TELEMETRY_TRACES_SHIFT_THRESHOLD: 10000
+      TELEMETRY_TRACES_BULK_SIZE: 10000
+      TELEMETRY_TRACES_BULK_TIME: 1
+      TELEMETRY_TRACES_TIMEOUT: 30
+      TELEMETRY_TRACES_CONCURRENT: 1
+      TELEMETRY_TRACES_PROVIDER: "Console"
+      TELEMETRY_PROM_SCRAP_ALERT: 5
+      TELEMETRY_METRICS_SHIFT_THRESHOLD: 100000
+      TELEMETRY_METRICS_THRESHOLD: 600000
+      TELEMETRY_HEALTH_TIMER: 30
+      TELEMETRY_RECORD_MIN_INTERVAL: -1
+      TELEMETRY_AUTH_MIN_INTERVAL: -1
+      TELEMETRY_MAX_SESSION: 10000
+      APP_LOG_LEVEL: "info"
+      API_LOG_LEVEL: "warn"
+      TELEMETRY_HTTPS_ENABLED: "auto"
+      TELEMETRY_CONFIG_PATH: "tlm-config"
+      TELEMETRY_CLOUD_PROVIDER: "openshift"
+      TELEMETRY_CORS_DOMAIN: $DOMAIN
+  resources:
+    requests:
+      memory: "1000Mi"
+      cpu: "500m"
+    limits:
+      memory: "1000Mi"
+      cpu: "500m"
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+    hosts:
+      - host: tlm.$DOMAIN
+        paths:
+          - path: /metrics
+            port: 9107
+          - path: /
+            port: 8107
