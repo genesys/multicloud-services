@@ -1,0 +1,69 @@
+###############################################################################
+# Additional CX Concact parameters for provisioning
+# https://all.docs.genesys.com/PEC-OU/Current/CXCPEGuide/Provision
+###############################################################################
+
+cxc-amark-app:          100.0.029.0005.9042
+cxc-amark-ui:           100.0.029.0005.8784
+cxc-campaign-manager:   100.0.029.0005.3920
+cxc-compliance:         100.0.029.0005.3946
+cxc-dial-manager:       100.0.029.0005.1139
+cxc-job-scheduler:      100.0.029.0005.2709
+cxc-list-builder:       100.0.029.0005.4712
+cxc-list-manager:       100.0.029.0005.3873 
+
+
+configserver:
+  user_name: cxc_configserver_user_name
+  user_password: cxc_configserver_user_password
+
+redis:
+  password: cxc_redis_password
+
+gws:
+  client_id: cxc_gws_client_id
+  client_secret: cxc_gws_client_secret
+
+
+# CXContact Tenant Provisioning configuration
+tenant_provisioning:
+  enabled: true
+  # Basic Authentication for GWS Services. Required if `create_auth_client: true` or `create_environment: true`.
+  # Should be plain text
+  gws_basic_auth_user: cxc_prov_gwsauthuser #in secrets
+  gws_basic_auth_pass: cxc_prov_gwsauthpass #in secrets
+  # Tenants list, that should be configured by CXC Tenant Provisioning. May contain multiple tenants
+  tenants:
+    # Tenant 0
+    - configserver:
+        # if set to 'true' - will create environment if it doesn't exist. Else will re-use existing.
+        # if set to 'false' - will NOT create environment if it doesn't exist. Will use existing.
+        create_environment: true
+        # should be unique
+        #primary_host: tenant-9350e2fc-a1dd-4c65-8d40-1f75a2e080dd.${VOICE_NAMESPACE}.svc.${DNS_SCOPE}    #must be FQDN as it's SRV record
+        primary_host: tenant-!tenant_id!-cfgmaster.service.dc1.consul
+        primary_port: 8888
+        backup_host:
+        backup_port:
+        # Username and Password that will be used for creation of environment. Should exist.
+        username: cxc_prov_tenant_user #in secrets
+        password: cxc_prov_tenant_pass #in secrets
+        # Configserver location e.g /USW1
+        location: tenant_primary_location     # ?corresponds to gws_configuration ENV GWS_CONFIGURATION_COMMON_LOCATION
+        # GWS Server application name. Standard name is `CloudCluster`
+        server_app_name: CloudCluster
+        # GWS Client application name for GWS Connection. Standard name is `Cloud`
+        client_app_name: Cloud
+        # Outbound Contact Server Application Name
+        ocs_name: OCS
+        # Database Access Point Application Name
+        ocs_dap_name: OCSDAP
+        # CXContact requires set of options to be configured for OCS and CloudCluster applications.
+        # Will not update app options if set to false.
+        update_app_options: true
+      # The short tenant name (for example 22-06), should be unique
+      short_tenant_name: t!tenant_sid!
+      # The customer name (for example cxc), should be unique
+      customer_name: t!tenant_sid!
+      # Domain, will be used for login, should be unique
+      domain: t!tenant_sid!

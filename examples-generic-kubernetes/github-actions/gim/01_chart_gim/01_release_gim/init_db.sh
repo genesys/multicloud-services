@@ -1,5 +1,5 @@
-export PGUSER="${pg_admin_user}"
-export PGPASSWORD="${pg_admin_pass}"
+export PGUSER="${POSTGRES_USER}"
+export PGPASSWORD="${POSTGRES_PASSWORD}"
 
 apk add --update postgresql-client
 

@@ -6,6 +6,7 @@ Consult with our [documentation](https://all.docs.genesys.com/BDS/Current/BDSPEG
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration

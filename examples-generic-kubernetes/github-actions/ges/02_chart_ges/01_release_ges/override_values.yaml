@@ -1,0 +1,31 @@
+###############################################################################
+# Additional GES parameters
+# https://all.docs.genesys.com/PEC-CAB/Current/CABPEGuide/Configure
+###############################################################################
+
+ges:
+  ambassador:
+    enabled: false
+  deployment:
+    image:
+      version: 100.0.002.2105
+
+  configMap:
+    env:
+      azureDeployment: false  
+      ui:
+        devops_username: $DEVOPS_USERNAME
+        devops_password: $DEVOPS_PASSWORD
+
+    integrations:
+      db:
+        host: $POSTGRES_ADDR
+        name: $DB_NAME
+        secure: "false"
+
+      vmcs:
+        redis_host: redis-ors-stream.service.dc1.consul
+        redis_port: 6379
+        redis_cluster_mode: "false"
+        redis_stream_name: "NewCallbackStream"
+        ors_redis_location: "{{ .Values.ges.configMap.integrations.vmcs.redis_host }}:{{ .Values.ges.configMap.integrations.vmcs.redis_port | default 10000 }}"

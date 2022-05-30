@@ -1,6 +1,6 @@
-gws-ui-auth:          100.0.002.1325
-gws-core-environment: 100.0.002.1864
-gws-core-auth:        100.0.002.3491
+gws-ui-auth:          100.0.006.1353
+gws-core-environment: 100.0.006.1907
+gws-core-auth:        100.0.006.3638
 
 postgres:
   host:     POSTGRES_ADDR

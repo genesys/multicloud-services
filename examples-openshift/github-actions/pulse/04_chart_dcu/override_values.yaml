@@ -248,7 +248,8 @@ csproxy:
     runAsGroup: 0
 
 # volumeClaims contains persistent volume claims for services
-
+# All available storage classes can be found here:
+# https://github.com/genesysengage/tfm-azure-core-aks/blob/master/k8s-module/storage.tf
 volumeClaims:
   # statserverBackup is storage for statserver backup data
   statserverBackup:

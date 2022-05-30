@@ -57,7 +57,7 @@ image:
   snmp:
     registry: $IMAGE_REGISTRY
     repository: gvp/multicloud/gvp_snmp
-    tag: 100.0.100.0012
+    tag: 100.0.100.0027
     pullPolicy: IfNotPresent
   rup:
     registry: $IMAGE_REGISTRY

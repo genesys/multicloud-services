@@ -8,8 +8,8 @@ gauth:
     clientSecret: ucsx_gauth_client_secret
 
 db:
-  user: ucsx_master_db_user
-  password: ucsx_master_db_password
+  user: POSTGRES_USER
+  password: POSTGRES_PASSWORD
   host: POSTGRES_ADDR
   name: DB_NAME_UCSX
   port: "5432"

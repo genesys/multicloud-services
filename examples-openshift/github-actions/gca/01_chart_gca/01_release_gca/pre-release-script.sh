@@ -26,7 +26,6 @@ export tenant_id=$( get_secret tenant_id gim )
 ###############################################################################
 #       GIM database parameters from GIM deployment secrets
 ###############################################################################
-
 export POSTGRES_ADDR_GIM=$( get_secret gim_pgdb_server gim )
 export gim_pgdb_etl_name=$( get_secret gim_pgdb_etl_name gim )
 export gim_pgdb_etl_user=$( get_secret gim_pgdb_etl_user gim )
@@ -34,11 +33,10 @@ export gim_pgdb_etl_password=$( get_secret gim_pgdb_etl_password gim )
 ###############################################################################
 #             Tenant DB information from tenant deployment secrets
 ###############################################################################
-export POSTGRES_ADDR_TENANT=$( get_secret tenant_pg_db_server voice )
+export POSTGRES_ADDR_TENANT=$( get_secret POSTGRES_ADDR voice )
 export tenant_pg_db_name=$( get_secret tenant_t${tenant_sid}_pg_db_name voice )
 export tenant_pg_db_user=$( get_secret tenant_t${tenant_sid}_pg_db_user voice )
 export tenant_pg_db_password=$( get_secret tenant_t${tenant_sid}_pg_db_password voice )
-export tenant_pg_db_server=$( get_secret tenant_pg_db_server voice )
 ###############################################################################
 #          Object bucket credentials from GSP secrets (gim secrets)
 ###############################################################################
@@ -53,7 +51,6 @@ export bucket_name=$(kubectl -n gsp get cm gim -o jsonpath='{.data.BUCKET_NAME}'
 # For validation process need to evaluate release override values here
 replace_overrides {tenant_sid}          $tenant_sid
 replace_overrides {tenant_id}           $tenant_id
-
 replace_overrides POSTGRES_ADDR_GIM     $POSTGRES_ADDR_GIM
 replace_overrides gim_pgdb_etl_name     $gim_pgdb_etl_name
 replace_overrides gim_pgdb_etl_user     $gim_pgdb_etl_user

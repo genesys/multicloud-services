@@ -31,9 +31,9 @@ export gauth_pg_username=$( get_secret gauth_pg_username )
 export gauth_pg_password=$( get_secret gauth_pg_password )
 ###############################################################################
 # 			Posgress admin credentials (uses for creating gauth db)
-######### POSTGRES_ADMIN_USER/POSTGRES_ADMIN_PASS #############################
-export POSTGRES_ADMIN_USER=$( get_secret POSTGRES_ADMIN_USER )
-export POSTGRES_ADMIN_PASS=$( get_secret POSTGRES_ADMIN_PASS )
+######### POSTGRES_USER/POSTGRES_PASSWORD #############################
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 # 						Redis credentials
 ######### gauth_redis_password ################################################

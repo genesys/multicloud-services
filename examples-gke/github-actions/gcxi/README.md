@@ -6,6 +6,7 @@ Consult with our [documentation](https://all.docs.genesys.com/PEC-REP/Current/GC
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -13,18 +14,14 @@ Consult with our [documentation](https://all.docs.genesys.com/PEC-REP/Current/GC
 Be sure to update the values defined to align with your environment.
 To use the scripting for service deployment, create a deployment secret (`deployment-secrets`) to store confidential information you may not want held in your repository, or `.yaml` files. 
 
-Update the `image.registry` setting to reflect your image repository path:
-```
-image:
-  registry: "repository.path"
-```
-
 ### Notes
 :memo: Optionally, **gcxi** deployment can be populated with `deployment secrets` of **gim**, and **iwd** in their corresponding namespaces to automatically connect to their databases. See the `pre-release-script.sh` for more details.
 
 ## Secrets 
 Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
+
+Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 `secrets/deployment_secrets`
 
 
@@ -42,8 +39,8 @@ iwd_db_user| iwduser
 iwd_db_pass| iwdpass
 gcxi_db_host| gcxi.db.host
 gcxi_db_name| postgres
-pg_admin_user| postgres
-pg_admin_pass| somepass
+POSTGRES_USER| postgres
+POSTGRES_PASSWORD| somepass
 GAUTH_CLIENT| gcxi_client
 GAUTH_KEY| secret
 
@@ -52,6 +49,11 @@ GAUTH_KEY| secret
 Example `.yaml`
 ```
 apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: deployment-secrets
+  namespace: gcxi
 stringData:
   tenant_sid: 100
   tenant_id: 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
@@ -65,15 +67,11 @@ stringData:
   iwd_db_pass: iwdpass
   gcxi_db_host: gcxi.db.host
   gcxi_db_name: postgres
-  pg_admin_user: postgres
-  pg_admin_pass: somepass
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: somepass
   GAUTH_CLIENT: gcxi_client
   GAUTH_KEY: secret
-kind: Secret
-metadata:
-  name: deployment-secrets
-  namespace: gcxi
-type: Opaque
+
 ```
  
 

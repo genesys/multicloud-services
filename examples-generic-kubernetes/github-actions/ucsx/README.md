@@ -6,6 +6,7 @@ Consult with our [documentation](https|//all.docs.genesys.com/UCS/Current/UCSPEG
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -54,8 +55,8 @@ POSTGRES_ADDR|pgdb-dgt-postgresql.infra.svc
 DB_NAME_UCSX|ucsx
 ucsx_gauth_client_id| ucsx_api_client
 ucsx_gauth_client_secret| secret
-ucsx_master_db_password| postgresPASS
-ucsx_master_db_user| postgresUSER
+POSTGRES_PASSWORD| postgresPASS
+POSTGRES_USER| postgresUSER
 ucsx_tenant_100_db_name| ucsx_t100
 ucsx_tenant_100_db_password| ucsx
 ucsx_tenant_100_db_user| ucsx_t100

@@ -1,0 +1,71 @@
+###############################################################################
+# Global IWDDM parameters
+# https://all.docs.genesys.com/PEC-IWD/Current/IWDDMPEGuide/Configure
+###############################################################################
+
+podLabels:
+  service: iwddm
+
+image:
+  registry: "$IMAGE_REGISTRY"
+  repository: "iwddm/iwd_dm_cloud"
+  pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: pullsecret
+
+iwddm:
+
+  cronjob:
+    scheduleInterval: 3
+    suspend: false
+
+  labels:
+    extraLabel1: extraVal1
+
+  serviceAccount:
+    create: true
+    name:
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "100m"
+      memory: "512Mi"
+
+  env:
+    executionChain: "full"
+    restUrl: "http://iwd.iwd.svc:4024/iwd/v3"
+    monitoring:
+      enabled: false
+      pushgateway_url: ""
+    gim:
+      enabled: true
+    wfm: # define standard WFM URLs to use if .Values.iwddm.env.wfm.enabled
+      enabled: false
+      rest_url:   "http://wfm-t101-backend.wfm.svc:7010/wfm/api/v3"
+      health_url: "http://wfm-t101-backend.wfm.svc:7010/?Handler=DISCO"
+      gauth:
+        enabled: false
+        rest_url: http://gauth-auth.gauth.svc.cluster.local.:80
+        client_id: iwddm_client
+        client_secret:
+          valueFrom:
+            secretKeyRef:
+              name: shared-gauth-iwddm-client-secret
+              key: gauth-iwddm-client-secret
+
+
+
+  # -- Volumes mounted into an IWDDM container
+  volumeMounts: |-
+    - name: iwddm-db-secrets
+      readOnly: true
+      mountPath: "/mnt/env-secrets/db-secrets"
+    - name: iwd-secrets
+      readOnly: true
+      mountPath: "/mnt/env-secrets/iwd-secrets"
+    - name: gim-secrets
+      readOnly: true
+      mountPath: "/mnt/env-file-secrets/gim-secret"

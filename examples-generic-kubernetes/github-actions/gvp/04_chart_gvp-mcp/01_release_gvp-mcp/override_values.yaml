@@ -1,7 +1,7 @@
 # Additional override values
 image:
   snmp:
-    tag: 100.0.100.0012
+    tag: 100.0.100.0027
   rup:
     tag: 100.0.1001610
   fluentBit:

@@ -39,8 +39,8 @@ export DB_NAME_PROV=$( get_secret DB_NAME_PROV )
 ###############################################################################
 # 			Postgres admin credentials (uses for creating gauth db)
 ###############################################################################
-export gws_pg_adm=$( get_secret gws_pg_adm )
-export gws_pg_adm_pass=$( get_secret gws_pg_adm_pass )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 # 					Postgres gws credentials
 ###############################################################################

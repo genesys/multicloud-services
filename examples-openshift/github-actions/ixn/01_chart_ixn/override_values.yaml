@@ -3,7 +3,7 @@
 # https://all.docs.genesys.com/IXN/Current/IXNPEGuide/Configure
 ###############################################################################
 image:
-  registry: "repository.path"
+  registry: "$IMAGE_REGISTRY"
   pullPolicy: Always
   imagePullSecrets:
     - name: pullsecret

@@ -6,6 +6,7 @@ Consult with our [documentation](https://all.docs.genesys.com/VM/Current/VMPEGui
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -32,9 +33,9 @@ REDIS_PASSWORD| redpass
 REDIS_PORT| 6379
 tenant_gauth_client_id| client_id
 tenant_gauth_client_secret| client_secret
-tenant_pg_admin| ADMIN
-tenant_pg_admin_pass| PASS
-tenant_pg_db_server| server.address
+POSTGRES_USER| ADMIN
+POSTGRES_PASSWORD| PASS
+POSTGRES_ADDR| server.address
 tenant_t100_pg_db_name| t100
 tenant_t100_pg_db_password| t100pass
 tenant_t100_pg_db_user| t100user                     

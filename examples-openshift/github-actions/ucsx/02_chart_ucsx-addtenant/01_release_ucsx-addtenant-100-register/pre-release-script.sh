@@ -33,8 +33,8 @@ export ucsx_tenant_db_password=$( get_secret ucsx_tenant_${ucsx_sid}_db_password
 ###############################################################################
 # 			Postgres admin credentials (uses for creating ucsx db)
 ###############################################################################
-export ucsx_master_db_user=$( get_secret ucsx_master_db_user )
-export ucsx_master_db_password=$( get_secret ucsx_master_db_password )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 # 					Gauth ucsx credentials 
 ###############################################################################

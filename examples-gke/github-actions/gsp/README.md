@@ -6,6 +6,7 @@ Consult with our [documentation](all.docs.genesys.com/PEC-REP/Current/GIMPEGuide
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration

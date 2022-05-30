@@ -6,6 +6,7 @@ Consult with our [documentation](https://all.docs.genesys.com/PEC-REP/Current/Pu
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -40,10 +41,10 @@ Create the following secrets to store confidential information you may not want 
 |-|-|
 gws_ClientId|pulse_client
 gws_Client_Secret|secret
-postgres_host|infra-postgres-postgresql.infra
-postgres_password|somepass
-postgres_port|5432
-postgres_user|postgres
+POSTGRES_ADDRESS|infra-postgres-postgresql.infra
+POSTGRES_PASSWORD|somepass
+POSTGRES_PORT|5432
+POSTGRES_USER|postgres
 redis_host|pulse-redis-master.pulse
 redis_key|secret
 redis_port|6379
@@ -56,10 +57,10 @@ apiVersion: v1
 stringData:
   gws_ClientId: pulse_client
   gws_Client_Secret: secret
-  postgres_host: infra-postgres-postgresql.infra
-  postgres_password: somepass
-  postgres_port: "5432"
-  postgres_user: postgres
+  POSTGRES_ADDRESS|infra-postgres-postgresql.infra
+  POSTGRES_PASSWORD|somepass
+  POSTGRES_PORT|5432
+  POSTGRES_USER|postgres
   redis_host: pulse-redis-master.pulse
   redis_key: secret
   redis_port: "6379"

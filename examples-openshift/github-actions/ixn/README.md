@@ -6,6 +6,7 @@ Consult with our [documentation](https://all.docs.genesys.com/IXN/Current/IXNPEG
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -33,8 +34,11 @@ Create the following secrets to store confidential information you may not want 
 
 |Key|Value|
 |-|-|
-pg_admin_pass| pgAdminPASS
-pg_admin_user| pgAdminUSER
+POSTGRES_ADDR| dgtl-pg-postgresql.infra
+IXNDB| ixn-100
+IXN_NODE_DB| ixn-node-100
+POSTGRES_USER| pgAdminPASS
+POSTGRES_PASSWORD| pgAdminUSER
 ixn_db_user| ixnUSER
 ixn_db_password| ixnPASS
 redis_password| redPASS

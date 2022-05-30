@@ -6,6 +6,7 @@ Consult with our [documentation](https://all.docs.genesys.com/GWS/Current/GWSPEG
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -29,8 +30,8 @@ Create the following secrets to store confidential information you may not want 
 |-|-|
 gws_redis_password|redpass
 gws_consul_token|1234567890
-gws_pg_adm|pgAdmin
-gws_pg_adm_pass|pgPass
+POSTGRES_USER|pgAdmin
+POSTGRES_PASSWORD|pgPass
 gws_pg_user|pgUser
 gws_pg_pass|pgPass
 gws_as_pg_user|asUser

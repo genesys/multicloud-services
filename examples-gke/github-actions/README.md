@@ -5,7 +5,7 @@ The service deployment pipeline is based on:
 
 - Github workflows and github actions (GHA), located in .github/
 - deployment scripts, located in services/ (dedicated sub-folder for each deployed service)
-- and helm packages, delivered by product/service teams and pulled from artifactory
+- and helm packages, delivered by product/service teams and uploaded to your own internal repository
 
 # TL;DR
 
@@ -19,6 +19,7 @@ Depending on command (eg. install, uninstall, validate, provision, etc) script p
 
 # Prerequisites
 In order to leverage this model of CI/CD, you will need to have the following configured.
+- Image repository
 - GitHub repository   
 - GitHub Actions runner - either [GitHub-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners), or your own [self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners). * It is recommended to use self-hosted runners with private repositories. 
 - GitHub Actions workflow - workflows/ will contain a base template to work from. 
@@ -44,7 +45,7 @@ To use a self-hosted runner within your cluster, we recommend [actions-runner-co
 
 # ℹ️ Configure your repository and the workflow with the following steps:
 1. Have access to an GKE cluster. Refer to https://cloud.google.com/kubernetes-engine/docs/quickstart
-2. Set up secrets in your workspace: GKE_PROJECT with the name of the project, GKE_SA_KEY with the Base64 encoded JSON service account key and IMAGE_REGISTRY_TOKEN (optional HELM_REGISTRY_TOKEN) repository secrets. Refer to:
+2. Set up secrets in your workspace: GKE_PROJECT with the name of the project, GKE_SA_KEY with the Base64 encoded JSON service account key, IMAGE_REGISTRY, and IMAGE_REGISTRY_TOKEN (optional HELM_REGISTRY_TOKEN) repository secrets. Refer to:
  - https://github.com/GoogleCloudPlatform/github-actions/tree/docs/service-account-key/setup-gcloud#inputs
  - https://docs.github.com/en/actions/reference/encrypted-secrets
  - https://cli.github.com/manual/gh_secret_set
@@ -96,7 +97,7 @@ Pipeline triggers manually in dispatch mode, within Github repo, in "Actions" ta
 Other dispatch-mode inputs are optional:
 
 - **namespace** - you can specify non-default namespace for particular service. Default value is empty and pipeline will use same name as service name (except tenants service - it is deployed in "voice" namespace by default)
-- **helm repo in JFrog** - we use "helm-stage" by default, but you can specify "helm-dev" or any other one accessible by URI https://pureengage.jfrog.io/artifactory/<xxx>
+- **helm repo in JFrog** - we use "helm-stage" by default, but you can specify "helm-dev" or any other one accessible by URI, this should point to your internal image repository.
 
 # Typical use cases
 When pipeline is triggered for multiple services at once, it will create parallel jobs for every service. These will be independent jobs. Operator can check the status of run (and each job) after the run.

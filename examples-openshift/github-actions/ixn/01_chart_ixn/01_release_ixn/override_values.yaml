@@ -27,8 +27,8 @@ ixnService:
         username: "${ixn_db_user}"
         password: "${ixn_db_password}"
     db:
-      name: "ixn-tenant_sid"
-      host: postgres-rw.infra
+      name: IXN_DB
+      host: POSTGRES_ADDR
   
   ixnNode:
     secrets:
@@ -38,8 +38,8 @@ ixnService:
         username: "${ixn_db_user}"
         password: "${ixn_db_password}"
     db:
-      name: "ixn-node-tenant_sid"
-      host: postgres-rw.infra
+      name: IXN_NODE_DB
+      host: POSTGRES_ADDR
     redis:
     - host: infra-redis-redis-cluster.infra
       port: 6379
@@ -51,5 +51,5 @@ ixnVQNode:
       repository: "ixn/ixn_vq_node"
       tag: 100.0.005.0510
 
-# Custom override-values for usage in pre-release-script
+# Custom override-valuse for usage in pre-release-script
 kafkaAddress: infra-kafka-cp-kafka.infra

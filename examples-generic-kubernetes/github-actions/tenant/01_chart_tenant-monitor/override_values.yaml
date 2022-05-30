@@ -1,0 +1,18 @@
+global:
+  imagePullSecrets: pullsecret
+  imageRegistry: $IMAGE_REGISTRY
+  pullPolicy: Always
+
+prometheus:
+  podMonitor:
+    create: "true"
+  alertrule:
+    create: "false"
+
+fluent:
+  rawlogs:
+    stdout:
+      enable: "true"
+  jsonlogs:
+    stdout:
+      enable: "true"

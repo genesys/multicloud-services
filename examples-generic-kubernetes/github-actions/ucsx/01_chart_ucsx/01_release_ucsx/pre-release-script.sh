@@ -25,8 +25,8 @@ export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
 export DB_NAME_UCSX=$( get_secret DB_NAME_UCSX )
 ###############################################################################
 # 			Postgres admin credentials (uses for creating gauth db)
-export ucsx_master_db_user=$( get_secret ucsx_master_db_user )
-export ucsx_master_db_password=$( get_secret ucsx_master_db_password )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 # 					Gauth ucsx credentials 
 ###############################################################################
@@ -39,8 +39,8 @@ replace_overrides POSTGRES_ADDR 				$POSTGRES_ADDR
 replace_overrides DB_NAME_UCSX 					$DB_NAME_UCSX
 replace_overrides ucsx_gauth_client_id 			$ucsx_gauth_client_id
 replace_overrides ucsx_gauth_client_secret 		$ucsx_gauth_client_secret
-replace_overrides ucsx_master_db_user 			$ucsx_master_db_user
-replace_overrides ucsx_master_db_password 		$ucsx_master_db_password
+replace_overrides POSTGRES_USER 			$POSTGRES_USER
+replace_overrides POSTGRES_PASSWORD 		$POSTGRES_PASSWORD
 
 ###############################################################################
 # Creating UCSX DB if not exist and init

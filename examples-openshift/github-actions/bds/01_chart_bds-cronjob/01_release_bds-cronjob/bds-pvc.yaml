@@ -8,5 +8,5 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: standard-rwx
+  storageClassName: azure-files
   volumeMode: Filesystem

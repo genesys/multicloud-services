@@ -36,8 +36,8 @@ export META_DB_ADMINDB=$( get_secret gcxi_db_name )
 ###############################################################################
 #       Posgress admin credentials
 ###############################################################################
-export pg_admin_user=$( get_secret pg_admin_user )
-export pg_admin_pass=$( get_secret pg_admin_pass )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 #       gcxi gauth credentials
 ###############################################################################
@@ -69,8 +69,8 @@ metadata:
   namespace: ${NS}
 type: Opaque
 stringData:
-  META_DB_ADMIN: ${pg_admin_user}
-  META_DB_ADMINPWD: '${pg_admin_pass}'
+  META_DB_ADMIN: ${POSTGRES_USER}
+  META_DB_ADMINPWD: '${POSTGRES_PASSWORD}'
 EOF
 
 ###############################################################################

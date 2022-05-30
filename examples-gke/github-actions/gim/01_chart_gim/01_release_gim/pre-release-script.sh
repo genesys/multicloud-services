@@ -17,8 +17,8 @@ export POSTGRES_ADDR=$( get_secret gim_pgdb_server )
 ###############################################################################
 #       Posgres admin credentials (uses for creating GIM db)
 ###############################################################################
-export pg_admin_user=$( get_secret pg_admin_user )
-export pg_admin_pass=$( get_secret pg_admin_pass )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 #       GIM DB credentials 
 ###############################################################################

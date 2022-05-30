@@ -1,6 +1,6 @@
 # Additional override values
 image:
-  snmptag: 100.0.100.0012
+  snmptag: 100.0.100.0027
 
 fluentBitSidecar:
   tag: 1.8.2

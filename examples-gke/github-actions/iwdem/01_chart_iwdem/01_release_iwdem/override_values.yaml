@@ -1,0 +1,9 @@
+###############################################################################
+# Additional IWDEM parameters
+# https://all.docs.genesys.com/PEC-Email/Current/EmailPEGuide/Configure
+###############################################################################
+redis:
+  password: iwdem_redis_password
+
+nexus:
+  apikey: iwdem_nexus_api_key

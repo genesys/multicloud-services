@@ -1,0 +1,31 @@
+###############################################################################
+# Global IWDEM parameters
+# https://all.docs.genesys.com/PEC-Email/Current/EmailPEGuide/Configure
+###############################################################################
+replicaCount: 1
+
+image:
+  registry: $IMAGE_REGISTRY
+  repository: nexus/iwd-email
+  pullSecrets:
+    - name: pullsecret
+
+gauth:
+  auth:
+    url: http://gauth-auth.gauth.svc.cluster.local:80
+
+redis:
+  nodes: redis://infra-redis-redis-cluster.infra:6379
+  useCluster: true
+  enableTLS: false
+
+nexus:
+  url: http://nexus.nexus
+
+monitoring:
+  # Deploy PodMonitor
+  enabled: true
+  # Create PrometheusRule k8s object with alarm definitions
+  alarms: true
+  # Create ConfigMap with Grafana Dashboards
+  dashboards: true

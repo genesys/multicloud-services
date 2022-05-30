@@ -1,0 +1,140 @@
+###############################################################################
+# Global CX Concact parameters
+# https://all.docs.genesys.com/PEC-OU/Current/CXCPEGuide/Configure
+###############################################################################
+
+image:
+  imagePullSecrets:
+    - name: pullsecret
+
+cxcontact:
+
+  replicas: 1
+  log:
+    level: info
+
+  deployDefaultInitContainer: false
+
+
+  compliance_data:
+    cdp_url: false
+    cdp_ng:
+      url: false
+      gcloud_auth: false
+      gcloud_id:
+      gcloud_secret:
+    embedded_basepath: "/list_builder/data/init_data"
+
+#  override:                #if connecting to Nexus. Otherwise Dial Manager is off
+#    dial-manager:
+#      enabled: false
+#      nexus:
+#        host: ..
+#        port: ..
+#      api_key: ..          #required
+
+monitoring:
+  enabled: true
+  dashboards: true
+  alarms: true
+  pagerduty: false
+
+k8s_optional:
+  podSecurityContext: {}
+  # dnsDomain will be used for generating FQDN for k8s services, for e.g "http://cxc-list-manager.cxc.svc.cluster.local."
+  dnsDomain: ".svc.cluster.local."    # introduced in helm chart cxcontact-029.0003.317
+                                      # this is important to change in GKE2 where we have VPC scope DNS
+                                      # ex: ".svc.gke1-uswest1.gcpe002.gencpe.com"
+
+redis:
+  enabled: true
+  cluster: true
+  # can be comma-delimited list of redis nodes, for e.g.
+  # nodes: redis://redis-node1:6379,redis://redis-node2:6379,redis://redis-node3:6379
+  nodes: redis://infra-redis-redis-cluster.infra.svc:6379
+  #use_tls: false
+  requirepass: true
+
+elasticsearch:
+  enabled: true
+  host: http://elastic-es-http.infra.svc
+  port: 9200
+
+gws:
+  # GWS Ingress URL
+  frontend_host: https://gauth.$DOMAIN
+  frontend_port: 443
+
+
+#  Services. Will be used for connection to GWS if GWS Internal Ingress URL is disabled (empty values)
+  core:
+    auth:
+      host: http://gauth-auth.gauth
+      port: 80
+    environment:
+      host: http://gauth-environment.gauth
+      port: 80
+  platform:
+    ocs:
+      host: http://gws-service-proxy.gws
+      port: 80
+    configuration:
+      host: http://gws-service-proxy.gws
+      port: 80
+    statistics:
+      host: http://gws-service-proxy.gws
+      port: 80
+    setting:
+      host: http://gws-service-proxy.gws
+      port: 80
+    voice:
+      host: http://gws-service-proxy.gws
+      port: 80
+
+
+ingress:
+  enabled: true
+  tls_enabled: true
+  cxc_frontend: cxc.$DOMAIN
+  annotations:
+#    !!!Ingress Session Stickiness is required.
+#    Default annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-samesite: "Lax"
+    nginx.ingress.kubernetes.io/session-cookie-name: "cxc-session-cookie"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+    kubernetes.io/ingress.class: nginx
+  tls:
+    - hosts:
+      - cxc.$DOMAIN
+      secretName: cxc-ext-tls
+
+# Additional ingress to expose internal backend endpoints.
+# If disabled  - all endpoints will be exposed on ingress.cxc_frontend
+internal_ingress:
+  enabled: true
+  tls_enabled: false
+  cxc_backend: cxc-int.$DOMAIN
+  annotations:
+#    Default annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+  tls: []
+  #  - hosts:
+  #      - cxc-int.$DOMAIN
+  #    secretName: cxc-int-tls
+
+storage:
+  # Persistent Volumes Claim Configuration
+  pvc:
+    enabled: true
+    create: true
+#    Instructs Helm to skip deleting PVC when a helm operation (such as helm uninstall, helm upgrade or helm rollback)
+#    would result in its deletion. However, this resource becomes orphaned. Helm will no longer manage it in any way.
+#    https://helm.sh/docs/howto/charts_tips_and_tricks/#tell-helm-not-to-uninstall-a-resource
+#    If PVC is already orphaned and you want to re-use it - set `storage.pvc.create` to `false`.
+    keepAfterDeletion: false
+    size: 2Gi
+    name: cxc-claim
+    storageClassName: nfs-client

@@ -12,13 +12,13 @@ tenants:
 # common configuration.
 config:
   # Postgres hostname
-  postgresHost: "${postgres_host}"
+  postgresHost: "${POSTGRES_ADDR}"
   # Postgres port
-  postgresPort: "${postgres_port}"
+  postgresPort: "${POSTGRES_PORT}"
   # Postgres User
-  postgresUser: "${postgres_user}"
+  postgresUser: "${POSTGRES_USER}"
   # Postgres Password
-  postgresPassword: "${postgres_password}"
+  postgresPassword: "${POSTGRES_PASSWORD}"
   # Redis host
   redisHost: "${redis_host}"
   # Redis port

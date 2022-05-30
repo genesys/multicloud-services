@@ -10,9 +10,7 @@ tenant_id: t{tenant_sid}
 tenant_uuid: {tenant_id}
 
 cfgdb:              #is taken from tenant's deployment-secrets
-
   host:     POSTGRES_ADDR_TENANT
-
   port:     5432
   engine:   "postgre"
   name:     tenant_pg_db_name
@@ -20,7 +18,6 @@ cfgdb:              #is taken from tenant's deployment-secrets
   password: tenant_pg_db_password
 
 gimdb:              #is taken from GIM deployment-secrets
-
   host:     POSTGRES_ADDR_GIM
   port:     5432
   engine:   "postgre"

@@ -52,6 +52,19 @@ Some examples of installation commands:
 - `install mssql` (for MS SQL)
 - `install elastic` (for ElasticSearch - requires licensing)
 
+## Database Structure
+For additional detail: [Database Configuration](../../../doc/DATABASE.md)
+
+With the installation command `install postgress`, by default all six instances are installed (pgdb-std, pgdb-gws, pgdb-dgtl, pgdb-rpthist, pgdb-rptrlt, pgdb-ucsx) 
+
+To install a distinct instance of postgres, define the specific db name in the command string.
+
+This is true for all commands: validate/install/uninstall
+`validate/install/uninstall postgres instance_name`
+
+For example, to install the GWS database (pgdb-gws):
+`install postgress gws` 
+
 ## Secrets 
 Create the [standard pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`

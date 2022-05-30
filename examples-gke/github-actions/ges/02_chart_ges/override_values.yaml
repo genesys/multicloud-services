@@ -1,0 +1,179 @@
+###############################################################################
+# Global GES parameters
+# https://all.docs.genesys.com/PEC-CAB/Current/CABPEGuide/Configure
+###############################################################################
+
+ges:
+  labels:
+    globalLabels: 
+      version: "{{ .Release.Name }}"
+
+  configMap:
+    env:
+      extendEnv: false
+      azureDeployment: true
+      regionAffinity: "dc1"
+      devOpsAccessGroups: "Platform Read Only,Platform Provisioning,Platform Internal Administrator"
+
+      log:
+        level: "DEBUG"
+        max_len: 2048
+
+      server:
+        internal_port: 3050
+        external_port: 3005
+        internal_url: "ges.ges"
+
+    integrations:
+
+      redis:
+        host: ges-redis-headless.ges.svc.cluster.local
+        port: 6379
+        secure: "false"
+        
+      gws:
+        auth: http://gauth-auth.gauth.svc.cluster.local
+        env: http://gauth-environment.gauth.svc.cluster.local
+        conf: http://gws-service-proxy.gws.svc.cluster.local
+        public_auth: https://gauth.${DOMAIN}
+        stats: http://gws-service-proxy.gws.svc.cluster.local
+        
+  deployment:
+    update_strategy: 
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 100%
+    env: []
+
+    envFrom:
+      - configMapRef:
+          name: "{{.Values.ges.servicename}}-{{.Release.Name}}-configmap"
+
+    replicas: 1
+
+    nodeSelector: {}
+
+    image:
+      imagePullSecrets:
+        - name: pullsecret
+      imagePullPolicy: "IfNotPresent"
+      registry: "$IMAGE_REGISTRY"
+      name: "genesys/ges"
+
+    hpa:
+      enabled: true
+      maximumReplicas: 5
+      mimimumReplicas: 1
+      targetMetrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 50
+      behavior: 
+        scaleDown:
+          stabilizationWindowSeconds: 60
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 30
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 30
+          selectPolicy: Max
+
+  priorityClassName: ""
+
+  resources:
+    limits:
+        cpu: "1250m"
+        memory: "2048Mi"
+    requests:
+        cpu: "500m"
+        memory: "512Mi"
+
+  ingress:
+    ingressint: 
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+        nginx.ingress.kubernetes.io/use-regex: 'true'
+      hosts:
+        - ges-int.$DOMAIN
+      paths:
+        - /ges/
+      tls:
+        - hosts:
+            - ges-int.$DOMAIN
+          secretName: ges-ingress-int
+
+    ingressext: 
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+        nginx.ingress.kubernetes.io/use-regex: 'true'
+      hosts:
+        - ges.$DOMAIN
+      paths:
+        - /ges/
+      tls:
+        - hosts:
+            - ges.$DOMAIN
+          secretName: ges-ingress-ext
+
+    networkPolicies: 
+      enabled: false
+
+  monitoring:
+    grafana:
+      enabled: "true"
+    prometheus:
+      enabled: "true"
+      use_service_monitor: "true"
+    newRelic:
+      enabled: "true"
+    
+    
+
+  podDisruptionBudget: 
+    enabled: true
+    strategy:
+      minAvailable: 1
+
+  tolerations: {}
+
+  secrets:
+    configFolders: "/secrets-infra,/secrets-ors,/secrets-gws"
+    volumes:
+      enabled: true
+      list:
+      - name: secrets-infra
+        secret:
+          secretName: ges-secrets-infra
+      - name: secrets-ors
+        secret:
+          secretName: voice-redis-ors-stream
+      - name: secrets-gws
+        secret:
+          secretName: gws-client-credentials
+    volumeMounts:
+      enabled: true
+      list:
+        - mountPath: /secrets-infra
+          name: secrets-infra
+          readOnly: true
+        - mountPath: /secrets-ors
+          name: secrets-ors
+          readOnly: true
+        - mountPath: /secrets-gws
+          name: secrets-gws
+          readOnly: true

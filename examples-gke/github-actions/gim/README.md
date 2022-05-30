@@ -6,6 +6,7 @@ Consult with our [documentation](all.docs.genesys.com/PEC-REP/Current/GIMPEGuide
 - Complete the prequisites if any.
 - Adjust the `chart.ver` to the release you wish to deploy.
 - Adjust the `override_values.yaml` to suit your environment and needs.
+- Create the required secrets.
 - Run the github actions workflow.
 
 ## Configuration
@@ -27,8 +28,8 @@ gim_pgdb_etl_name| gim
   gim_pgdb_etl_user| gim
   gim_pgdb_port| 5432
   gim_pgdb_server| reporting-postgres.namespace
-  pg_admin_pass| pgPASS
-  pg_admin_user| postgres
+  POSTGRES_PASSWORD| pgPASS
+  POSTGRES_USER| postgres
   tenant_id| 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
   tenant_sid| 100
 
@@ -47,8 +48,8 @@ stringData:
   gim_pgdb_etl_user: gim
   gim_pgdb_port: "5432"
   gim_pgdb_server: reporting-postgres.namespace
-  pg_admin_pass: pgPASS
-  pg_admin_user: postgres
+  POSTGRES_PASSWORD: pgPASS
+  POSTGRES_USER: postgres
   tenant_id: 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
   tenant_sid: "100"
 ```

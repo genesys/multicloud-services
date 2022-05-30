@@ -1,0 +1,272 @@
+# Version 4 UUID
+tenantid: 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
+
+serviceAccount:
+    create: true
+
+images:
+  imagePullSecrets: pullsecret
+  registry: $IMAGE_REGISTRY
+  pullPolicy: Always
+  pulseInit:
+    enable: "true"
+    pulseMode: "setup"
+# Fluentbit images 
+  fluentBit:
+    enable: "true"
+    name: json-sidecar
+    tag: 1.8.7
+  fluentBitCs:
+    enable: "true"
+    name: stdoutcs-sidecar
+    tag: 1.8.7
+  fluentBitOcs:
+    enable: "true"
+    name: stdoutocs-sidecar
+    tag: 1.8.7
+  fluentBitSs:
+    enable: "true"
+    name: stdoutss-sidecar
+    tag: 1.8.7
+  fluentBitUrs:
+    enable: "true"
+    name: stdouturs-sidecar
+    tag: 1.8.7
+
+
+tenant:
+  general:
+    upstreamServices: voice-sipfe:9101,voice-config:9100,ixn-server-9350e2fc-a1dd-4c65-8d40-1f75a2e080dd:7120,ixn-vqnode-9350e2fc-a1dd-4c65-8d40-1f75a2e080dd:7122"
+  pgdb:
+    dbhost: "/opt/genesys/dbserver/dbserver"
+    dbuser: "/opt/genesys/dbuser/dbuser"
+    dbname: "/opt/genesys/dbname/dbname"
+# Fluentbit model of logging
+  logging:
+    mounts:
+      fbJsonLog:
+      - mountPath: /mnt/logs
+        name: fluent-logs
+      fbstdoutCsLog:
+      - mountPath: /mnt/logs
+        name: fluentcs-logs
+      fbstdoutOcsLog:
+      - mountPath: /mnt/logs
+        name: fluentocs-logs
+      fbstdoutSsLog:
+      - mountPath: /mnt/logs
+        name: fluentss-logs
+      fbstdoutUrsLog:
+      - mountPath: /mnt/logs
+        name: fluenturs-logs
+      fluentBconfigmap:
+      - mountPath: /fluent-bit/etc/
+        name: tenants-fluent-bit-config
+      fluentBconfigmapCs:
+      - mountPath: /fluent-bit/etc/
+        name: tenants-fluent-bit-config-cs
+      fluentBconfigmapOcs:
+      - mountPath: /fluent-bit/etc/
+        name: tenants-fluent-bit-config-ocs
+      fluentBconfigmapSs:
+      - mountPath: /fluent-bit/etc/
+        name: tenants-fluent-bit-config-ss
+      fluentBconfigmapUrs:
+      - mountPath: /fluent-bit/etc/
+        name: tenants-fluent-bit-config-urs
+      jsonLog:
+      - mountPath: /opt/genesys/logs/JSON
+        name: fluent-logs
+      log:
+      - mountPath: /opt/genesys/logs/volume
+        name: log
+      - mountPath: /logs
+        name: log
+      stdoutCsLog:
+      - mountPath: /opt/genesys/logs/confserv
+        name: fluentcs-logs
+      stdoutOcsLog:
+      - mountPath: /opt/genesys/logs/OCS
+        name: fluentocs-logs
+      stdoutSsLog:
+      - mountPath: /opt/genesys/logs/SS
+        name: fluentss-logs
+      stdoutUrsLog:
+      - mountPath: /opt/genesys/logs/URS
+        name: fluenturs-logs
+    volumes:
+      fluentBconfigmap:
+      - configMap:
+          defaultMode: 420
+          name: tenants-fluent-bit-config
+        name: tenants-fluent-bit-config
+      fluentBconfigmapCs:
+      - configMap:
+          defaultMode: 420
+          name: tenants-fluent-bit-config-cs
+        name: tenants-fluent-bit-config-cs
+      fluentBconfigmapOcs:
+      - configMap:
+          defaultMode: 420
+          name: tenants-fluent-bit-config-ocs
+        name: tenants-fluent-bit-config-ocs
+      fluentBconfigmapSs:
+      - configMap:
+          defaultMode: 420
+          name: tenants-fluent-bit-config-ss
+        name: tenants-fluent-bit-config-ss
+      fluentBconfigmapUrs:
+      - configMap:
+          defaultMode: 420
+          name: tenants-fluent-bit-config-urs
+        name: tenants-fluent-bit-config-urs
+      jsonLog:
+      - emptyDir: {}
+        name: fluent-logs
+      log:
+      - name: log
+      stdoutCsLog:
+      - emptyDir: {}
+        name: fluentcs-logs
+      stdoutOcsLog:
+      - emptyDir: {}
+        name: fluentocs-logs
+      stdoutSsLog:
+      - emptyDir: {}
+        name: fluentss-logs
+      stdoutUrsLog:
+      - emptyDir: {}
+        name: fluenturs-logs
+
+#  # PVC Model of logging
+#   logging:
+#     volumes:
+#       log:
+#         - name: log
+#           persistentVolumeClaim:
+#             claimName: log-pvc
+#     mounts:
+#       log:
+#         - name: log
+#           mountPath: /opt/genesys/logs/volume
+#         - name: log
+#           mountPath: /logs
+  secrets:
+    pgdb:
+      pwd:
+        secretName: "/opt/genesys/dbpassword/dbpassword"
+        secretKey: "dbpassword"
+      volumes: |
+        - name: dbpassword
+          secret:
+            secretName: dbpassword
+        - name: dbserver
+          secret:
+            secretName: dbserver
+        - name: dbname
+          secret:
+            secretName: dbname
+        - name: dbuser
+          secret:
+            secretName: dbuser
+      mounts:
+        - name: dbpassword
+          readOnly: true
+          mountPath: "/opt/genesys/dbpassword"
+        - name: dbserver
+          readOnly: true
+          mountPath: "/opt/genesys/dbserver"
+        - name: dbname
+          readOnly: true
+          mountPath: "/opt/genesys/dbname"
+        - name: dbuser
+          readOnly: true
+          mountPath: "/opt/genesys/dbuser"
+
+    consul:
+      acl:
+        secretName: "/opt/genesys/consul-shared-secret/consul-consul-voice-token"
+      volumes:
+        - name: consul-shared-secret
+          secret:
+            secretName: consul-voice-token
+      mounts:
+        - name: consul-shared-secret
+          readOnly: true
+          mountPath: "/opt/genesys/consul-shared-secret"
+    redis:
+      configPwd:
+        secretName: "/opt/genesys/redis-config-secret/redis-config-state"
+        volumes:
+          - name: redis-config-secret
+            secret:
+              secretName: redis-config-token
+        mounts:
+          - name: redis-config-secret
+            readOnly: true
+            mountPath: "/opt/genesys/redis-config-secret"
+
+      streamPwd:
+        secretName: "/opt/genesys/redis-tenant-secret/redis-tenant-stream"
+        volumes:
+          - name: redis-tenant-secret
+            secret:
+              secretName: redis-tenant-token
+        mounts:
+          - name: redis-tenant-secret
+            readOnly: true
+            mountPath: "/opt/genesys/redis-tenant-secret"
+
+    kafka:
+      pwd:
+         secretName: "/opt/genesys/kafka-secrets/kafka-secrets"
+      volumes:
+        - name: kafka-secrets
+          secret:
+            secretName: kafka-secrets-token
+      mounts:
+        - name: kafka-secrets
+          mountPath: "/opt/genesys/kafka-secrets"
+    gws:
+      user:
+        secretName: "/opt/genesys/gauth-client-id/clientid"
+      pwd:
+        secretName: "/opt/genesys/gauth-client-token/clientsecret"
+      volumes:
+        - name: gauth-client-id
+          secret:
+            secretName: gauthclientid
+        - name: gauth-client-token
+          secret:
+            secretName: gauthclientsecret
+      mounts:
+        - name: gauth-client-id
+          readOnly: true
+          mountPath: "/opt/genesys/gauth-client-id"
+        - name: gauth-client-token
+          readOnly: true
+          mountPath: "/opt/genesys/gauth-client-token"
+
+  redis:
+    isCluster: true
+
+  resources:
+      tenantContainer:
+          limits:
+            cpu: "900m"
+            memory: 900Mi
+          requests:
+            cpu: "500m"
+            memory: 600Mi
+
+      initResources:
+        requests:
+          cpu: "100m"
+          memory: 500Mi
+
+  containerSecurityContext:
+    runAsUser: null
+    runAsGroup: 0
+    
+  securityContext:
+    fsGroup: null

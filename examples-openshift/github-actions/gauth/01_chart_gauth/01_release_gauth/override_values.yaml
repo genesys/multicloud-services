@@ -4,7 +4,7 @@ gws-core-auth:        100.0.006.3638
 
 postgres:
   host:     POSTGRES_ADDR
-  db:       DB_NAME
+  db:       DB_NAME 
 
 ###############################################################################
 # Values below recommended to save in secrets/deployment-secrets for privacy 

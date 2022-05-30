@@ -1,5 +1,5 @@
-export PGUSER="${ucsx_master_db_user}"
-export PGPASSWORD="${ucsx_master_db_password}"
+export PGUSER="${POSTGRES_USER}"
+export PGPASSWORD="${POSTGRES_PASSWORD}"
 
 apk add --update postgresql-client
 

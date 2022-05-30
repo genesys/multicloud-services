@@ -37,8 +37,8 @@ export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
 ###############################################################################
 # 			Posgress admin credentials (uses for creating iwd db)
 ###############################################################################
-export pg_admin_user=$( get_secret pg_admin_user )
-export pg_admin_pass=$( get_secret pg_admin_pass )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 # 					IXN DB names - reading from overrides
 ###############################################################################

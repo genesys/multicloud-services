@@ -2,13 +2,14 @@
 # Global ucsx-addtenent image parameters
 # https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
 ###############################################################################
+
 image:
   registry: $IMAGE_REGISTRY
   pullSecrets: 
     - name: pullsecret
 
 command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
-       
+
 ucsx:
   addr: ucsx.${NS}.svc.cluster.local:8500
   restaddr: http://ucsx.${DOMAIN}

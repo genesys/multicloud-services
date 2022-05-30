@@ -1,0 +1,40 @@
+###############################################################################
+# Global IWD parameters
+# https://all.docs.genesys.com/PEC-IWD/Current/IWDPEGuide/Configure
+###############################################################################
+
+replicaCount: 1
+
+image:
+  registry: $IMAGE_REGISTRY
+  repository: nexus/iwd
+  pullSecrets: []
+
+gauth:
+  auth:
+    url: http://gauth-auth.gauth
+    redirectUrl: https://gauth.${DOMAIN}
+
+ingress:
+  enabled: true
+  hosts:
+    - host: iwd.${DOMAIN}
+      paths:
+        - path: '/iwd/'
+          port: 4024
+  tls:
+    - hosts:
+        - iwd.${DOMAIN}
+      secretName: letsencrypt
+
+nexus:
+  url: http://nexus.nexus
+
+elasticsearch:
+  host: elastic-es-http.infra
+  port: 9200
+
+podSecurityContext:
+  runAsUser: null
+  runAsGroup: 0
+  fsGroup: null
