@@ -1,0 +1,65 @@
+###############################################################################
+# Global Nexus parameters
+# https://all.docs.genesys.com/PEC-DC/Current/DCPEGuide/Configure
+###############################################################################
+deploymentType: Deployment
+replicaCount: 1
+
+image:
+  registry: $IMAGE_REGISTRY
+  repository: nexus/nexus
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: pullsecret
+
+nameOverride: ""
+fullnameOverride: ""
+
+existingSecret:
+existingConfig:
+
+nexus:
+  fqdn: "http://digital.$DOMAIN"
+  redirectProtocol: "http://"
+  social:
+    apikey: ""
+    retryTimeout: 10000
+
+podSecurityContext:
+  {}
+
+securityContext:
+  {}
+
+
+service:
+  enabled: true
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer 
+  tls:
+    - hosts:
+      - digital.$DOMAIN
+      secretName: letsencrypt
+  hosts:
+    - host: digital.$DOMAIN
+      paths:
+        - path: '/chat/v3/'
+          port: http
+        - path: '/nexus/v3/'
+          port: http
+        - path: '/ux/'
+          port: http
+        - path: '/admin/'
+          port: http
+        - path: '/auth/'
+          port: http
+monitoring:
+  # Deploy ServiceMonitor
+  enabled: true
+  # Create PrometheusRule k8s object with alarm definitions
+  alarms: true
