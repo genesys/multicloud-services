@@ -9,6 +9,18 @@ image:
   pullPolicy: Always
   imagePullSecrets: "pullsecret"
 
+loggingSidecar:
+  enabled: true
+  image:
+    registry: fluent
+    repository: fluent-bit
+
+sipsLoggingSidecar:
+  enabled: true
+  image:
+    registry: fluent
+    repository: fluent-bit
+    
 # Set the redis port to be used.
 context:
   envs:

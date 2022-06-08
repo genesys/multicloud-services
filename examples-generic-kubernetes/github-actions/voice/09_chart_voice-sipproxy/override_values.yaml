@@ -22,7 +22,10 @@ secrets:
     - name: consul-shared-secret
       secret:
         secretName: consul-voice-token
-
+  redisCache:
+    general:
+      mode: k8s
+      enabled: true
 # Enable HPA and set the target CPU and memory for scale up and down
 hpa:
   enabled: false
