@@ -1,0 +1,26 @@
+name: "\U0001F4D1 Documentation issue"
+description: Report issues with our documentation
+title: "[DOC]: "
+labels: ["documentation", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out the report!
+  - type: textarea
+    id: doc-issue
+    attributes:
+      label: What did you find?
+      description: Where is the issue with the documentation, and what is the suggested change.
+      placeholder: Tell us what you see!
+      value: "This isn't right!"
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Contribution Guidelines](https://github.com/genesys/multicloud-services/blob/main/doc/CONTRIBUTE.md)
+      options:
+        - label: I agree to follow this project's Contribution Guidelines
+          required: true
