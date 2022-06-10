@@ -1,0 +1,76 @@
+
+name: "\U0001F997 Bug report"
+description: Report errors or unexpected behavior
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please make sure to search for existing [issues](https://github.com/genesys/multicloud-services/issues), review the [discussions](https://github.com/genesys/multicloud-services/discussions), and check the [FAQ](https://github.com/genesys/multicloud-services/wiki) before filing a new one.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what happened.
+      value: "A clear and concise description of what happened."
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Cluster
+      description: Which cluster type are you using?
+      options:
+        - generic kubernetes
+        - GKE
+        - OpenShift
+    validations:
+      required: true
+  - type: dropdown
+    id: service
+    attributes:
+      label: What service are you having issues with?
+      multiple: true
+      options:
+        - infra
+        - gauth
+        - voice
+        - tenant
+        - gws
+        - wwe        
+        - webrtc
+        - webrtc-blue-green
+        - gvp
+        - gsp
+        - gim
+        - gca
+        - designer
+        - designer-blue-green
+        - ucsx
+        - tlm
+        - nexus
+        - iwd
+        - iwdem
+        - iwddm
+        - cxc
+        - ges
+        - pulse
+        - bds
+        - ixn
+        - gcxi
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Contribution Guidelines](https://github.com/genesys/multicloud-services/blob/main/doc/CONTRIBUTE.md)
+      options:
+        - label: I agree to follow this project's Contribution Guidelines
+          required: true
