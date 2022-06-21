@@ -1,0 +1,34 @@
+###############################################################################
+# Global Designer DAS parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure#DAS_deployment_settings
+###############################################################################
+das:
+  deployment:
+    strategy: blue-green
+    replicaCount: 1
+  image:
+    repository: "$IMAGE_REGISTRY/designer/"
+    imagePullSecrets: [] # Common to a pod, Can only be specified under .Values.das.image.imagePullSecrets
+  service:
+    type: ClusterIP
+    port: 8081
+    targetPort: http
+  dasConfig:
+    create: true
+    envs:
+      DAS_SERVICES_ELASTICSEARCH_ENABLED: "true"
+      DAS_SERVICES_ELASTICSEARCH_HOST: "http://elastic-es-http.infra"
+      DAS_SERVICES_ELASTICSEARCH_PORT: "9200"
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    alerts:
+      enabled: true
+  securityContext:  
+    runAsUser: null
+    runAsGroup: 0 
+  initialDesignerSyncConfig: 
+    create: false
+  designerSyncConfig: 
+    create: false

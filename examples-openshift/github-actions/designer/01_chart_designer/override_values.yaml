@@ -1,54 +1,18 @@
+###############################################################################
+# Global Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
 designer:
   deployment:
-    color: "blue"
-    strategy: rollingupdate
-  image:
-    repository: $IMAGE_REGISTRY/designer/
-    tag:  100.0.101.0034
-    imagePullSecrets: [name: pullsecret]
-  designerSecrets:
-    secrets:
-      DES_GWS_CLIENT_ID: "designer_client"
-      DES_GWS_CLIENT_SECRET: "designer_secret"  
+    strategy: blue-green-volume
   volumes:
     logsPvc:  # Logs
       create: true 
       mountPath: /designer/logs     
       claimSize: "5Gi"
-      storageClass: "designer-storage-test"
+      storageClass: "designer-storage"
     workspacePvc: # Workspace
       create: true
       mountPath: /designer/workspace      
       claimSize: "5Gi"
-      storageClass: "designer-storage-test"
-  designerConfig:
-    envs:
-      DES_APPSERVER_HOST: designer-das.designer.svc.cluster.local
-      DES_USE_HTCC: "true"
-      DES_HTCC_SERVER: "gws-service-proxy.gws.svc.cluster.local"
-      DES_HTCC_PORT: "80"
-      DES_ENABLE_ANALYTICS: "true"
-      DES_ES_URL: "http://elastic-es-http.infra.svc.cluster.local"
-      DES_ES_SERVER: "elastic-es-http.infra.svc.cluster.local"
-      DES_ES_PORT: "9200"
-  designerFlowSettings:
-    create: true
-  service:
-    type: ClusterIP
-  ingress:
-    paths: ["/"]
-    hosts:
-      - designer.${DOMAIN}
-    tls:
-      - hosts:
-        - designer.${DOMAIN}
-        secretName: letsencrypt
-  securityContext: 
-    runAsUser: null
-    runAsGroup: 0
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-    alerts:
-      enabled: true
+      storageClass: "designer-storage"

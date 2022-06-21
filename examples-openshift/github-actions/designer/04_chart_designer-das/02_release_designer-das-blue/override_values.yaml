@@ -1,0 +1,9 @@
+###############################################################################
+# Additional Designer DAS parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure#DAS_deployment_settings
+###############################################################################
+das:
+  deployment:
+    color: "blue"
+  image:
+    tag: 100.0.001.0043

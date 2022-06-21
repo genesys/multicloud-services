@@ -1,62 +1,18 @@
+###############################################################################
+# Global Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
 designer:
   deployment:
-    color: "blue"
-    strategy: rollingupdate
-    replicaCount: 1
-  image:
-    repository: $IMAGE_REGISTRY/designer/
-    tag:  100.0.101.0034
-    imagePullSecrets: [name: pullsecret]
-  designerSecrets:
-    secrets:
-      DES_GWS_CLIENT_ID: "designer_client"
-      DES_GWS_CLIENT_SECRET: "designer_secret"
-      #DES_REDIS_PASSWORD: "DES_REDIS_PASSWORD"
+    strategy: blue-green-volume
   volumes:
     logsPvc:  # Logs
       create: true 
       mountPath: /designer/logs     
-      claimSize: "3Gi"
+      claimSize: "5Gi"
       storageClass: "nfs-client"
     workspacePvc: # Workspace
       create: true
       mountPath: /designer/workspace      
-      claimSize: "3Gi"
-      storageClass: "csi-standard-rwx"
-  designerConfig:
-    envs:
-      DES_PORT: "8888"
-      DES_APPSERVER_HOST: designer-das.designer.svc.cluster.local
-      DES_APPSERVER_PORT: "80"
-      DES_DEPLOY_URL: "/workspaces"
-      DES_USE_HTCC: "true"
-      DES_HTCC_SERVER: gws-service-proxy.gws.svc.cluster.local
-      DES_HTCC_PORT: "80"
-      DES_ENABLE_ANALYTICS: "true"
-      DES_FILE_LOGGING_ENABLED: "false"
-      DES_ES_URL: http://elastic-es-http.infra.svc.cluster.local
-      DES_ES_SERVER: elastic-es-http.infra.svc.cluster.local
-      DES_ES_PORT: "9200"
-  designerFlowSettings:
-    create: true
-  service:
-    type: ClusterIP
-  ingress:
-    paths: ["/"]
-    hosts:
-      - designer.${DOMAIN}
-    tls:
-      - hosts:
-        - designer.${DOMAIN}
-        secretName: letsencrypt
-  securityContext: 
-    runAsUser: 500
-    runAsGroup: 500
-    fsGroup: 500
-    runAsNonRoot: true
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-    alerts:
-      enabled: true
+      claimSize: "5Gi"
+      storageClass: "nfs-client"

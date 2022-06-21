@@ -1,0 +1,14 @@
+###############################################################################
+# Global Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
+designer:
+  deployment:
+    strategy: blue-green-ingress
+    color: "green" # cutover value
+  ingress:
+    annotations:
+      route.openshift.io/termination: "edge"
+    paths: ["/"]
+    hosts:
+      - designer.${DOMAIN}

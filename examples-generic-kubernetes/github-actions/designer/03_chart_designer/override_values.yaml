@@ -1,0 +1,17 @@
+###############################################################################
+# Global Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
+designer:
+  deployment:
+    strategy: blue-green-ingress
+    color: "green" # cutover value
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      kubernetes.io/ingress.class: public
+      nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+    paths: ["/"]
+    hosts:
+      - designer.${DOMAIN}

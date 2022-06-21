@@ -1,0 +1,205 @@
+###############################################################################
+# Global Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
+designer:
+  deployment:
+    replicaCount: 1
+    strategy: blue-green
+  image:
+    repository: $IMAGE_REGISTRY/designer/
+    imagePullSecrets: [name: pullsecret]
+  designerConfig:
+    envs:
+      DES_APPSERVER_HOST: designer-das-service.${NS}
+      DES_USE_HTCC: "true"
+      DES_HTCC_SERVER: "gws-service-proxy.gws"
+      DES_HTCC_PORT: "80"
+      DES_ENABLE_ANALYTICS: "true"
+      DES_ES_URL: "http://elastic-es-http.infra"
+      DES_ES_SERVER: "elastic-es-http.infra"
+      DES_ES_PORT: "9200"
+  service:
+    type: ClusterIP
+  securityContext: 
+    runAsUser: null
+    runAsGroup: 0
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    alerts:
+      enabled: true
+  
+  designerFlowSettings:
+    create: true
+    envs:
+      {
+        "applicationHost": "designer-das-service.${NS}",
+        "applicationPort": 8081,
+        "consult_use_app_dlg_start_done": true,
+        "contactCenterForCallRecording": "RecordingServer",
+        "daysToKeepBackups": 1,
+        "deployURL": "/workspaces",
+        "disableCCIDAuth": false,
+        "disableCSRF": true,
+        "disablePBAC": false,
+        "disableRBAC": false,
+        "disableSDRBlockList": false,
+        "disableSSO": false,
+        "disable_dialog_requestid_check": false,
+        "docsMicroserviceURL": "https://docs.genesys.com/Documentation/PSAAS/Public/Administrator/Designer",
+        "docsURL": "http://docs.genesys.com/Special:HelpLink/DESHelp?context=Draft.Welcome",
+        "enableAnalytics": true,
+        "enableESAuditLogs": true,
+        "enableFSAuditLogs": true,
+        "esMaxQueryDuration": 90,
+        "esPort": 9200,
+        "esServer": "elastic-es-http.infra",
+        "esUrl": "http://elastic-es-http.infra:9200",
+        "features":
+          {
+            "advancedScriptingInAssign": true,
+            "audioConversion": false,
+            "callback": false,
+            "callbackrecord": false,
+            "callbackv2": true,
+            "campaignGroupRouting": false,
+            "chatbot": false,
+            "clearDTMFBuffer": false,
+            "devanalytics": true,
+            "digital": true,
+            "enableImplicitModuleMilestones": false,
+            "globalCommand": true,
+            "globalCommandRespectBargein": true,
+            "grammarValidation": false,
+            "icm": false,
+            "nexus": false,
+            "personalization": false,
+            "plugins": true,
+            "predictiveRouting": false,
+            "reportingModuleSDRInChunk": false,
+            "saml": false,
+            "store": false,
+            "survey": true,
+            "voicemail": true,
+            "vxmlapp": false,
+          },
+        "fetchCustomerProfileTimeout": 1,
+        "ffmpegPath": "/designer/ffmpeg",
+        "gwsauthurl": "http://gauth-auth.gauth:80",
+        "gwsenvurl": "http://gauth-environment.gauth:80",
+        "htccKeepAliveInterval": 5,
+        "htccport": 80,
+        "htccprotocol": "http",
+        "htccserver": "gws-service-proxy.gws",
+        "httpProxy": "",
+        "idleTimeout": 840,
+        "localmode":
+          {
+            "comment": "defaults here will point to the 35-39 tenant and its workspace in designer postgres db on cgd-vm03 instance",
+            "tenantId": "c0000000-1111-2222-3333-444444444444",
+            "workspaceId": "workspace",
+          },
+        "lockdownMode": false,
+        "lockdownPermissions":
+          {
+            "ACCOUNTS-GENERAL": "READ",
+            "APP-CLONING": "NONE",
+            "APP-EXPORT": "READ",
+            "APP-GENERAL": "READ",
+            "APP-IMPORT": "NONE",
+            "APP-TAGGING": "NONE",
+            "AUDIO-GENERAL": "READ_AND_UPDATE_AND_CREATE",
+            "BUSINESS-GENERAL": "READ_AND_UPDATE_AND_CREATE",
+            "FLOW-DIAGRAM": "READ",
+            "FLOW-PROPERTY": "READ",
+            "GRAMMARS-GENERAL": "READ_AND_UPDATE_AND_CREATE",
+            "MESSAGES-GENERAL": "READ_AND_UPDATE_AND_CREATE",
+            "WORKSPACE-SETTINGS": "READ",
+          },
+        "logging":
+          {
+            "audit": { "level": "debug" },
+            "auditdebug": { "level": "debug" },
+            "cli": { "level": "debug" },
+            "designer": { "level": "debug" },
+          },
+        "maxAppSizeCompare": 1000000,
+        "maxBuilds": 20,
+        "maxFlowEntryCount": 20,
+        "multitenancy": { "basePath": "./workspace" },
+        "numBackupsToKeep": 20,
+        "numChildProcesses": 2,
+        "port": 8888,
+        "primarySwitch": "SIP_Switch",
+        "profileContextservicesPassword": "",
+        "profileContextservicesURL": "",
+        "profileContextservicesUser": "",
+        "rbacSection": "CfgGenesysAdministratorServer",
+        "recordingType": "GIR",
+        "redundantHttpProxy": "",
+        "rootsSRL": "",
+        "s3Region": "",
+        "saml":
+          {
+            "attributeMapping":
+              {
+                "http://genesys.com/saml/hub/CS_AUTH_TOKEN": "CS_AUTH_TOKEN",
+                "http://genesys.com/saml/hub/CS_USER": "CS_USER",
+                "urn:oid:0.9.2342.19200300.100.1.1": "id",
+                "urn:oid:2.5.4.3": "commonName",
+                "urn:oid:2.5.4.4": "surname",
+              },
+            "idpEntryPoint": "https://192.168.99.100:30443/idp/profile/SAML2/Redirect/SSO",
+            "nameIDFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+            "spEntityID": "devSP",
+            "spHost": "slweb-21-24-p.genhtcc.com",
+          },
+        "sdrMaxObjCount": -1,
+        "sdrS3BucketName": "com.genesys.dev.$.sdr",
+        "sdrToS3": false,
+        "ssoLoginUrl": "https://gauth.${DOMAIN}",
+        "storeurl": "http://localhost:3600",
+        "tenant_dbid": "1",
+        "tenantid": "1",
+        "urs_routing": true,
+        "useUserRecordedSystemAudio": false,
+        "use_ors_treatments": true,
+        "usehtcc": true,
+        "vxml_reporting_timeout": 30,
+        "plugins": [
+            {
+            "displayName": "PII Masking",
+            "feature": "nexus",
+            "id": "nexuspii",
+            "loginEndpoint": "https://digital.${DOMAIN}/admin/ux/loadplugin",
+            "placement": "messageCollections",
+            "url": "https://digital.${DOMAIN}/admin/ux/" 
+            },
+            {
+            "displayName": "Field Codes",
+            "feature": "nexus",
+            "id": "nexusfc",
+            "loginEndpoint": "https://digital.${DOMAIN}/admin/ux/loadplugin", 
+            "placement": "messageCollections",
+            "url": "https://digital.${DOMAIN}/admin/ux/fieldcodes/" 
+            },
+            {
+            "displayName": "Custom Variables",
+            "feature": "nexus",
+            "id": "nexuscv",
+            "loginEndpoint": "https://digital.${DOMAIN}/admin/ux/loadplugin", 
+            "placement": "messageCollections",
+            "url": "https://digital.${DOMAIN}/admin/ux/customvariables/" 
+            },
+            {
+            "displayName": "Standard Responses",
+            "feature": "nexus",
+            "id": "nexussr",
+            "loginEndpoint": "https://digital.${DOMAIN}/admin/ux/loadplugin", 
+            "placement": "messageCollections",
+            "url": "https://digital.${DOMAIN}/admin/ux/sr" 
+            }
+          ]
+      }

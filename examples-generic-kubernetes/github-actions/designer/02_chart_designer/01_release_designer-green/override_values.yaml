@@ -1,0 +1,13 @@
+###############################################################################
+# Additional Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
+designer:
+  deployment:
+    color: "green"
+  image:
+    tag: 100.0.202.0011
+  designerSecrets:
+    secrets:
+      DES_GWS_CLIENT_ID: designer_gws_client_id
+      DES_GWS_CLIENT_SECRET: designer_gws_client_secret  
