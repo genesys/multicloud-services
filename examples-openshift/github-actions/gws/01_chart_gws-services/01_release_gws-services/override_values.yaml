@@ -68,19 +68,19 @@ secrets:
 
 
 gwsServices:
-  gws-platform-configuration:
+  gwsPlatformConfiguration:
     clientId: gws_client_id
-  gws-platform-datacollector:
+  gwsPlatformDatacollector:
     clientId: gws_client_id
-  gws-app-workspace:
+  gwsAppWorkspace:
     clientId: gws_client_id
-  gws-platform-ixn:
+  gwsPlatformIxn:
     clientId: gws_client_id
-  gws-platform-ocs:
+  gwsPlatformOcs:
     clientId: gws_client_id
-  gws-platform-setting:
+  gwsPlatformSetting:
     clientId: gws_client_id
-  gws-app-provisioning:
+  gwsAppProvisioning:
     clientId: gws_client_id
     postgres:
       address: POSTGRES_ADDR
