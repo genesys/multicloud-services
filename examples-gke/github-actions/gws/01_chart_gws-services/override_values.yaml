@@ -29,7 +29,7 @@ dnsConfig:
     value: "3"
 
 gwsServices:
-  gws-app-provisioning:
+  gwsAppProvisioning:
 
     deployment:
       replicaCount: 1
@@ -59,7 +59,7 @@ gwsServices:
         GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USE_SSL: false
         GWS_SECURE_COOKIE: false
 
-  gws-app-workspace:
+  gwsAppWorkspace:
 
     deployment:
       replicaCount: 1
@@ -82,7 +82,7 @@ gwsServices:
         GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
         GWS_WORKSPACE_CONSUL_AUTH_ENV_DISABLED: true
 
-  gws-platform-configuration:
+  gwsPlatformConfiguration:
 
     deployment:
       # Number of pod replicas
@@ -105,7 +105,7 @@ gwsServices:
         GWS_CONFIGURATION_cache_tenantRefreshIntervalMin: 1
         GWS_CS_CLUSTER_SUPPORT: true
 
-  gws-platform-datacollector:
+  gwsPlatformDatacollector:
 
     deployment:
       replicaCount: 1
@@ -124,7 +124,7 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_DATACOLLECTOR_timeouts_environmentRefreshMs: 300000
 
-  gws-platform-ixn:
+  gwsPlatformIxn:
 
     deployment:
       replicaCount: 1
@@ -143,7 +143,7 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_IXN_timeouts_environmentRefreshMs: 60000
 
-  gws-platform-ocs:
+  gwsPlatformOcs:
 
     deployment:
       replicaCount: 1
@@ -162,7 +162,7 @@ gwsServices:
         GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
 
-  gws-platform-setting:
+  gwsPlatformSetting:
 
     deployment:
       replicaCount: 1
@@ -181,7 +181,7 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_SETTING_timeouts_environmentRefreshMs: 300000
 
-  gws-platform-statistics:
+  gwsPlatformStatistics:
 
     deployment:
       replicaCount: 1
@@ -200,7 +200,7 @@ gwsServices:
         GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
         GWS_STATISTICS_timeouts_environmentRefreshMs: 300000
 
-  gws-platform-voice:
+  gwsPlatformVoice:
 
     deployment:
       replicaCount: 1
@@ -220,15 +220,11 @@ gwsServices:
         GWS_VOICE_timeouts_requestTimeoutMs: 30000
         GWS_VOICE_timeouts_environmentRefreshMs: 10000
 
-  gws-ui-crmworkspace:
+  gwsUiCrmworkspace:
     deployment:
       replicaCount: 1
 
-  gws-ui-provisioning:
-    deployment:
-      replicaCount: 1
-
-  gws-ui-workspace:
+  gwsUiProvisioning:
     deployment:
       replicaCount: 1
 
