@@ -1,0 +1,35 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+# image:
+#   tag: 14.1.0-debian-10-r80
+
+grafana:
+  enabled: false
+
+alertmanager:
+  ingress:
+      enabled: true
+      ingressClassName: nginx-internal
+      annotations: 
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts: 
+        - alert-manager.${DOMAIN}
+      tls: 
+        - hosts:
+            - alert-manager.${DOMAIN}
+          secretName: alertmgr-ingress-cert
+
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx-internal
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts: 
+      - prometheus.${DOMAIN}
+    tls: 
+      - hosts:
+          - prometheus.${DOMAIN}
+        secretName: prometheus-ingress-cert
