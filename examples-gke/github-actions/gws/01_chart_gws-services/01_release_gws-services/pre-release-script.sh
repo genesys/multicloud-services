@@ -87,7 +87,18 @@ export gws_client_secret=$( get_secret gws_client_secret )
 export gws_ops_user=$( get_secret gws_ops_user )
 export gws_ops_pass_encr=$( get_secret gws_ops_pass_encr )
 ###############################################################################
-
+# Location of the deployment
+###############################################################################
+export global_location=$( get_secret LOCATION )
+###############################################################################
+# Elastic search
+###############################################################################
+export ES_ADDR=$( get_secret ES_ADDR )
+###############################################################################
+# Redis
+###############################################################################
+export REDIS_ADDR=$( get_secret REDIS_ADDR )
+###############################################################################
 
 # For validation process need to evaluate release override values here
 replace_overrides POSTGRES_ADDR 		$POSTGRES_ADDR
@@ -105,6 +116,9 @@ replace_overrides gws_client_id 		$gws_client_id
 replace_overrides gws_client_secret 	$gws_client_secret
 replace_overrides gws_ops_user 			$gws_ops_user
 replace_overrides gws_ops_pass_encr 	$gws_ops_pass_encr
+replace_overrides global_location 		$global_location
+replace_overrides ES_ADDR 		        $ES_ADDR
+replace_overrides REDIS_ADDR 		    $REDIS_ADDR
 
 ###############################################################################
 # Creating GWS DB if not exist and init

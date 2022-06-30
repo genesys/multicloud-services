@@ -22,12 +22,6 @@ deploymentGlobals:
     # A supplemental group ID that applies to all containers in a pod
     fsGroup: 500
 
-# DNS configuration
-dnsConfig:
-  options:
-  - name: ndots
-    value: "3"
-
 gwsServices:
   gwsAppProvisioning:
 
@@ -36,31 +30,32 @@ gwsServices:
 
     resources:
       limits:
-        cpu: 1
+        cpu: 2
         memory: 3200Mi
       requests:
-        cpu: 0.5
+        cpu: 1
         memory: 3200Mi
 
     context:
       env:
         GWS_PROVISIONING_COMMON_LOGLEVEL: info
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_CONF_URL: http://gws-service-proxy.gws.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_CONF_URL: http://gws-service-proxy.gws:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
         # Enables/disables SSL connection to PostgreSQL. Possible values: disable, prefer, require, verify-ca, verify-full
         PGSSLMODE: disable
+
         GWS_PROVISIONING_OBJECTCACHE_DB_TYPE: postgres
         GWS_PROVISIONING_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
-        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USER: prov
-        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PASSWORD: prov
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USER: $gws_as_pg_user
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PASSWORD: $gws_as_pg_pass
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: $POSTGRES_ADDR
         GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PORT: 5432
         GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USE_SSL: false
         GWS_SECURE_COOKIE: false
 
   gwsAppWorkspace:
-
     deployment:
       replicaCount: 1
 
@@ -77,15 +72,30 @@ gwsServices:
         GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
         GWS_WORKSPACE_SERVER_USE_SECURE_COOKIE: true
         GWS_SECURE_COOKIE: true
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
         GWS_WORKSPACE_CONSUL_AUTH_ENV_DISABLED: true
 
-  gwsPlatformConfiguration:
+  # This component is not delivered to PE
+  gwsPlatformChat:
+    enabled: true    
 
     deployment:
-      # Number of pod replicas
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 0.2
+        memory: 700Mi
+
+  gwsPlatformConfiguration:
+    
+
+    deployment:
       replicaCount: 1
 
     resources:
@@ -99,14 +109,13 @@ gwsServices:
     context:
       env:
         GWS_CONFIGURATION_COMMON_DISCOVERY_TENANTS: true
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_CONFIGURATION_timeouts_environmentRefreshMs: 300000
         GWS_CONFIGURATION_cache_tenantRefreshIntervalMin: 1
         GWS_CS_CLUSTER_SUPPORT: true
 
-  gwsPlatformDatacollector:
-
+  gwsPlatformDatacollector:  
     deployment:
       replicaCount: 1
 
@@ -120,12 +129,11 @@ gwsServices:
 
     context:
       env:
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_DATACOLLECTOR_timeouts_environmentRefreshMs: 300000
 
   gwsPlatformIxn:
-
     deployment:
       replicaCount: 1
 
@@ -139,12 +147,11 @@ gwsServices:
 
     context:
       env:
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_IXN_timeouts_environmentRefreshMs: 60000
 
   gwsPlatformOcs:
-
     deployment:
       replicaCount: 1
 
@@ -159,11 +166,10 @@ gwsServices:
     context:
       env:
         GWS_OCS_timeouts_environmentRefreshMs: 300000
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
 
   gwsPlatformSetting:
-
     deployment:
       replicaCount: 1
 
@@ -177,12 +183,11 @@ gwsServices:
 
     context:
       env:
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_SETTING_timeouts_environmentRefreshMs: 300000
 
   gwsPlatformStatistics:
-
     deployment:
       replicaCount: 1
 
@@ -196,12 +201,26 @@ gwsServices:
 
     context:
       env:
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_STATISTICS_timeouts_environmentRefreshMs: 300000
 
-  gwsPlatformVoice:
+  # This component is not delivered to PE
+  gwsPlatformUcs:
+    enabled: true   
 
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 0.2
+        memory: 1Gi
+
+  gwsPlatformVoice:
     deployment:
       replicaCount: 1
 
@@ -215,10 +234,12 @@ gwsServices:
 
     context:
       env:
-        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth.svc:80
-        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth.svc:80
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.gauth:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.gauth:80
         GWS_VOICE_timeouts_requestTimeoutMs: 30000
         GWS_VOICE_timeouts_environmentRefreshMs: 10000
+        GWS_AUTH_COMMON_ENV_SERVICE: http://gauth-environment.gauth:80
+        #GWS_PSDK_ENHANCED_PROTOCOL_SECURITY: true
 
   gwsUiCrmworkspace:
     deployment:
@@ -228,36 +249,14 @@ gwsServices:
     deployment:
       replicaCount: 1
 
-### 3-d Party services
-
-elasticSearch:
-  # FQDN or IP of ElasticSearch cluster
-  address: elastic-es-http.infra.svc
-  # ElasticSearch port
-  port: 9200
-  # Enable/disable TLS connection to Elasticsearch cluster
-  enableTls: false
-
-
-redis:
-  # Redis cluster host name
-  address: infra-redis-redis-cluster.infra
-  # Redis port
-  port: 6379
-  # Enable/disable TLS connection to Redis cluster
-  enableTls: false
 
 consul:
   # Port of local Consul agent
   port: 8500
   # Prefix to locate GWS data in the Consul KV storage
-  kv_prefix: "gws-test"
+  kv_prefix: "gws"
 
 prometheus:
   # Enables annotation based discovery to scrape metrics
   metricServer:
     enabled: true
-
-gwsServiceProxy:
-  context:
-    sessionCookieName: GWSLB
