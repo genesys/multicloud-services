@@ -12,7 +12,6 @@ image:
 imagePullSecrets:
   pullsecret: {}
 
-
 kafka:
   bootstrap: infra-kafka-cp-kafka.infra.svc:9092
 

@@ -25,13 +25,16 @@ gimdb:              #is taken from GIM deployment-secrets
   username: gim_pgdb_etl_user
   password: gim_pgdb_etl_password
 
+kafka:
+  bootstrap: KAFKA_ADDR:9092
+
 storage:
   s3:              #is taken from GSP cm & secrets
-    bucket:        bucket_name
+    bucket:        BUCKET_NAME
     gcaSnapshots:  "/gca"
     accessKey:     s3_access_key
     secretKey:     s3_secret_key
     useSSL:        true
-    endPoint:      "s3.openshift-storage.svc"
-    port:          443
+    endPoint:      BUCKET_HOST
+    port:          BUCKET_PORT
     Insecure:      true
