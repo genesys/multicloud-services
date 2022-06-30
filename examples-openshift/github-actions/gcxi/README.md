@@ -30,6 +30,7 @@ Create the following secrets to store confidential information you may not want 
 |-|-|
 tenant_sid| 100
 tenant_id| 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
+LOCATION| USW1
 gim_db_host| gim.db.host
 gim_db_name| gim
 gim_db_user| gimuser
