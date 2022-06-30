@@ -14,20 +14,23 @@ function get_secret {
 ###############################################################################
 #       Tenant id (UUID) and sid from GIM deployment secrets
 ###############################################################################
-export tenant_sid=$( get_secret tenant_sid gim )
-export tenant_id=$( get_secret tenant_id gim )
+export tenant_sid=$( get_secret tenant_sid )
+export tenant_id=$( get_secret tenant_id )
+export LOCATION=$( get_secret LOCATION )
 ###############################################################################
 #       GIM database parameters from GIM deployment secrets
 ###############################################################################
-export gim_db_name=$( get_secret gim_pgdb_etl_name gim )
-export gim_db_user=$( get_secret gim_pgdb_etl_user gim )
-export gim_db_pass=$( get_secret gim_pgdb_etl_password gim )
+export gim_db_host=$( get_secret gim_db_host )
+export gim_db_name=$( get_secret gim_db_name )
+export gim_db_user=$( get_secret gim_db_user )
+export gim_db_pass=$( get_secret gim_db_pass )
 ###############################################################################
 #       IWD database parameters from GIM deployment secrets
 ###############################################################################
-export iwd_db_name=iwd-$tenant_sid
-export iwd_db_user=$( get_secret iwd_db_user iwd )
-export iwd_db_pass=$( get_secret iwd_db_password iwd )
+export iwd_db_host=$( get_secret iwd_db_host )
+export iwd_db_name=$( get_secret iwd_db_name )
+export iwd_db_user=$( get_secret iwd_db_user )
+export iwd_db_pass=$( get_secret iwd_db_pass )
 ###############################################################################
 #           Postgres address and admin_db
 ###############################################################################
@@ -44,7 +47,6 @@ export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 export GAUTH_CLIENT=$( get_secret GAUTH_CLIENT )
 export GAUTH_KEY=$( get_secret GAUTH_KEY )
 ###############################################################################
-
 
 ###############################################################################
 # Creating secrets: gcxi-secret-gauth and gcxi-secret-pg

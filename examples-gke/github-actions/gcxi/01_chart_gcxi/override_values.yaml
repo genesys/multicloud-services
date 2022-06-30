@@ -11,6 +11,7 @@ gcxi:
   - name: gcxi-config-pg
 
   deployment:
+    kubeVersion: 1.22
     code: 100
     deployFluentbitSidecar: true
     deployGrafanaDashboard: true

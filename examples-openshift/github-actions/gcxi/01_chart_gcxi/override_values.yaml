@@ -11,6 +11,7 @@ gcxi:
   - name: gcxi-config-pg
 
   deployment:
+    kubeVersion: 1.22
     code: 100
     deployFluentbitSidecar: true
     deployGrafanaDashboard: true
@@ -46,7 +47,7 @@ gcxi:
 
   replicas:
     postgres: 1
-    worker: 2
+    worker: 1
 
   resources:
     worker:

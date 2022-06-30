@@ -5,7 +5,7 @@
 gcxi:
   deployment:
     code: $tenant_sid
-    region: USW1
+    region: ${LOCATION}
     tenantColor: 
     tenantId: $tenant_id
     tenantName: t$tenant_sid
