@@ -1,6 +1,6 @@
-gws-ui-auth:          100.0.006.1353
-gws-core-environment: 100.0.006.1907
-gws-core-auth:        100.0.006.3638
+gws-ui-auth:          100.0.007.1355
+gws-core-environment: 100.0.007.1927
+gws-core-auth:        100.0.007.3692
 
 postgres:
   host:     POSTGRES_ADDR
@@ -20,6 +20,7 @@ redis:
   password: gauth_redis_password
 
 services:
+  location: global_location
   secret:
     admin_username: gauth_admin_username
     admin_password: gauth_admin_password
@@ -28,5 +29,19 @@ services:
 
   auth:
     jks:
+      enabled: true
+      sso:
+        enabled: true
+      secret:
+        create: true
+
+      # Convert keystore.jks file content to base64 ( cat keystore.jks | base64 ) and put the output here
+      keyStore: jksStorage.jks
+
+      keyStoreFileData: <key content>	
+      # Keystore password
       keyStorePassword: gauth_jks_keyStorePassword
-      keyPassword:      gauth_jks_keyPassword
+      # SSL key alias
+      keyAlias: gws-auth-key
+      # SSL key password
+      keyPassword: gauth_jks_keyPassword

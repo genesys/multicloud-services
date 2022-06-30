@@ -54,6 +54,10 @@ export gauth_gws_client_secret=$( get_secret gauth_gws_client_secret )
 export gauth_jks_keyPassword=$( get_secret gauth_jks_keyPassword )
 export gauth_jks_keyStorePassword=$( get_secret gauth_jks_keyStorePassword )
 ###############################################################################
+# Location of the deployment
+###############################################################################
+export global_location=$( get_secret LOCATION )
+###############################################################################
 
 # For validation process need to evaluate release override values here
 replace_overrides POSTGRES_ADDR $POSTGRES_ADDR
@@ -67,6 +71,7 @@ replace_overrides gauth_gws_client_id $gauth_gws_client_id
 replace_overrides gauth_gws_client_secret $gauth_gws_client_secret
 replace_overrides gauth_jks_keyPassword $gauth_jks_keyPassword
 replace_overrides gauth_jks_keyStorePassword $gauth_jks_keyStorePassword
+replace_overrides global_location 		$global_location
 
 ###############################################################################
 # Creating gauth DB if not exist

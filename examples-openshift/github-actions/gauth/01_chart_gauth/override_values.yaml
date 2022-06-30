@@ -32,7 +32,7 @@ redis:
     name_override:
     create: true
   image: redis:5-stretch
-  cluster_nodes: infra-redis-redis-cluster.infra.svc.cluster.local:6379
+  cluster_nodes: infra-redis-redis-cluster-headless.infra.svc.cluster.local:6379
   use_tls: false
   # REDIS AUTH
   password_required: true
@@ -248,7 +248,6 @@ services:
     replicas: 1
   auth_ui:
     replicas: 1
-
 
 pod_autoscaler:
   auth:
