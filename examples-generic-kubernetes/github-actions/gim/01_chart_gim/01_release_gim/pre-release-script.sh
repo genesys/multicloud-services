@@ -10,7 +10,6 @@ function get_secret {
 			--no-headers | base64 -d )
 }
 
-
 ###############################################################################
 #           Postgres address
 ###############################################################################
@@ -32,6 +31,9 @@ export gim_pgdb_etl_password=$( get_secret gim_pgdb_etl_password )
 export tenant_sid=$( get_secret tenant_sid )
 export tenant_id=$( get_secret tenant_id )
 ###############################################################################
+#       kafka
+###############################################################################
+export KAFKA_ADDR=$( get_secret KAFKA_ADDR )
 
 ###############################################################################
 # Creating GIM DB if not exist and init

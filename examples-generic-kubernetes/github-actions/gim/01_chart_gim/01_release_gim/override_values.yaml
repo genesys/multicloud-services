@@ -9,8 +9,11 @@ image:
 tenant_id: t${tenant_sid}
 tenant_uuid: $tenant_id
 
+kafka:
+  bootstrap: $KAFKA_ADDR:9092
+
 db:
-  jdbcUrl: jdbc:postgresql://{db_hostname}:{{.Values.db.port}}/{db_name}?{db_username}&sslmode=prefer
+  jdbcUrl: jdbc:postgresql://${POSTGRES_ADDR}:5432/${gim_pgdb_etl_name}?${gim_pgdb_etl_user}&sslmode=prefer
   host: ${POSTGRES_ADDR}
   name: ${gim_pgdb_etl_name}
   username: ${gim_pgdb_etl_user}
