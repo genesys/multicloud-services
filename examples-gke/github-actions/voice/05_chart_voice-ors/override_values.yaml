@@ -22,7 +22,14 @@ secrets:
     - name: consul-shared-secret
       secret:
         secretName: consul-voice-token
-
+  scxmlSecret:
+    general:
+      enabled: false
+    mounts:
+    volumes:
+  redisSipCache:
+    general:
+      enabled: true  
 # Enable HPA and set the target CPU and memory for scale up and down
 hpa:
   targetCPUPercent: 50

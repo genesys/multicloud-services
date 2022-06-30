@@ -1,0 +1,53 @@
+
+name: "\U0001F4A1 Feature request"
+description: Suggest an idea or new feature
+title: "[FEATURE]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please make sure to search for existing [issues](https://github.com/genesys/multicloud-services/issues), review the [discussions](https://github.com/genesys/multicloud-services/discussions), and check the [FAQ](https://github.com/genesys/multicloud-services/wiki) before filing a new one.
+  - type: textarea
+    id: what-is-needed
+    attributes:
+      label: What is needed?
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: Tell us what is needed.
+      value: "A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Possible solutions.
+      description: Describe the solution you'd like.
+      placeholder: Describe the solution you'd like.
+      value: "A description of what you want to happen."
+    validations:
+      required: true
+  - type: textarea
+    id: alternative
+    attributes:
+      label: What alternatives were considered?
+      description: Describe alternatives you've considered.
+      placeholder: Tell us what was tried.
+      value: "A description of any alternative solutions or features you've considered."
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Contextualize the request.
+      description: Add any other context or screenshots about the feature request here.
+      placeholder: Tell us what is needed.
+    validations:
+      required: false      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Contribution Guidelines](https://github.com/genesys/multicloud-services/blob/main/doc/CONTRIBUTE.md)
+      options:
+        - label: I agree to follow this project's Contribution Guidelines
+          required: true

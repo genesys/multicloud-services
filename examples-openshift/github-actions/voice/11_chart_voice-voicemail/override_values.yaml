@@ -161,9 +161,9 @@ smtp:
 ## Containers should run as genesys user and cannot use elevated permissions
 securityContext:
   readOnlyRootFilesystem: false
+  runAsUser: null
+  runAsGroup: null
   runAsNonRoot: true
-  runAsUser: 500
-  runAsGroup: 500
 
 prometheus:
   # Enable for Prometheus Annotation
@@ -179,11 +179,6 @@ prometheus:
     scrapeTimeout:
 
 podSecurityContext: {}
-
-securityContext:
-  runAsUser: null
-  runAsGroup: null
-  runAsNonRoot: true
 
 containerSecurityContext:
   runAsUser: null

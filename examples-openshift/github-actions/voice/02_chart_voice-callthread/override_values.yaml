@@ -22,7 +22,12 @@ secrets:
     - name: consul-shared-secret
       secret:
         secretName: consul-voice-token
-
+  kafka:                                                          
+    general:
+      enabled: true
+  kafkaDC:
+    general:
+      enabled: false    
 # Enable HPA and set the target CPU and memory for scale up and down
 hpa:
   targetCPUPercent: 60

@@ -40,6 +40,9 @@ gwsServices:
       port: 5432
       # PostgreSQL database name
       db: DB_NAME_PROV
+    context:
+      env:
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: POSTGRES_ADDR  
 
 ### 3rd Party services
 postgres:
@@ -116,3 +119,4 @@ secrets:
   ops-username: gws_ops_user
   # Encrypted password of the operational user
   ops-password: gws_ops_pass_encr    
+
