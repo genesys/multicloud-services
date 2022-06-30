@@ -1,3 +1,4 @@
+![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 We've included a basic deployment to help get started.
 Consult with our [documentation](all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/Overview) for the full configuration and deployment details.
@@ -24,16 +25,24 @@ Create the following secrets to store confidential information you may not want 
 
 |Key|Value|
 |-|-|
-S3_ACCESS_KEY| access_key
-S3_SECRET_KEY| secret_key
+ACCESS_KEY_ID| access_key
+SECRET_ACCESS_KEY| secret_key
+BUCKET_HOST| storage.googleapis.com
+BUCKET_NAME| gca-gsp-storage-bucket
+BUCKET_PORT|  443
+KAFKA_ADDR| infra-kafka-cp-kafka.infra
 
 Example `.yaml`
 
 ```
 apiVersion: v1
 data:
-  S3_ACCESS_KEY: access_key
-  S3_SECRET_KEY: secret_key
+  ACCESS_KEY_ID: access_key
+  SECRET_ACCESS_KEY: secret_key
+  BUCKET_HOST: storage.googleapis.com
+  BUCKET_NAME: gca-gsp-storage-bucket
+  BUCKET_PORT: 443
+  KAFKA_ADDR: infra-kafka-cp-kafka.infra
 kind: Secret
 metadata:
   name: deployment-secrets
