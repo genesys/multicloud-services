@@ -45,14 +45,13 @@ image:
 ## liveness and readiness probes
 ## !!! THESE OPTIONS SHOULD NOT BE CHANGED UNLESS INSTRUCTED BY GENESYS !!!
 livenessValues:
-  path: /ems-rs/components
   initialDelaySeconds: 600
   periodSeconds: 120
   timeoutSeconds: 3
   failureThreshold: 3
 
 readinessValues:
-  path: /ems-rs/components
+  path: /ems-rs/readiness
   initialDelaySeconds: 10
   periodSeconds: 60
   timeoutSeconds: 3
@@ -82,21 +81,18 @@ context:
   env:
     CFGAPP: default
     GVP_RS_SERVICE_HOSTNAME: gvp-rs.${NS}.svc.cluster.local
-    #CFGPASSWORD: password
-    #CFGUSER: default
     CFG_HOST: gvp-configserver.${NS}.svc.cluster.local
     CFG_PORT: '8888'
     CMDLINE: ./rs_startup.sh
     DBNAME: gvp_rs
-    #DBPASS: 'jbIKfoS6LpfgaU$E'
-    DBUSER: openshiftadmin
+    DBUSER: sa
     rsDbSharedUsername: mssqlreader
     DBPORT: 1433
     #localconfigcachepath: /billing/gvp-rs/data/cache
     HOSTFOLDER: Hosts
     HOSTOS: CFGRedHatLinux
     LCAPORT: '4999'
-    MSSQLHOST: mssqlserveropenshift.database.windows.net
+    MSSQLHOST: mssql-deployment.infra.svc.cluster.local
     RSAPP: azure_rs
     RSJVM_INITIALHEAPSIZE: 4096m
     RSJVM_MAXHEAPSIZE: 8192m
@@ -110,6 +106,8 @@ context:
     SNMPFOLDER: Applications
 
   RSCONFIG:
+    reporting:
+      rs.exposerestapis: false
     messaging:
       activemq.memoryUsageLimit: "7680 mb"
       activemq.dataDirectory: "/billing/gvp-rs/data/activemq"
