@@ -65,18 +65,6 @@ serviceAccount:
 ##
 podAnnotations: {}
 
-## Specifies the security context for all Pods in the service
-##
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: null
-  runAsGroup: null
-  fsGroup: null
-
-securityContext:
-  runAsUser:  null
-  runAsGroup: null
-
 ## Resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
