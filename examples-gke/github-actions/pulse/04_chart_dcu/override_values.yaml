@@ -71,18 +71,6 @@ serviceAccount:
 ##
 podAnnotations: {}
 
-## Specifies the security context for all Pods in the service
-##
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: null
-  runAsGroup: null
-  fsGroup: null
-
-securityContext:
-  runAsUser:  null
-  runAsGroup: null
-
 ## Add labels to all pods
 ##
 podLabels: {}
@@ -171,9 +159,6 @@ collector:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "8000m"
-  securityContext:
-    runAsUser: null
-    runAsGroup: null
 
 # * Configuration for the StatServer container
 statserver:
@@ -193,9 +178,6 @@ statserver:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "4000m"
-  securityContext:
-    runAsUser: null
-    runAsGroup: null
 
 # * Configuration for the monitor sidecar container
 monitorSidecar:
@@ -216,9 +198,6 @@ monitorSidecar:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "10m"
-  securityContext:
-    runAsUser: null
-    runAsGroup: null
 
 ##########################################################################
 
@@ -243,9 +222,6 @@ csproxy:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "1000m"
-  securityContext:
-    runAsUser: null
-    runAsGroup: null
 
 # volumeClaims contains persistent volume claims for services
 # All available storage classes can be found here:
