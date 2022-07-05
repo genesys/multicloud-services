@@ -104,18 +104,6 @@ podAnnotations: {}
 ##
 podLabels: {}
 
-## Specifies the security context for all Pods in the service
-##
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: null
-  runAsGroup: null
-  fsGroup: null
-
-securityContext:
-  runAsGroup: null
-  runAsUser: null
-
 ## Ingress configuration
 ingress:
   enabled: true
