@@ -1,0 +1,9 @@
+deployment:
+  type: gateway
+  color: green
+
+image:
+  webrtcVersion: 100.0.044.0000
+
+gateway:
+  turnExternalUriGreen: 127.0.0.1

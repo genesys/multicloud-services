@@ -1,0 +1,3 @@
+deployment:
+  type: infra
+  color: green

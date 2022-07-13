@@ -1,5 +1,0 @@
-deployment:
-  type: cutover
-
-gateway:
-  turnExternalUriBlue: 127.0.0.1

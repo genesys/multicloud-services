@@ -1,0 +1,3 @@
+deployment:
+  type: cutover
+  color: green # cutover value
