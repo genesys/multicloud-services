@@ -2,13 +2,13 @@
 # Global Webrtc parameters
 # https://all.docs.genesys.com/WebRTC/Current/WebRTCPEGuide/Configure
 ###############################################################################
+
 deployment:
   coturnService:
     annotations: {}
   type:              infra/coturn/gateway/cutover
   color:             "blue"
   namespace:         ${NS}
-  keda:              false
   securityContext:
     fsGroup: null
     runAsNonRoot: true
@@ -18,18 +18,13 @@ deployment:
   ingress:
     domain: ${DOMAIN}
     annotations:
-      kubernetes.io/ingress.class:               nginx01-internal
+      route.openshift.io/termination: "edge"
+      kubernetes.io/ingress.class:               nginx
       nginx.ingress.kubernetes.io/affinity:      cookie
       nginx.ingress.kubernetes.io/affinity-mode: persistent
       nginx.ingress.kubernetes.io/ssl-redirect:  "true"
       nginx.ingress.kubernetes.io/session-cookie-path:     "/; Secure"
       nginx.ingress.kubernetes.io/session-cookie-samesite: None
-  dnsPolicy: ClusterFirst
-  dnsConfig:
-    options:
-      - name: ndots
-        value: "3"
-  keda: false
 
 monitoring:
   enabled:           true
@@ -37,14 +32,13 @@ monitoring:
   prometheusMetrics: true
   prometheusAlerts:  true
 
-
 networkPolicies:
   enabled: false
 
-
 image:
   pullPolicy: Always
-  imagePullSecrets: []
+  imagePullSecrets:
+    - pullsecret
   webrtc: $IMAGE_REGISTRY/webrtc
   coturn: $IMAGE_REGISTRY/webrtc
   webrtcVersion: 100.0.016.0000
@@ -56,37 +50,19 @@ gateway:
   # NB! 1 worker handles 25 regs/calls. CPU and Mem request depends on num of workers
   logPath:                 "stdout"
   crash_path:               ""
-  # Section for Persistent Volume Claim used for Coturn logs.
-  # If not defined - then HostPath will be used for logs mount
-  #logPvc:
-  #  # Name of PersistentVolumeClaim - if exists, PVC will be created. Otherwise, hostpath will be used for Coturn logs
-  #  pvcName:                webrtc-coturn-log-pvc
-  #  # StorageClass name for Coturn PVC
-  #  storageClassName:       azure-files-retain
-  #  capacity:               2Gi
-  # Voice microservice - SIP proxy address
   voiceSipProxy:           voice-sipproxy.voice.svc.cluster.local;transport=tcp
   esServer:                stdout
   replicas:                1
   workersCount:            2
-  turnExternalUriBlue:     ""
-  turnExternalUriGreen:    ""
   enable1pccCalls:         true
 
   authRedirectUri:          https://gauth.${DOMAIN}
-  # GWS9.0 Auth service address
   authService:              https://gauth.${DOMAIN}
-  # GWS9.0 Environment service address
   envService:               https://gauth.${DOMAIN}
-  # GWS9.0 Configuration service address
   cfgService:                http://gws-service-proxy.gws.svc.cluster.local:80
 
-  # Enable or disable transoding on gateway side - true/false. Transcoding is enabled by default
-  # If transcoding is disabled - then Gateway can handle more agent sessions but OPUS codec is not supported
   enableTranscoding:        true
-  # other arguments
   arguments:                [ '-logpath stdout', '-es-server stdout' ]
-  # Add annotations from the following map to Gateway pods
   podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/port:   "10052"
@@ -127,16 +103,8 @@ gateway:
 coturn:
   ServiceAccount: default
   logPath:     "stdout"
-  # If not defined - then HostPath will be used for logs mount
-  #logPvc:
-  #  # Name of PersistentVolumeClaim - if exists, PVC will be created. Otherwise, hostpath will be used for Coturn logs
-  #  pvcName:                webrtc-coturn-log-pvc
-  #  # StorageClass name for Coturn PVC
-  #  storageClassName:       azure-files-retain
-  #  capacity:               2Gi
   replicas:    1
   port:        80
-  # Coturn resources will be inserted as-is from this section
   resources:
     requests:
       cpu: 300m

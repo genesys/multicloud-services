@@ -1,0 +1,6 @@
+deployment:
+  type: coturn
+  color: green
+
+image:
+  coturnVersion: 100.0.044.0000

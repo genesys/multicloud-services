@@ -1,3 +1,4 @@
+![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 We've included a basic deployment to help get started.
 Consult with our [documentation](https://all.docs.genesys.com/AUTH/Current/AuthPEGuide/Overview) for the full configuration and deployment details.
@@ -44,7 +45,7 @@ gauth_gws_client_id|gauth_client
 gauth_gws_client_secret|gauth_secret **base64 encoded**
 gauth_jks_keyPassword|keyPass
 gauth_jks_keyStorePassword|keyStorePass
-
+LOCATION|USW1
 
 An example `.yaml`
 ```
@@ -66,6 +67,7 @@ stringData:
   gauth_gws_client_secret: base64 encoded gauth_secret
   gauth_jks_keyPassword: keyPass 
   gauth_jks_keyStorePassword: keyStorePass
+  LOCATION: USW1
 ```
 ## Additional Information
 

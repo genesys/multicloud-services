@@ -1,0 +1,9 @@
+deployment:
+  type: gateway
+  color: blue
+
+image:
+  webrtcVersion: 100.0.044.0000
+
+gateway:
+  turnExternalUriBlue: 127.0.0.1
