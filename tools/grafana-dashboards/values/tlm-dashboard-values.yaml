@@ -9,5 +9,5 @@ appGrafanaDashboards:
   #   Name of key
   #   KEY: 
   telemetry-grafana-dashboard:
-    NAME: telemetry-service-grafana-dashboard
+    NAME: tlm-dashboard
     KEY: telemetry-core-dashboard-telemetry-service.json
