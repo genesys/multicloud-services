@@ -7,10 +7,10 @@ namespace: $NS
 grafanaDashboard:
   enabled: true
 
-imagePullSecrets:
-    - name: pullsecret
-
 tlm:
+  image:
+    imagePullSecrets:
+      - name: pullsecret
   nodeSelector:
     genesysengage.com/nodepool:
   service:

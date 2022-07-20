@@ -4,7 +4,7 @@
 ###############################################################################
 tlm:
   image:
-    tag: "100.0.005.1647"
+    tag: "100.0.006.1685"
 
   secrets:
       TELEMETRY_AUTH_CLIENT_SECRET: $TELEMETRY_AUTH_CLIENT_SECRET
