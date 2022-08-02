@@ -1,0 +1,50 @@
+# Uncomment for mk8s
+#volumePermissions:
+#  enabled: true
+#kibana:
+#  volumePermissions:
+#    enabled: true
+
+# Uncomment for openshift
+sysctlImage:
+  enabled: false
+
+master:
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+  podSecurityContext:
+    enabled: false
+    fsGroup: null
+
+data:
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+  podSecurityContext:
+    enabled: false
+    fsGroup: null
+
+coordinating:
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+  podSecurityContext:
+    enabled: false
+    fsGroup: null
+
+ingest:
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+  podSecurityContext:
+    enabled: false
+    fsGroup: null
+
+metrics:
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+  podSecurityContext:
+    enabled: false
+    fsGroup: null

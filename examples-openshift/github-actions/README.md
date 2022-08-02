@@ -1,3 +1,4 @@
+![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 The following is an example framework for the use of GitOPS with Genesys Private Edition deployments. 
 

@@ -2,7 +2,6 @@
 # Global ucsx-addtenent image parameters
 # https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
 ###############################################################################
-
 image:
   registry: $IMAGE_REGISTRY
   pullSecrets: 

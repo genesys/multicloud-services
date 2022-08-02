@@ -1,0 +1,47 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+global:
+  # Adjust for your needs!
+  storageClass: azure-files
+  kibanaEnabled: true
+
+kibana:
+  persistence:
+    size: 3Gi
+  # required for mk8s
+  #volumePermissions:
+  #  enabled: true
+
+master:
+  persistence:
+    enabled: true
+    size: 8Gi
+  serviceAccount:
+    create: true
+    name: elasticsearch
+
+data:
+  persistence:
+    enabled: true
+    size: 8Gi
+  serviceAccount:
+    name: elasticsearch
+
+ingest:
+  serviceAccount:
+    name: elasticsearch
+
+coordinating:
+  serviceAccount:
+    name: elasticsearch
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+
+# required for mk8s
+#volumePermissions:
+#  enabled: true

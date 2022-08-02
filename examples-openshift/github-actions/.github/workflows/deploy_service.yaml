@@ -17,8 +17,8 @@
 # 5. Commit and push the workflow file to your default branch. Manually trigger a workflow run.
 
 # 📃 Considerations
-# Image registry should be added to cluster in coresponding namespace before workflow run
-# Example:    
+# Pull secret should exist in coresponding namespace before workflow run
+# Create it by:    
 #     kubectl create secret docker-registry pullsecret \
 #       --docker-server=$IMAGE_REGISTRY \
 #       --docker-username=user --docker-password=token
@@ -26,22 +26,16 @@
 
 
 
-name: Deploy service
+
+name: Deploy service to Openshift
 
 env:
-  # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
-  # See https://github.com/redhat-actions/oc-login#readme for how to retrieve these values.
-  # To get a permanent token, refer to https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
-  OPENSHIFT_SERVER:   "api.cluster.server.address:port"
-  OPENSHIFT_TOKEN:     ${{ secrets.OPENSHIFT_TOKEN }}
-
   # 🖊️ EDIT to change the helm registry settings.
   # Registries such as Jfrog, GHCR, Quay.io, and Docker Hub are supported.
-  HELM_REGISTRY:           ${{ secrets.HELM_REGISTRY }}
-  HELM_REGISTRY_USER:      ${{ secrets.HELM_REGISTRY_USER }}          
+  HELM_REGISTRY:            ${{ secrets.HELM_REGISTRY }}
+  HELM_REGISTRY_USER:       ${{ secrets.HELM_REGISTRY_USER }}          
   HELM_REGISTRY_TOKEN:      ${{ secrets.HELM_REGISTRY_TOKEN }}
   IMAGE_REGISTRY:           ${{ secrets.IMAGE_REGISTRY }}
-
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
@@ -51,22 +45,22 @@ on:
         type: choice
         description: service(s) for deployment
         required: true
-        default: webrtc
+        default: infra
         options:
         - infra
+        - logging
+        - monitoring
         - gauth
         - voice
         - tenant
         - gws
         - wwe        
         - webrtc
-        - webrtc-blue-green
         - gvp
         - gsp
         - gim
         - gca
         - designer
-        - designer-blue-green
         - ucsx
         - tlm
         - nexus
@@ -79,10 +73,18 @@ on:
         - bds
         - ixn
         - gcxi
+      cluster:
+        type: choice
+        description: openshift cluster
+        required: true
+        default: aro
+        options:
+        - aro
+
       namespace:
+        # by default will use namespace equal to service name
         description: namespace (if not default)
         required: false
-        default: "default"
       helmrepo:
         description: helm repo name in HELM_REGISTRY
         required: true
@@ -94,17 +96,30 @@ on:
         
 jobs:
   openshift-ci-cd:
-    name: Build and deploy to OpenShift
+    name: Deploy ${{ github.event.inputs.service }} to ${{ github.event.inputs.cluster }}
      # 🖊️ (Optional) EDIT if you want to run on your own runner
     runs-on: ubuntu-latest
 
     steps:
+
+    # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
+    # See https://github.com/redhat-actions/oc-login#readme for how to retrieve these values.
+    # To get a permanent token, refer to https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
+    - name: Define cluster connection variables 
+      run: |
+        case ${{ github.event.inputs.cluster }} in
+          aro)
+              echo "OPENSHIFT_SERVER=api.cluster.server.address:port"       >> $GITHUB_ENV
+              echo "TOKEN_NAME=ARO_TOKEN"                                   >> $GITHUB_ENV
+            ;;
+        esac
+
     - name: Check for required secrets
       uses: actions/github-script@v4
       with:
         script: |
           const secrets = {
-            OPENSHIFT_TOKEN: `${{ secrets.OPENSHIFT_TOKEN }}`,
+            OPENSHIFT_TOKEN: `${{ secrets[env.TOKEN_NAME] }}`,
             HELM_REGISTRY_TOKEN: `${{ secrets.HELM_REGISTRY_TOKEN }}`,
           };
 
@@ -160,13 +175,23 @@ jobs:
       uses: redhat-actions/oc-login@v1
       with:
         openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
-        openshift_token:      ${{ env.OPENSHIFT_TOKEN }}
+        openshift_token:      ${{ secrets[env.TOKEN_NAME] }}
         namespace:            ${{ github.event.inputs.namespace }}
         insecure_skip_tls_verify: true
 
-    - name: Create or use project
+    - name: Determine target namespace
       run: |
         NS=${{ github.event.inputs.namespace }}
+        # By default (if namespace not defined) we install in namespace=service_name
+        if [ -z "$NS" ] ; then
+          NS=${{ github.event.inputs.service }}
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+        fi
+        echo "NS=$NS" >> $GITHUB_ENV
+
+    - name: Create or use project
+      run: |
+        NS=${{ env.NS }}
         if ! oc project $NS; then
            echo "Project $NS does not exist. Creating it.."
            oc new-project $NS
@@ -179,7 +204,7 @@ jobs:
 
     - name: Custom script
       run: |
-        export NS=${{ github.event.inputs.namespace }}
+        export NS=${{ env.NS }}
         export SERVICE=${{ github.event.inputs.service }}
         DOMAIN=${{ env.OPENSHIFT_SERVER }}
         export DOMAIN=$(echo $DOMAIN | sed 's/:.*//' | sed 's/^api./apps./')
@@ -202,17 +227,17 @@ jobs:
         # The chart-name using in command:
         #     helm install RELEASE-NAME helm-repo/chart-name
         # ##################################################################################
-        for DIR in [0-9][0-9]_chart_*$CHART_NAME*/; do
+        for DIR_CH in [0-9][0-9]_chart_*$CHART_NAME*/; do
           
-          CHART=$([[ -d "$DIR" ]] && echo $DIR | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
+          CHART=$([[ -d "$DIR_CH" ]] && echo $DIR_CH | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
           
-          DIR=$(echo $DIR | sed 's/\///')
+          DIR_CH=$(echo $DIR_CH | sed 's/\///')
           
           # evaluate ENV variables
-          envsubst < $DIR/override_values.yaml > overrides.yaml
+          envsubst < $DIR_CH/override_values.yaml > overrides.yaml
 
           # 🖊️ (Optional) EDIT 1st line of chart.ver file with chart version number
-          VER=$(head -n 1 $DIR/chart.ver)
+          VER=$(head -n 1 $DIR_CH/chart.ver)
           
           FLAGS="helm_repo/$CHART --install --version=$VER -n $NS -f $(pwd)/overrides.yaml"
           
@@ -243,14 +268,14 @@ jobs:
 
           esac
 
-          cd $DIR
+          cd $DIR_CH
           
           touch overrides.yaml
           [[ "$FLAGS" ]] && FLAGS+=" -f $(pwd)/overrides.yaml"
             
           # FOR EVERY HELM RELEASE###########################################################
-          # ℹ️ Notice: in chart folder should be exist subfolder with name in format: 
-          #      [0-9][0-9]_release_release-name 
+          # ℹ️ Notice: in chart folder you should have subfolder with name in format: 
+          #      [0-9][0-9]_release_<release-name>
           # where release-name is name of release using to installing 
           # and digits define the instalation order 
           # The release-name using in command:

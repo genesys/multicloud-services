@@ -10,3 +10,11 @@ context:
     DBUSER: openshiftadmin
     rsDbSharedUsername: mssqlreader
     MSSQLHOST: mssql-deployment.infra.svc.cluster.local
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: null
+  runAsGroup: null
+
+podSecurityContext:
+  fsGroup: null

@@ -9,6 +9,7 @@ ges:
   deployment:
     image:
       version: 100.0.002.2105
+
   configMap:
     env:
       azureDeployment: false  
@@ -28,3 +29,9 @@ ges:
         redis_cluster_mode: "false"
         redis_stream_name: "NewCallbackStream"
         ors_redis_location: "{{ .Values.ges.configMap.integrations.vmcs.redis_host }}:{{ .Values.ges.configMap.integrations.vmcs.redis_port | default 10000 }}"
+
+  securityContext:
+    fsGroup: null
+    runAsGroup: 0
+    runAsNonRoot: true
+    runAsUser: null

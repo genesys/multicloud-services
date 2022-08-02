@@ -19,8 +19,6 @@ wwe:
     pullPolicy: IfNotPresent
     imagePullSecrets:
       - name: pullsecret
-  imagePullSecrets:
-    - name: pullsecret
   service:
     enabled: true
     type: ClusterIP
@@ -33,7 +31,8 @@ wwe:
          paths:
            - path: '/'
              port: 80
-    annotations: {}
+    annotations: 
+      route.openshift.io/termination: edge
     tls:
       # Example
        - secretName: letsencrypt

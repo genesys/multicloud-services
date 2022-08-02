@@ -60,8 +60,8 @@ readinessValues:
 ## PVCs defined
 volumes:
   pvc:
-    storageClass: managed-premium
-    claimSize: 50Gi
+    storageClass: premium-rwo
+    claimSize: 2Gi
     activemqAndLocalConfigPath: "/billing/gvp-rs"
 
 ## Define service(s) for application.  Fields many need to be modified based on `type`
@@ -170,19 +170,19 @@ resourceForRS:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   requests:
-    memory: "2Gi"
+    memory: "500Mi"
     cpu: "200m"
   limits:
-    memory: "4Gi"
-    cpu: "400m"
+    memory: "2Gi"
+    cpu: "600m"
 
 resourceForSnmp:
   requests:
-    memory: "500Mi"
+    memory: "250Mi"
     cpu: "100m"
   limits:
-    memory: "2Gi"
-    cpu: "500m"
+    memory: "500Mi"
+    cpu: "300m"
 
 ## primaryApp containers' Security Context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container

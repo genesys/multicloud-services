@@ -20,12 +20,12 @@ To use the scripting for service deployment, create a deployment secret (deploym
 ## Installation
 The third party services are deployed as follows:
 
+- mssql
 - postgres
 - redis
 - opensearch
 - kafka
 - consul
-- mssql
 - elasticsearch (optional)
 
 ### To install all infra services:
@@ -34,7 +34,7 @@ This is the default action of the packaged deployment.
 
 To disable a specific installation(s) when using the packaged deployment, preface the directories with `x`.   
 **Example**   
-`07_chart_elasticsearch` to `x07_chart_elasticsearch`
+`06_chart_consul` to `x06_chart_consul`
 ### To install specific services:
 Use a secondary argument to define the third party service you wish to deploy. 
 
@@ -64,6 +64,7 @@ This is true for all commands: validate/install/uninstall
 
 For example, to install the GWS database (pgdb-gws):
 `install postgress gws` 
+
 
 ## Secrets 
 Create the [standard pullsecret](../#-considerations) for the workflow: 

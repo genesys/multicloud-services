@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 3Gi
-  storageClassName: azure-files
+  storageClassName: standard-rwx
 EOF
 
 
