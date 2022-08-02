@@ -23,11 +23,31 @@ resources:
 existingSecret:
 existingConfig:
 
+ingress:
+  enabled: true
+  hosts:
+  - host: ucsx.${DOMAIN}
+    paths:
+    - path: /ucs/v3/
+      port: 8080
+    - path: /ucs/v10/
+      port: 8080
+    - path: /ucs/v3/config
+      port: 8500
+  annotations: 
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  className: nginx
+  tls:
+    - hosts: 
+      - ucsx.${DOMAIN}
+      secretName: ucsx-tls-secret
+
+      
 gauth:
   auth:
-    url: http://gauth-auth.gauth.svc.cluster.local
+    url: http://gauth-auth.gauth.svc
   env:
-    url: http://gauth-environment.gauth.svc.cluster.local
+    url: http://gauth-environment.gauth.svc
 
 service:
   enabled: true
@@ -38,7 +58,7 @@ service:
   annotations: {}
 
 elasticsearch:
-  url: http://elastic-es-http.infra.svc.cluster.local:9200
+  url: http://ucsx-es-elasticsearch.ucsx.svc:9200
 
 # * Monitoring
 monitoring:

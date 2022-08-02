@@ -64,7 +64,7 @@ ucsx_tenant_100_db_user| ucsx_t100
 ucsx_sid|100
 ucsx_tenant_id|9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
 ucsx_registry|repository.path
-
+LOCATION|/
  
 
 

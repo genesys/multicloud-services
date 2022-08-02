@@ -2,15 +2,16 @@
 # Global ucsx-addtenent image parameters
 # https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
 ###############################################################################
+
 image:
   registry: $IMAGE_REGISTRY
   pullSecrets: 
     - name: pullsecret
 
 command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
-
+       
 ucsx:
-  addr: ucsx.${NS}.svc.cluster.local:8500
+  addr: ucsx.${NS}.svc:8500
   restaddr: http://ucsx.${DOMAIN}
 
 configNameBase: ucsx-config
@@ -18,10 +19,12 @@ secretNameBase: ucsx-secret
 
 keepPod: true
 
+wwe:
+  restMode: true
+
 gauth:
   auth:
     url: http://gauth-auth.gauth.svc
-    regions: westus2
   env:
     url: http://gauth-environment.gauth.svc
 
@@ -31,3 +34,17 @@ podSecurityContext:
   fsGroup: null
   runAsGroup: 0
   runAsUser: null
+
+ingress:
+  enabled: true
+  hosts:
+  - host: ucsx.${DOMAIN}
+    paths:
+    - path: /ucs/v3/
+      port: 8080
+    - path: /ucs/v10/
+      port: 8080
+    - path: /ucs/v3/config
+      port: 8500
+
+

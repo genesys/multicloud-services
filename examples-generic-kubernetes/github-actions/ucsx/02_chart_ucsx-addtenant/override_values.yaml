@@ -11,23 +11,22 @@ image:
 command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
        
 ucsx:
-  addr: ucsx.${NS}.svc.cluster.local:8500
+  addr: ucsx.${NS}.svc:8500
   restaddr: http://ucsx.${DOMAIN}
 
 configNameBase: ucsx-config
 secretNameBase: ucsx-secret
 
-wwe:
-  skipRegistration: true
-  
 keepPod: true
+
+wwe:
+  restMode: true
 
 gauth:
   auth:
-    url: http://gauth-auth.gauth.svc.cluster.local
-    regions: westus2
+    url: http://gauth-auth.gauth.svc
   env:
-    url: http://gauth-environment.gauth.svc.cluster.local
+    url: http://gauth-environment.gauth.svc
 
 resources: {}
 
@@ -36,3 +35,15 @@ podSecurityContext:
   runAsUser: 500
   runAsGroup: 500
   fsGroup: 500
+
+ingress:
+  enabled: true
+  hosts:
+  - host: ucsx.${DOMAIN}
+    paths:
+    - path: /ucs/v3/
+      port: 8080
+    - path: /ucs/v10/
+      port: 8080
+    - path: /ucs/v3/config
+      port: 8500
