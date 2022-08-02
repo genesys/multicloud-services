@@ -1,0 +1,39 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+grafana:
+  enabled: false
+
+prometheus:
+  prometheusSpec:
+    # Important to set these parameters to false
+    # so that prometheus can discover CRD in all namespaces
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+
+  ingress:
+    enabled: true
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/ingress.class: nginx-internal
+    hosts:
+    - prometheus.$DOMAIN
+    tls:
+    - hosts:
+      - prometheus.$DOMAIN
+      secretName: prometheus-ingress-cert
+
+alertmanager:
+  ingress:
+    enabled: true
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/ingress.class: nginx-internal
+    hosts:
+    - alert-manager.$DOMAIN
+    tls:
+    - hosts:
+      - alert-manager.$DOMAIN
+      secretName: alertmgr-ingress-cert

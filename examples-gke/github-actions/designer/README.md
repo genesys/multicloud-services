@@ -37,7 +37,7 @@ kind: Secret
 type: Opaque
 metadata:
   name: deployment-secrets
-  namespace: designer-test
+  namespace: designer
 stringData:
   designer_gws_client_id: designer_client
   designer_gws_client_secret: secret

@@ -31,7 +31,7 @@ image:
   cfghandlertag:
   rmtesttag:
   rmtag:
-  snmptag: 100.0.100.0012
+  snmptag: 100.0.100.0027
   pullPolicy: Always
   imagePullSecrets:
     - name: pullsecret
@@ -54,21 +54,6 @@ dnsConfig:
 # Pod termination grace period 15 mins.
 gracePeriodSeconds: 900
 
-## liveness and readiness probes
-## !!! THESE OPTIONS SHOULD NOT BE CHANGED UNLESS INSTRUCTED BY GENESYS !!!
-livenessValues:
-  path: /rm/liveness
-  initialDelaySeconds: 60
-  periodSeconds: 90
-  timeoutSeconds: 20
-  failureThreshold: 3
-
-readinessValues:
-  path: /rm/readiness
-  initialDelaySeconds: 10
-  periodSeconds: 60
-  timeoutSeconds: 20
-  failureThreshold: 3
 
 ### PVCs defined
 volumes:

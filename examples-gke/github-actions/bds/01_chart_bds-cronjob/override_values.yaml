@@ -2,8 +2,6 @@
 
 nameSpace: ${NS}
 tenantName: t100-100
-serviceAccount:
-   name: genesys
 bdsApp:
   secrets:
     manual:

@@ -30,6 +30,7 @@ export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
 export ucsx_tenant_db_name=$( get_secret ucsx_tenant_${ucsx_sid}_db_name )
 export ucsx_tenant_db_user=$( get_secret ucsx_tenant_${ucsx_sid}_db_user )
 export ucsx_tenant_db_password=$( get_secret ucsx_tenant_${ucsx_sid}_db_password )
+export global_location=$( get_secret LOCATION )
 ###############################################################################
 # 			Postgres admin credentials (uses for creating ucsx db)
 ###############################################################################
@@ -52,6 +53,7 @@ replace_overrides ucsx_tenant_id				$ucsx_tenant_id
 replace_overrides ucsx_tenant_db_name			$ucsx_tenant_db_name
 replace_overrides ucsx_tenant_db_user			$ucsx_tenant_db_user
 replace_overrides ucsx_tenant_db_password		$ucsx_tenant_db_password
+replace_overrides global_location 				$global_location
 ###############################################################################
 # Creating UCSX DB if not exist and init
 ###############################################################################

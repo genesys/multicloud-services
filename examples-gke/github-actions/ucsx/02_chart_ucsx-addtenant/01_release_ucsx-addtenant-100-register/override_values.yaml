@@ -10,6 +10,7 @@ gauth:
   auth:
     clientId: ucsx_gauth_client_id
     clientSecret: ucsx_gauth_client_secret
+    regions: global_location
 
 db:
   host: POSTGRES_ADDR

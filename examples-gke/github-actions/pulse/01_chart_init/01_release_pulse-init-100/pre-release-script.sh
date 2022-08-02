@@ -21,14 +21,19 @@ function replace_overrides {
 #             Exporting variable from deployment secret
 ###############################################################################
 #-------POSTGRES
+POSTGRES_PORT=$(get_secret POSTGRES_PORT) 
+POSTGRES_USER=$(get_secret POSTGRES_USER)
 export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
-export POSTGRES_PORT=$( get_secret POSTGRES_PORT )
-export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PORT=${POSTGRES_PORT:-5432}
+export POSTGRES_USER=${POSTGRES_USER:-postgres}
 export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 #-------REDIS
-export redis_host=$( get_secret redis_host )
-export redis_port=$( get_secret redis_port )
-export redis_key=$( get_secret redis_key )
+redis_host=$(get_secret redis_host)
+redis_port=$(get_secret redis_port)
+redis_key=$(get_secret redis_key)
+export redis_host=${redis_host:-pulse-redis-master}
+export redis_port=${redis_port:-6379}
+export redis_key=${redis_key:-secret}
 #-------GWS credentials
 export gws_ClientId=$( get_secret gws_ClientId )
 export gws_Client_Secret=$( get_secret gws_Client_Secret )
@@ -59,7 +64,7 @@ if [ ! "$(helm list -n $NS | grep pulse-redis)" ]; then
   REPO_NAME="bitnami"
   BITNAMI_URL="$REPO_NAME https://charts.bitnami.com/bitnami"
   ARGS=""
-#   --set master.podSecurityContext.fsGroup=null  \
+#   ARGS="--set master.podSecurityContext.fsGroup=null  \
 #       --set master.containerSecurityContext.runAsUser=null \
 #       --set replica.podSecurityContext.fsGroup=null \
 #       --set replica.containerSecurityContext.runAsUser=null"

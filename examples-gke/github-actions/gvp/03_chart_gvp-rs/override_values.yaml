@@ -170,11 +170,11 @@ resourceForRS:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   requests:
-    memory: "500Mi"
-    cpu: "200m"
+    memory: "3Gi"
+    cpu: "750m"
   limits:
-    memory: "2Gi"
-    cpu: "600m"
+    memory: "4Gi"
+    cpu: "1"
 
 resourceForSnmp:
   requests:

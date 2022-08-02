@@ -19,10 +19,12 @@ secretNameBase: ucsx-secret
 
 keepPod: true
 
+wwe:
+  restMode: true
+
 gauth:
   auth:
     url: http://gauth-auth.gauth.svc
-    regions: westus2
   env:
     url: http://gauth-environment.gauth.svc
 

@@ -1,0 +1,10 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+clusterName: GKE
+disableCloudRouting: true
+sinksConfig:
+- ms_teams_sink:
+    name: main_ms_teams_sink
+    webhook_url: https://genesyslab.webhook.office.com/webhookb2/9681f8fe-d0e0-45d9-8989-f9b9ccea0b35@785ce69c-90cf-4dc7-a882-eaf312d1d15d/IncomingWebhook/616468cdda074a858dd235e212f7f141/fa195016-486f-4ba8-9ef4-c71e941ef4ae

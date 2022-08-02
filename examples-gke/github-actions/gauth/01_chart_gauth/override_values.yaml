@@ -200,12 +200,13 @@ ingress:
   annotations:
     # Default annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-  # HTTPS configuration
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  ingressClassName: nginx
   tls_enabled: true
   tls:
     - hosts:
         - gauth.${DOMAIN}
-      secretName: letsencrypt
+      secretName: gauth-ingress-cert
 
 
 # Internal  config
@@ -218,12 +219,14 @@ internal_ingress:
   annotations:
     # Default annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  ingressClassName: nginx-internal
   # HTTPS configuration
   tls_enabled: true
   tls:
     - hosts:
         - gauth-int.${DOMAIN}
-      #secretName: letsencrypt
+      secretName: int-auth-ingress-cert
 
 monitoring:
   # Deploy ServiceMonitor

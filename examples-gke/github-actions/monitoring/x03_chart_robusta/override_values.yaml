@@ -1,0 +1,10 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+clusterName: example
+disableCloudRouting: true
+sinksConfig:
+- ms_teams_sink:
+    name: main_ms_teams_sink
+    webhook_url: https://webhook.office.com/webhookb2/<id>/IncomingWebhook/<id>

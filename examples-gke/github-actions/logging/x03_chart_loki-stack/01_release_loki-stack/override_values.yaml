@@ -1,0 +1,17 @@
+###############################################################################
+# Define more specific override values here
+###############################################################################
+
+loki:
+  initContainers:
+  - name: fix-permissions
+    image: busybox:latest
+    securityContext:
+      privileged: true
+      runAsGroup: 0
+      runAsNonRoot: false
+      runAsUser: 0
+    command: ["sh", "-c", "chown -R 10001:10001 /data"]
+    volumeMounts:
+    - mountPath: /data
+      name: storage

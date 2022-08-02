@@ -23,13 +23,13 @@ function replace_overrides {
 export S3_ACCESS_KEY=$( get_secret ACCESS_KEY_ID )
 export S3_SECRET_KEY=$( get_secret SECRET_ACCESS_KEY )
 ###############################################################################
-#       Storage bucket detaila
+#       Storage bucket details
 ###############################################################################
 export BUCKET_HOST=$( get_secret BUCKET_HOST )
 export BUCKET_NAME=$( get_secret BUCKET_NAME )
 export BUCKET_PORT=$( get_secret BUCKET_PORT )
 ###############################################################################
-#       Storage bucket detaila
+#       Storage bucket details
 ###############################################################################
 export KAFKA_ADDR=$( get_secret KAFKA_ADDR )
 ###############################################################################

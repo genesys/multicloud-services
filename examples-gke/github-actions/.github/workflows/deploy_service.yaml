@@ -17,25 +17,17 @@
 # 5. Commit and push the workflow file to your default branch. Manually trigger a workflow run.
 
 # 📃 Considerations
-# Image registry should be added to cluster in coresponding namespace before workflow run
-# Example:    
+# Pull secret should exist in coresponding namespace before workflow run
+# Create it by:    
 #     kubectl create secret docker-registry pullsecret \
 #       --docker-server=$IMAGE_REGISTRY \
 #       --docker-username=user --docker-password=token
 
 
 
-name: Deploy service
+name: Deploy service to GKE
 
 env:
-  # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
-  # See https://github.com/redhat-actions/oc-login#readme for how to retrieve these values.
-  # To get a permanent token, refer to https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
-  PROJECT_ID:   ${{ secrets.GKE_PROJECT }}        
-  GKE_CLUSTER:  gke1                                # TODO: update to cluster name
-  GKE_ZONE:     us-west1-a                          # TODO: update to cluster zone
-  DOMAIN:       test.dev                            # TODO: update to domain name
-
   # 🖊️ EDIT to change the helm registry settings.
   # Registries such as Jfrog, GHCR, Quay.io, and Docker Hub are supported.
   HELM_REGISTRY:            ${{ secrets.HELM_REGISTRY }}
@@ -52,22 +44,22 @@ on:
         type: choice
         description: service(s) for deployment
         required: true
-        default: webrtc
+        default: infra
         options:
         - infra
+        - logging
+        - monitoring
         - gauth
         - voice
         - tenant
         - gws
         - wwe        
         - webrtc
-        - webrtc-blue-green
         - gvp
         - gsp
         - gim
         - gca
         - designer
-        - designer-blue-green
         - ucsx
         - tlm
         - nexus
@@ -80,10 +72,19 @@ on:
         - bds
         - ixn
         - gcxi
+      cluster:
+        type: choice
+        description: gcloud cluster
+        required: true
+        default: gke1-1
+        options:
+        - gke1-1
+        - gke1-2
+
       namespace:
+        # by default will use namespace equal to service name
         description: namespace (if not default)
         required: false
-        default: "webrtc-test"
       helmrepo:
         description: helm repo name in HELM_REGISTRY
         required: true
@@ -95,19 +96,45 @@ on:
         
 jobs:
   gke-ci-cd:
-    name: Build and deploy to Google Kubernetes Engine (GKE)
+    name: Deploy ${{ github.event.inputs.service }} (${{ github.event.inputs.command }}) to ${{ github.event.inputs.cluster }}
 
      # 🖊️ (Optional) EDIT if you want to run on your own runner
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
 
     steps:
+
+    # 🖊️ EDIT your repository secrets to log into your Gcloud cluster and set up the context.
+    # and define cluster name, zone and domain in the code below
+    - name: Define cluster connection variables 
+      run: |
+        case ${{ github.event.inputs.cluster }} in
+
+          gke1-1)
+              echo "GKE_SA_KEY_NAME=GKE_SA_KEY"               >> $GITHUB_ENV
+              echo "GKE_PROJECT_NAME=GKE_PROJECT"             >> $GITHUB_ENV
+              echo "GKE_CLUSTER=gke1"                         >> $GITHUB_ENV
+              echo "GKE_ZONE=us-west1"                        >> $GITHUB_ENV
+              echo "DOMAIN=test.dev"                          >> $GITHUB_ENV
+            ;;
+
+          gke1-2)
+              echo "GKE_SA_KEY_NAME=GKE_SA_KEY"               >> $GITHUB_ENV
+              echo "GKE_PROJECT_NAME=GKE_PROJECT"             >> $GITHUB_ENV
+              echo "GKE_CLUSTER=gke2"                         >> $GITHUB_ENV
+              echo "GKE_ZONE=us-east1"                        >> $GITHUB_ENV
+              echo "DOMAIN=test.staging"                      >> $GITHUB_ENV
+            ;;
+
+        esac
+
+
     - name: Check for required secrets
       uses: actions/github-script@v4
       with:
         script: |
           const secrets = {
-            GKE_SA_KEY: `${{ secrets.GKE_SA_KEY }}`,
-            GKE_PROJECT: `${{ secrets.GKE_PROJECT }}`,
+            GKE_SA_KEY: `${{ secrets[env.GKE_SA_KEY_NAME] }}`,
+            GKE_PROJECT: `${{ secrets[env.GKE_PROJECT_NAME] }}`,
             HELM_REGISTRY_TOKEN: `${{ secrets.HELM_REGISTRY_TOKEN }}`,
           };
 
@@ -139,8 +166,8 @@ jobs:
     - name: Setup gcloud CLI
       uses: google-github-actions/setup-gcloud@v0.2.0
       with:
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
-        project_id: ${{ secrets.GKE_PROJECT }}
+        service_account_key: ${{ secrets[env.GKE_SA_KEY_NAME] }}
+        project_id: ${{ secrets[env.GKE_PROJECT_NAME] }}
 
 
     - name: Install helm tool
@@ -164,23 +191,33 @@ jobs:
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
-        credentials: ${{ secrets.GKE_SA_KEY }}
+        credentials: ${{ secrets[env.GKE_SA_KEY_NAME] }}
+
+    - name: Determine target namespace
+      run: |
+        NS=${{ github.event.inputs.namespace }}
+        # By default (if namespace not defined) we install in namespace=service_name
+        if [ -z "$NS" ] ; then
+          NS=${{ github.event.inputs.service }}
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+        fi
+        echo "NS=$NS" >> $GITHUB_ENV
 
     - name: Create or use namespace
       run: |
-        NS=${{ github.event.inputs.namespace }}
-        if ! kubectl get namespaces $NS; then
+        NS="${{ env.NS }}"
+        if ! kubectl get namespace $NS; then
            echo "Namespace $NS does not exist. Creating it.."
            kubectl create namespace $NS
         else
            echo "Namespace $NS already exists. Will use it."
         fi
-        kubectl config set-context --current --namespace=${{ github.event.inputs.namespace }}
+        kubectl config set-context --current --namespace=$NS
 
 
     - name: Custom script
       run: |
-        export NS=${{ github.event.inputs.namespace }}
+        export NS="${{ env.NS }}"
         export SERVICE=${{ github.event.inputs.service }}
         export DOMAIN=${{ env.DOMAIN }}
         export IMAGE_REGISTRY=${{ env.IMAGE_REGISTRY }}
@@ -202,17 +239,17 @@ jobs:
         # The chart-name using in command:
         #     helm install RELEASE-NAME helm-repo/chart-name
         # ##################################################################################
-        for DIR in [0-9][0-9]_chart_*$CHART_NAME*/; do
+        for DIR_CH in [0-9][0-9]_chart_*$CHART_NAME*/; do
           
-          CHART=$([[ -d "$DIR" ]] && echo $DIR | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
+          CHART=$([[ -d "$DIR_CH" ]] && echo $DIR_CH | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
           
-          DIR=$(echo $DIR | sed 's/\///')
+          DIR_CH=$(echo $DIR_CH | sed 's/\///')
           
           # evaluate ENV variables
-          envsubst < $DIR/override_values.yaml > overrides.yaml
+          envsubst < $DIR_CH/override_values.yaml > overrides.yaml
 
           # 🖊️ (Optional) EDIT 1st line of chart.ver file with chart version number
-          VER=$(head -n 1 $DIR/chart.ver)
+          VER=$(head -n 1 $DIR_CH/chart.ver)
           
           FLAGS="helm_repo/$CHART --install --version=$VER -n $NS -f $(pwd)/overrides.yaml"
           
@@ -242,14 +279,14 @@ jobs:
 
           esac
 
-          cd $DIR
+          cd $DIR_CH
           
           touch overrides.yaml
           [[ "$FLAGS" ]] && FLAGS+=" -f $(pwd)/overrides.yaml"
             
           # FOR EVERY HELM RELEASE###########################################################
-          # ℹ️ Notice: in chart folder should be exist subfolder with name in format: 
-          #      [0-9][0-9]_release_release-name 
+          # ℹ️ Notice: in chart folder you should have subfolder with name in format: 
+          #      [0-9][0-9]_release_<release-name>
           # where release-name is name of release using to installing 
           # and digits define the instalation order 
           # The release-name using in command:

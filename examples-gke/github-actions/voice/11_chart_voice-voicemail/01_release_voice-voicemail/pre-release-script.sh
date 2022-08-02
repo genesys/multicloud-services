@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 3Gi
-  storageClassName: nfs-client
+  storageClassName: standard-rwx
 EOF
 
 

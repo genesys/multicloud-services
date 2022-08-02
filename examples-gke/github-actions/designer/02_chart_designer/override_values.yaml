@@ -21,9 +21,6 @@ designer:
       DES_ES_PORT: "9200"
   service:
     type: ClusterIP
-  securityContext: 
-    runAsUser: 0
-    runAsGroup: 0
   prometheus:
     enabled: true
     serviceMonitor:
@@ -132,7 +129,7 @@ designer:
         "numBackupsToKeep": 20,
         "numChildProcesses": 2,
         "port": 8888,
-        "primarySwitch": "SIP_Switch",
+        "primarySwitch": "SIP_Cluster",
         "profileContextservicesPassword": "",
         "profileContextservicesURL": "",
         "profileContextservicesUser": "",

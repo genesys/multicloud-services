@@ -25,9 +25,6 @@ das:
       enabled: true
     alerts:
       enabled: true
-  securityContext:  
-    runAsUser: 0
-    runAsGroup: 0 
   initialDesignerSyncConfig: 
     create: false
   designerSyncConfig: 

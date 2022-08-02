@@ -9,4 +9,4 @@ context:
     CFG_HOST: gvp-configserver.gvp.svc.cluster.local
     DBUSER: $gvp_rs_mssql_db_user
     rsDbSharedUsername: mssqlreader
-    MSSQLHOST: mssql-mssql-latest.infra.svc.cluster.local
+    MSSQLHOST: $gvp_mssql_db_server

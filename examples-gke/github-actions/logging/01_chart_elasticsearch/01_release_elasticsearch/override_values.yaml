@@ -1,0 +1,47 @@
+# Uncomment for mk8s
+#volumePermissions:
+#  enabled: true
+#kibana:
+#  volumePermissions:
+#    enabled: true
+
+# Uncomment for openshift
+#
+#master:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#  serviceAccount:
+#    create: true
+#    name: elasticsearch
+#
+#data:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#  serviceAccount:
+#    name: elasticsearch
+#   
+#coordinating:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#  serviceAccount:
+#    name: elasticsearch
+#
+#ingest:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#  serviceAccount:
+#    name: elasticsearch
+#
+#metrics:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false

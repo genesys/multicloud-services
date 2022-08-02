@@ -229,3 +229,4 @@ csproxy:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "1000m"
+

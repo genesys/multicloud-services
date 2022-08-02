@@ -1,3 +1,4 @@
+![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 We've included a basic deployment to help get started.
 Consult with our [documentation](https://all.docs.genesys.com/PrivateEdition/Current/TenantPEGuide) for the full configuration and deployment details.
@@ -25,6 +26,8 @@ Create the following secrets to store confidential information you may not want 
 - `secrets/deployment_secrets`
 
 **Note** As tenant will share the same namespace as voice services, we recommend using a common deployment secret `deployment_secrets` for the two services. 
+
+
 
 |Key|Value|
 |-|-|

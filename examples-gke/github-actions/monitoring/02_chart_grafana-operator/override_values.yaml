@@ -1,0 +1,24 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+operator:
+  scanAllNamespaces: true
+
+grafana:
+  ingress:
+    enabled: true
+    hostname: grafana.$DOMAIN
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/ingress.class: nginx-internal
+    tls: true
+
+  dashboardLabelSelectors:
+    - matchLabels:
+        app: grafana
+
+  persistence:
+    enabled: true
+    storageClass: standard
+    size: 6Gi

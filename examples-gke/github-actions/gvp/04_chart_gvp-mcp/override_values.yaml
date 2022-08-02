@@ -300,12 +300,12 @@ ingress: {}
 ##
 resourcesMcp: 
   requests: 
-    memory: "200Mi"
-    cpu: "250m"
+    memory: "3Gi"
+    cpu: "750m"
     ephemeral-storage: "1Gi"
   limits:
-    memory: "2Gi"
-    cpu: "300m" 
+    memory: "4Gi"
+    cpu: "1" 
 
 resourcesDefault: 
   requests:
