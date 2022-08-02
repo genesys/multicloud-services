@@ -4,15 +4,25 @@ The purpose of this repository is to provide Genesys customers with examples rel
 
 Ideal for Demos, Labs or Proof of Concepts. The content provided in this repository cannot be used for QA or Production environments as it is not designed to meet typical HA, DR, multi-region or Security requirements. All content is being provided AS-IS without any SLA, warranty or coverage via Genesys product support.
 
-This repository contains example code for:
-* Application service pipelines
-* [Third party service pipelines](/third-party)
-* [Tools and monitoring](/tools)
+### Select your cluster type to get started. This repository contains example code for:
 
-Select your cluster type to get started. 
-* [generic kubernetes](/examples-generic-kubernetes)
+* [Generic kubernetes](/examples-generic-kubernetes)
+    * Genesys services - [services](/examples-generic-kubernetes/github-actions)
+    * Third party services - [infra](/examples-generic-kubernetes/github-actions/infra)
+    * Observability - [monitoring](/examples-generic-kubernetes/github-actions/monitoring), [logging](/examples-generic-kubernetes/github-actions/logging)
+
 * [GKE](/examples-gke)
+    * Genesys services - [services](/examples-gke/github-actions)
+    * Third party services - [infra](/examples-gke/github-actions/infra)
+    * Observability - [monitoring](/examples-gke/github-actions/monitoring), [logging](/examples-gke/github-actions/logging)
+
 * [OpenShift](/examples-openshift)
+    * Genesys services - [services](/examples-openshift/github-actions) 
+    * Third party services - [infra](/examples-openshift/github-actions/infra)
+    * Observability - [monitoring](/examples-openshift/github-actions/monitoring), [logging](/examples-openshift/github-actions/logging)
+ 
+* [Tools](/tools)
+  * Grafana - [dashboard templates](/tools/grafana-dashboards)
 
 ## Respository Structure
 <pre>
@@ -28,68 +38,60 @@ genesys/multicloud-services
 ├── examples-gke
 │   ├── github-actions
 │   │   ├── .github/workflow
-│   │   └── services
+│   │   ├── services
+│   │   ├── third party
+│   │   └── observability
 │   └── README.md
 ├── examples-openshift
 │   ├── github-actions
 │   │   ├── .github/workflow
-│   │   └── services
+│   │   ├── services
+│   │   ├── third party
+│   │   └── observability
 │   └── README.md
 ├── examples-generic-kubernetes
 │   ├── github-actions
 │   │   ├── .github/workflow
-│   │   └── services
+│   │   ├── services
+│   │   ├── third party
+│   │   └── observability
 │   └── README.md
-├── tools
-│   ├── dashboards
-│   │   └── grafana
-│   │       └── templates
-│   └── README.md
-└── third-party
-    ├── redis
-    ├── kafka
-    ├── postgresql
-    ├── opensearch
-    ├── consul
-    └── README.md
+└── tools
+    └──grafana-dashboards
+       ├── overlays
+       ├── templates
+       └── README.md
+
+
 </pre>
 
 ## Related Sites
 All service and product documentation can be found at [all.docs.genesys.com](https://all.docs.genesys.com). 
 
-For sample platform reference architectures, please checkout [Genesys Multicloud Platform repository](https://github.com/genesys/multicloud-platform).
+For sample platform reference architectures, please checkout [Genesys Multicloud Platform repository](https://github.com/genesysengage/multicloud-platform).
 
 ## Issues
 
-Find known and resolved issues in the [issue tracker](https://github.com/genesys/multicloud-services/issues).
+Find known and resolved issues in the [issue tracker](https://github.com/genesysengage/multicloud-services/issues).
 
 ## Roadmap
 
-Upcoming features and accepted issues can be found on the [project page](https://github.com/genesys/multicloud-services/projects).
+Upcoming features and accepted issues can be found on the [project page](https://github.com/genesysengage/multicloud-services/projects).
 
 ## FAQ
-Find answers to frequent questions [here](https://github.com/genesys/multicloud-services/discussions/categories/q-a). 
-
-#### Here is a sample issue someone had
-
-  Cause: This is the root cause to the issue. 
-
-  Solution: Here is how you'd fix this issue. 
+Find answers to frequent questions in the [discussions section](https://github.com/genesysengage/multicloud-services/discussions). 
 
 ## Contributing
 
 We are excited to work alongside our community. 
 
-**BEFORE you begin work**, please read & follow our
-[Contribution Guidelines](/doc/CONTRIBUTE.md) to
-help avoid duplicate effort.
+**BEFORE you begin work**, please read & follow our [Contribution Guidelines](/doc/CONTRIBUTE.md) to help avoid duplicate effort.
 
 ## Communicating with the Team
 
-The easiest way to communicate with the team is via GitHub [issues](https://github.com/genesys/multicloud-services/issues/new/choose).
+The easiest way to communicate with the team is via GitHub [issues](https://github.com/genesysengage/multicloud-services/issues/new/choose).
 
-Please file new issues, feature requests and suggestions, but **please search for
-similar open/closed pre-existing issues before creating a new issue.**
+Please file new issues, feature requests and suggestions, but **please search for similar open/closed pre-existing issues before creating a new issue.**
 
 # License
 

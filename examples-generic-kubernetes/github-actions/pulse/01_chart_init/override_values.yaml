@@ -19,7 +19,7 @@ config:
   # Postgres config map name
   postgresConfig: "pulse-postgres-configmap"
   # Postgres hostname
-  postgresHost: "infra-postgres-postgresql.infra.svc.cluster.local"
+  postgresHost: "postgres-rw.infra.svc.cluster.local"
   # Postgres port
   postgresPort: "5432"
   # Postgres SSL mode

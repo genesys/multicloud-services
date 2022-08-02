@@ -16,8 +16,8 @@
 # 5. Commit and push the workflow file to your default branch. Manually trigger a workflow run.
 
 # 📃 Considerations
-# Image registry should be added to cluster in coresponding namespace before workflow run
-# Example:    
+# Pull secret should exist in coresponding namespace before workflow run.
+# Create it by:    
 #     kubectl create secret docker-registry pullsecret \
 #       --docker-server=$IMAGE_REGISTRY \
 #       --docker-username=user --docker-password=token
@@ -25,7 +25,7 @@
 
 
 
-name: Deploy service
+name: Deploy service to MicroK8s
 
 env:
   # 🖊️ EDIT your repository secrets to log into your MicroK8s cluster and set up the context.
@@ -47,9 +47,11 @@ on:
         type: choice
         description: service(s) for deployment
         required: true
-        default: webrtc
+        default: infra
         options:
         - infra
+        - logging
+        - monitoring
         - gauth
         - voice
         - tenant
@@ -76,9 +78,9 @@ on:
         - ixn
         - gcxi
       namespace:
+        # by default will use namespace equal to service name
         description: namespace (if not default)
         required: false
-        default: webrtc
       helmrepo:
         description: helm repo name in HELM_REGISTRY
         required: true
@@ -90,9 +92,9 @@ on:
         
 jobs:
   mk8s-ci-cd:
-    name: Build and deploy to MicroK8s
+    name: Deploy ${{ github.event.inputs.service }} (${{ github.event.inputs.command }}) to mk8s
      # 🖊️ (Optional) EDIT if you want to run on your own runner
-     # We run runner in tha same mk8s cluster
+     # We run runner in the same mk8s cluster
     runs-on: [ "self-hosted", "mk8s-runner"]
 
     steps:
@@ -129,28 +131,28 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-
     - name: Install kubectl CLI tool for MicroK8s
       uses: azure/setup-kubectl@v1
       with:
         # 🖊️ (Optional) EDIT if you want to specify kubectl cli version
         version: "latest"
-        
+
+
     - name: Set login context for kubectl
       uses: azure/k8s-set-context@v1
       with:
-        # 🖊️ Set MK8S_CONFIG_FILE in your secrets
-        #   Use secret (https://developer.github.com/actions/managing-workflows/storing-secrets/)
-        # The content of MK8S_CONFIG_FILE generate by command on microk8s cluster:
-        #     microk8s config
+        # 🖊️ Set MK8S_CONFIG_FILE in your github secrets
+        # (https://developer.github.com/actions/managing-workflows/storing-secrets/)
+        # Generate secret content by command on microk8s cluster: $ microk8s config
         kubeconfig: ${{ secrets.MK8S_CONFIG_FILE }} 
-        
-      
+
+
     - name: Check helm version
       id: helm-version
       run: helm version
       continue-on-error: true
-        
+
+
     # Installing helm if not pre-installed on runner
     - name: Install helm tool
       if: steps.helm-version.outcome == 'failure'
@@ -166,23 +168,32 @@ jobs:
           --username ${{ env.HELM_REGISTRY_USER }} --password ${{ env.HELM_REGISTRY_TOKEN }}
 
 
-
     - name: Check config file mk8s and set kubectl context
       run: |
         echo "Connectivity check"
-        if ! kubectl top nodes; then 
+        if ! kubectl get nodes; then 
           echo "Login error using kube_mk8s_config"
-          echo "Pls, verify your MK8S_CONFIG_FILE secret"
+          echo "Recommendation: verify your MK8S_CONFIG_FILE secret"
           exit 1
         fi 
 
 
-
-    - name: Create or use project
+    - name: Determine target namespace
       run: |
         NS=${{ github.event.inputs.namespace }}
+        # By default (if namespace not defined) we install in namespace=service_name
+        if [ -z "$NS" ] ; then
+          NS=${{ github.event.inputs.service }}
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+        fi
+        echo "NS=$NS" >> $GITHUB_ENV
+
+
+    - name: Create or use namespace
+      run: |
+        NS="${{ env.NS }}"
         if ! kubectl get namespace $NS; then
-           echo "Project $NS does not exist. Creating it.."
+           echo "Namespace $NS does not exist. Creating it.."
            kubectl create namespace $NS
         else
            echo "Namespace $NS already exists. Will use it."
@@ -192,11 +203,10 @@ jobs:
 
     - name: Custom script
       run: |
-        export NS=${{ github.event.inputs.namespace }}
+        export NS="${{ env.NS }}"
         export SERVICE=${{ github.event.inputs.service }}
         export DOMAIN=${{ env.MK8S_SERVER }}
         export IMAGE_REGISTRY=${{ env.IMAGE_REGISTRY }}
-
 
         cd $SERVICE
 
@@ -215,17 +225,17 @@ jobs:
         # The chart-name using in command:
         #     helm install RELEASE-NAME helm-repo/chart-name
         # ##################################################################################
-        for DIR in [0-9][0-9]_chart_*$CHART_NAME*/; do
+        for DIR_CH in [0-9][0-9]_chart_*$CHART_NAME*/; do
           
-          CHART=$([[ -d "$DIR" ]] && echo $DIR | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
+          CHART=$([[ -d "$DIR_CH" ]] && echo $DIR_CH | sed 's/[0-9][0-9]_chart_//' | sed 's/\///')
           
-          DIR=$(echo $DIR | sed 's/\///')
+          DIR_CH=$(echo $DIR_CH | sed 's/\///')
           
           # evaluate ENV variables
-          envsubst < $DIR/override_values.yaml > overrides.yaml
+          envsubst < $DIR_CH/override_values.yaml > overrides.yaml
 
           # 🖊️ (Optional) EDIT 1st line of chart.ver file with chart version number
-          VER=$(head -n 1 $DIR/chart.ver)
+          VER=$(head -n 1 $DIR_CH/chart.ver)
           
           FLAGS="helm_repo/$CHART --install --version=$VER -n $NS -f $(pwd)/overrides.yaml"
           
@@ -255,14 +265,14 @@ jobs:
 
           esac
 
-          cd $DIR
+          cd $DIR_CH
           
           touch overrides.yaml
           [[ "$FLAGS" ]] && FLAGS+=" -f $(pwd)/overrides.yaml"
             
           # FOR EVERY HELM RELEASE###########################################################
-          # ℹ️ Notice: in chart folder should be exist subfolder with name in format: 
-          #      [0-9][0-9]_release_release-name 
+          # ℹ️ Notice: in chart folder you should have subfolder with name in format: 
+          #      [0-9][0-9]_release_<release-name>
           # where release-name is name of release using to installing 
           # and digits define the instalation order 
           # The release-name using in command:

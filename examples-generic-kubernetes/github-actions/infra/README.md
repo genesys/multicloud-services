@@ -20,12 +20,12 @@ To use the scripting for service deployment, create a deployment secret (deploym
 ## Installation
 The third party services are deployed as follows:
 
+- mssql
 - postgres
 - redis
 - opensearch
 - kafka
 - consul
-- mssql
 - elasticsearch (optional)
 
 ### To install all infra services:
@@ -46,7 +46,7 @@ Some examples of installation commands:
 
 - `install postgres` (for Postgres)
 - `install redis` (for Redis)
-- `install opensearch` (for OpenSearch - free fork of ElasticSeacrh)
+- `install opensearch` (for OpenSearch - free fork of Elasticsearch)
 - `install cp-helm` (for Kafka)
 - `install consul` (for Consul)
 - `install mssql` (for MS SQL)
@@ -67,9 +67,8 @@ For example, to install the GWS database (pgdb-gws):
 
 
 ## Secrets 
-Create the standard [pullsecret](../#-considerations) for the workflow: 
+Create the [standard pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 
 ## Additional Information
 
-While using Openshift, additional privileges may need to be used with the deployment of third party components. These are managed within the `pre-release-script.sh` and `post-release-script.sh` scripts.

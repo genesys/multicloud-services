@@ -1,0 +1,10 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+loki:
+  persistence:
+    enabled: true
+    size: 12Gi
+  config:
+    existingSecret: loki-config

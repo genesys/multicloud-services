@@ -1,0 +1,38 @@
+# Uncomment for mk8s
+volumePermissions:
+  enabled: true
+
+kibana:
+  volumePermissions:
+    enabled: true
+# Uncomment for openshift
+#
+#master:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#
+#data:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#   
+#coordinating:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#
+#ingest:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false
+#
+#metrics:
+#  podSecurityContext:
+#    enabled: false
+#  containerSecurityContext:
+#    enabled: false

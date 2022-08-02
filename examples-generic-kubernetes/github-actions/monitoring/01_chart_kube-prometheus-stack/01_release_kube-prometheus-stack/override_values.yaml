@@ -1,0 +1,41 @@
+###############################################################################
+# Define more specific override values here
+###############################################################################
+
+# Forwarding critical and high severity alerts to Robusta
+
+alertmanager:
+  enabled: true
+  config:
+    
+    global:
+      #slack_api_url: <URL>
+      resolve_timeout: 5m
+    
+    route:
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: "null"
+      routes:
+      
+      - receiver: robusta
+        # you can specify more strict filtering here
+        match_re:
+          service: .+
+          severity: critical|CRITICAL|high|HIGH
+    
+    receivers:
+      # do not delete this 'null' one
+      - name: "null"
+      - name: robusta
+        webhook_configs:
+        # assuming that Robusta is installed in same namespace (typically monitoring)
+        - url: http://robusta-runner/api/alerts
+          send_resolved: true
+      
+      #- name: 'slack'
+      #  slack_configs:
+      #  - channel: '#alerts'
+      #    text: 'https://internal.myorg.net/wiki/alerts/{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}'

@@ -1,0 +1,30 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+global:
+  # Adjust for your needs!
+  storageClass: microk8s-hostpath
+  kibanaEnabled: true
+
+kibana:
+  persistence:
+    size: 3Gi
+
+  volumePermissions:
+    enabled: true
+
+master:
+  persistence:
+    enabled: true
+    size: 8Gi
+
+data:
+  persistence:
+    enabled: true
+    size: 8Gi
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true

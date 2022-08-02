@@ -1,3 +1,4 @@
+![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 We've included a basic deployment to help get started.
 Consult with our [documentation](all.docs.genesys.com/PEC-IWD/Current/IWDPEGuide) for the full configuration and deployment details.

@@ -65,15 +65,6 @@ podAnnotations: {}
 
 podLabels: {}
 
-podSecurityContext:
-  runAsUser: 500
-  runAsGroup: 500
-  fsGroup: null
-
-securityContext:
-  runAsUser:  500
-  runAsGroup: 500
-
 priorityClassName: ""
 
 # you can configure nodeSelector if needed
@@ -116,7 +107,7 @@ monitoring:
     additionalLabels: {}
   goldenSignals:
     enabled: false
-    
+
 # limit the number of concurrent disruptions
 podDisruptionBudget:
   enabled: false
@@ -168,9 +159,6 @@ lds:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "4000m"
-  securityContext:
-    runAsUser:  500
-    runAsGroup: 500
 
 ##########################################################################
 
@@ -214,9 +202,6 @@ monitorSidecar:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "10m"
-  securityContext:
-    runAsUser: 500
-    runAsGroup: 500
 
 # configuration for the Configuration Server Proxy container
 csproxy:
@@ -244,6 +229,4 @@ csproxy:
       # maximum amount of CPU resources that can be used and should be tuned to reflect
       # what the application can effectively use before needing to be horizontally scaled out
       cpu: "1000m"
-  securityContext:
-    runAsUser: 500
-    runAsGroup: 500
+

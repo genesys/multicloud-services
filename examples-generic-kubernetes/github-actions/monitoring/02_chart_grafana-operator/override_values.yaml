@@ -1,0 +1,31 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+operator:
+  scanAllNamespaces: true
+
+grafana:
+  ingress:
+    enabled: true
+    hostname: grafana.$DOMAIN
+    annotations: 
+      cert-manager.io/cluster-issuer: ca-issuer
+      kubernetes.io/ingress.class: public
+    tls: true
+
+  dashboardLabelSelectors:
+    - matchLabels:
+        app: grafana
+
+  persistence:
+    enabled: true
+    storageClass: microk8s-hostpath
+    size: 6Gi
+
+  containerSecurityContext:
+    runAsUser: 0
+    #runAsGroup: 0
+    #privileged: false
+    runAsNonRoot: false
+    #allowPrivilegeEscalation: false

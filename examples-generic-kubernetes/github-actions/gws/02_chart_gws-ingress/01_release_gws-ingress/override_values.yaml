@@ -1,1 +1,45 @@
-gws-system-nginx:           9.0.000.26
+gws-system-nginx: 9.0.000.26
+
+entryPoints:
+  internal:
+    service:
+      # Annotations for service
+      annotations: 
+    ingress:
+      # Whether ingress will start
+      enabled: true
+      # Ingress annotations
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      ingressClassName: nginx-internal
+      # Paths to ingress relative to hostname
+      paths: ["/"]
+      # Host names
+      hosts:
+        - gws-int.${DOMAIN}
+      # TLS configuration
+      tls:
+        - secretName: gws-int-ingress
+          hosts:
+            - gws-int.${DOMAIN}
+
+
+# For access outside K8s cluster
+  external:
+    ingress: 
+      # Whether ingress will start
+      enabled: true
+      # Ingress annotations
+      annotations: 
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      ingressClassName: nginx
+      # Paths to ingress relative to hostname
+      paths: ["/"]
+      # Host names
+      hosts:
+        - gws.${DOMAIN}
+      # TLS configuration
+      tls:
+        - secretName: gws-ext-ingress
+          hosts:
+            - gws.${DOMAIN}
