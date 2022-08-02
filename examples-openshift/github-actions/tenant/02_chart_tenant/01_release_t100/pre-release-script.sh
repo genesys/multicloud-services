@@ -41,6 +41,7 @@ export tenant_gauth_client_secret=$( get_secret tenant_gauth_client_secret )
 ###############################################################################
 export POSTGRES_USER=$( get_secret POSTGRES_USER )
 export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
+export LOCATION=$( get_secret LOCATION )
 ###############################################################################
 
 

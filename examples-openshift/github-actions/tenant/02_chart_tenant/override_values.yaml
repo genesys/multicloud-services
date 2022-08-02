@@ -15,23 +15,23 @@ images:
   fluentBit:
     enable: "true"
     name: json-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitCs:
     enable: "true"
     name: stdoutcs-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitOcs:
     enable: "true"
     name: stdoutocs-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitSs:
     enable: "true"
     name: stdoutss-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitUrs:
     enable: "true"
     name: stdouturs-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
 
 
 tenant:
@@ -41,20 +41,6 @@ tenant:
     dbhost: "/opt/genesys/dbserver/dbserver"
     dbuser: "/opt/genesys/dbuser/dbuser"
     dbname: "/opt/genesys/dbname/dbname"
-
-# Health check adjustment    
-  livenessProbe:
-    startupDelay: 50
-    checkInterval: 10
-    failureCount: 3
-    timeoutSeconds: 20
-    startupFailureThreshold: 60
-  readinessProbe:
-    startupDelay: 100
-    checkInterval: 10
-    failureCount: 3
-    timeoutSeconds: 5
-
 # Fluentbit model of logging
   logging:
     mounts:

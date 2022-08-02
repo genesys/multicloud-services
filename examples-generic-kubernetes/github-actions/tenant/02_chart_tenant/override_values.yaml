@@ -15,23 +15,23 @@ images:
   fluentBit:
     enable: "true"
     name: json-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitCs:
     enable: "true"
     name: stdoutcs-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitOcs:
     enable: "true"
     name: stdoutocs-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitSs:
     enable: "true"
     name: stdoutss-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
   fluentBitUrs:
     enable: "true"
     name: stdouturs-sidecar
-    tag: 1.8.7
+    tag: 1.9.5
 
 
 tenant:

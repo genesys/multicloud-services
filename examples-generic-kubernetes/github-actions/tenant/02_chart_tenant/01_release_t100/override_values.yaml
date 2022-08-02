@@ -1,7 +1,11 @@
 images:
   tenant:
-    tag: 100.0.1000060
+    tag: 100.0.1000068
   pgdbInit:
-    tag: 100.0.1000060
+    tag: 100.0.1000068
+    enable: "true"
   pulseInit:
-    tag: 100.0.1000060
+    tag: 100.0.1000068
+tenant:
+  general:
+    location: "${LOCATION}"
