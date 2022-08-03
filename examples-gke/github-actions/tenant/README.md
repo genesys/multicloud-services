@@ -28,23 +28,47 @@ Create the following secrets to store confidential information you may not want 
 **Note** As tenant will share the same namespace as voice services, we recommend using a common deployment secret `deployment_secrets` for the two services. 
 
 
+|Key|Sample Value|Description
+|-|-|-
+CONSUL_VOICE_TOKEN|abc123|Consul ACL token
+DNS_SERVER|10.12.14.16 |IP address of DNS server
+KAFKA_ADDRESS|kafka-helm-cp-kafka.kafka:9092| Kafka FQDN and port
+REDIS_IP|10.12.14.18 | IP address of Redis service
+REDIS_PASSWORD| redpass| Redis password
+REDIS_PORT| 6379| Redis port
+tenant_gauth_client_id| external_api_client| Client ID for communicating with GAUTH service
+tenant_gauth_client_secret| secret | Client ID secret 
+POSTGRES_USER| postgres| Postgres admin account 
+POSTGRES_PASSWORD| secret| Postgres admin password 
+POSTGRES_ADDR| pgdb-std-postgresql.infra | Postgres address for voice
+tenant_t100_pg_db_name| t100 | Tenant DB name - part of tenant deployment
+tenant_t100_pg_db_password| t100| Tenant DB password - part of tenant deployment
+tenant_t100_pg_db_user| t100|Tenant DB user - part of tenant deployment                     
 
-|Key|Value|
-|-|-|
-CONSUL_VOICE_TOKEN|abc123
-DNS_SERVER|dns.address 
-KAFKA_ADDRESS|kafka.address
-REDIS_IP|123.123.123.123
-REDIS_PASSWORD| redpass
-REDIS_PORT| 6379
-tenant_gauth_client_id| client_id
-tenant_gauth_client_secret| client_secret
-POSTGRES_USER| ADMIN
-POSTGRES_PASSWORD| PASS
-POSTGRES_ADDR| server.address
-tenant_t100_pg_db_name| t100
-tenant_t100_pg_db_password| t100pass
-tenant_t100_pg_db_user| t100user
+An example `.yaml`
+```
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: deployment-secrets
+  namespace: voice
+stringData:
+  CONSUL_VOICE_TOKEN: abc123
+  DNS_SERVER: 10.12.14.16
+  KAFKA_ADDRESS: kafka-helm-cp-kafka.kafka:9092
+  REDIS_IP: 10.12.14.18
+  REDIS_PASSWORD:  redpass
+  REDIS_PORT:  6379
+  tenant_gauth_client_id:  external_api_client
+  tenant_gauth_client_secret:  secret
+  POSTGRES_USER:  postgres
+  POSTGRES_PASSWORD:  secret
+  POSTGRES_ADDR:  pgdb-std-postgresql.infra
+  tenant_t100_pg_db_name:  t100
+  tenant_t100_pg_db_password:  t100
+  tenant_t100_pg_db_user:  t100
+```
 
 ## Additional Information
 
