@@ -39,13 +39,13 @@ secrets:
 # pvc will be created for logs
 volumes:
   pvcLog:
-    create: true
+    create: false
     claim: sip-log-pvc
     storageClass: microk8s-hostpath
     volumeName:
 
   pvcJsonLog:
-    create: true
+    create: false
     claim: sip-json-log-pvc
     storageClass: microk8s-hostpath
     volumeName:
