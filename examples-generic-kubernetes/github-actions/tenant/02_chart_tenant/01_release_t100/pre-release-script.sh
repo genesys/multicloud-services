@@ -62,7 +62,7 @@ create_secret gauthclientsecret clientsecret  $tenant_gauth_client_secret
 # Creating tenant DB if not exist and init
 ###############################################################################
 envsubst < init_db.sh > init_db.sh_
-kubectl run busybox -i -rm --image=alpine --restart=Never -- sh -c "$(<init_db.sh_)"
+kubectl run busybox -i --rm --image=alpine --restart=Never -- sh -c "$(<init_db.sh_)"
 ###############################################################################
 
 ###############################################################################
