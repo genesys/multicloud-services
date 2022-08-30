@@ -11,7 +11,7 @@ entryPoints:
       # Ingress annotations
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-      ingressClassName: nginx-internal
+      ingressClassName: nginx
       # Paths to ingress relative to hostname
       paths: ["/"]
       # Host names
