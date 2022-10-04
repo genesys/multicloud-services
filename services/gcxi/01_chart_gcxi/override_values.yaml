@@ -1,0 +1,111 @@
+###############################################################################
+# Global GCXI parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GCXIPEGuide/Configure
+###############################################################################
+gcxi:
+  app:
+    namespace: $NS 
+  imagePullSecrets:
+    - pullsecret
+  configMaps:
+  - name: gcxi-config-pg
+
+  deployment:
+    kubeVersion: 1.22
+    code: $TENANT_SID
+    code: $TENANT_SID
+    region: $LOCATION
+    tenantColor: 
+    tenantId: $TENANT_UUID
+    tenantName: t$TENANT_SID
+    type: local
+
+    deployFluentbitSidecar: true
+    deployGrafanaDashboard: true
+    deployPostgresConfig: false
+    deployPrometheusRules: true
+    deployServiceMonitor: true
+    hostIPC: false
+    useDynamicLogPV: false
+    useEmptyDirLogPV: true
+
+  env:
+    GCXI_AUTH_MODE: oauth
+    GAUTH_API_INT: http://gauth-auth.gauth:80
+    GAUTH_API_INT_ENV: http://gauth-environment.gauth:80/environment/v3/environments
+    GAUTH_REDIRECT_PROTO: https
+    GAUTH_UI_EXT: https://gauth.$DOMAIN
+
+    TENANT_UUID: $TENANT_UUID
+
+    GCXI_GIM_DB:
+      ## GCXI_GIM_DB.DSNDEF: definition for GCXI_GIM_DB DSN (connection to GIM database); format: DSN_NAME=GCXI_GIM_DB;DB_TYPE=;DB_TYPE_EX=;HOST=;PORT=;DB_NAME=;LOGIN=;PASSWORD=
+      DSNDEF: DSN_NAME=GCXI_GIM_DB;DB_TYPE=POSTGRESQL;DB_TYPE_EX=PostgreSQL;HOST=${gcxi_gim_db_host};PORT=5432;DB_NAME=${gcxi_gim_db_name};LOGIN=;PASSWORD=;DRV_TYPE=JDBC;GCXI_QENGINE=ON
+      LOGIN: $gcxi_gim_db_user
+      PASSWORD: $gcxi_gim_db_pass
+
+    IWD_DB:
+      ## IWD_DB.DSNDEF: definition for IWD_DB DSN (connection to IWD database); format: DSN_NAME=IWD_DB;DB_TYPE=;DB_TYPE_EX=;HOST=;PORT=;DB_NAME=;LOGIN=;PASSWORD=
+      DSNDEF: DSN_NAME=IWD_DB;DB_TYPE=POSTGRESQL;DB_TYPE_EX=PostgreSQL;HOST=${gcxi_iwd_db_host};PORT=5432;DB_NAME=${gcxi_iwd_db_name};LOGIN=;PASSWORD=;DRV_TYPE=JDBC;GCXI_QENGINE=ON
+      LOGIN: $gcxi_iwd_db_user
+      PASSWORD: $gcxi_iwd_db_pass
+
+  images:
+    init: alpine
+    gcxi:
+      control: gcxi_control
+      worker: gcxi
+    postgres: postgres:11
+    repository: $IMAGE_REGISTRY/gcxi
+
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/affinity: cookie
+      nginx.ingress.kubernetes.io/affinity-mode: persistent
+      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+      nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    domain:
+    external:
+      annotations:
+        route.openshift.io/termination: edge
+      ingressClassName: $INGRESS_CLASS
+      host: web-gcxi-${TENANT_SID}.${DOMAIN}
+      tls:
+        enabled: false
+        secretName: gcxi-ingress-ext
+    internal:
+      annotations:
+      host: web-gcxi-int-${TENANT_SID}.${DOMAIN}
+      tls:
+        enabled: false
+        secretName: gcxi-ingress-int
+    path: /
+
+  replicas:
+    postgres: 1
+    worker: 1
+
+  resources:
+    worker:
+      requests:
+        cpu: 0.5
+        memory: 1Gi
+      limits:
+        cpu: 2
+        memory: 6Gi
+
+  secrets:
+  - name: gcxi-secret-pg
+  - name: gcxi-secret-gauth
+
+  pvc:
+    backup:
+      capacity: 1Gi
+      storageClassName: $STORAGE_CLASS_RWX
+    postgres:
+      capacity: 1Gi
+      storageClassName: $STORAGE_CLASS_RWX
+    share:
+      capacity: 1Gi
+      storageClassName: $STORAGE_CLASS_RWX

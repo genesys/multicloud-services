@@ -1,0 +1,25 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  nexus-agent-stream:
+    NAME: nexus-agent-stream
+    KEY: metrics-nexus-agent-stream.json
+  nexus-api:
+    NAME: nexus-api
+    KEY: metrics-nexus-api.json
+  nexus-chat-session:
+    NAME: nexus-chat-session 
+    KEY: metrics-nexus-chat-session.json
+  nexus-resources-usage:
+    NAME: nexus-resources-usage 
+    KEY: metrics-nexus-resources-usage.json
+  nexus-whatsapp:
+    NAME: nexus-whatsapp 
+    KEY: metrics-nexus-whatsapp.json

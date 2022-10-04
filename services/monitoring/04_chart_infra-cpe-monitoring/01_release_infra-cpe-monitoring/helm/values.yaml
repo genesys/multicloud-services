@@ -1,0 +1,6 @@
+dashboards:
+    infra: true
+
+#interval: 30s
+#alerts:
+#    enabled: true

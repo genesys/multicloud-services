@@ -1,0 +1,14 @@
+gws-app-provisioning: 9.0.001.09
+gws-app-workspace: 9.0.001.03
+gws-platform-configuration: 9.0.000.94
+gws-platform-datacollector: 9.0.000.63
+gws-platform-ixn: 9.0.000.56
+gws-platform-ocs: 9.0.000.59
+gws-platform-setting: 9.0.000.65
+gws-platform-statistics: 9.0.000.74
+gws-platform-voice: 9.0.000.79
+gws-system-nginx: 9.0.000.29
+gws-ui-crmworkspace: 9.0.000.97
+gws-ui-provisioning: 9.0.001.00
+gws-platform-ucs: 9.0.000.55
+gws-platform-chat: 9.0.000.57

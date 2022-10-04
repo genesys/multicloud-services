@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+    app: grafana
+resources: []
+configMapGenerator:
+    - name: ucsx-cluster-health-dashboard
+      files: 
+        - cluster-health.json
+    - name: ucsx-db-performance-dashboard
+      files: 
+        - db-performance.json
+    - name: ucsx-elasticsearch-performance-dashboard
+      files: 
+        - elasticsearch-performance.json
+    - name: ucsx-qos-dashboard
+      files: 
+        - qos.json
+    - name: ucsx-attachments-qos-dashboard
+      files: 
+        - attachments-qos.json

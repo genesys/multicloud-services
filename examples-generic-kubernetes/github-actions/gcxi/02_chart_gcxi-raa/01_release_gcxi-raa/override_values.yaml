@@ -1,7 +1,0 @@
-###############################################################################
-# Additional GCXI-RAA parameters
-# https://all.docs.genesys.com/PEC-REP/Current/GCXIPEGuide/ConfigureRAA
-###############################################################################
-raa:
-  env:
-    GCXI_GIM_DB__JSON: "{GCXI_GIM_DB__JSON}"

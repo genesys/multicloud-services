@@ -1,0 +1,7 @@
+# k8s specific
+
+zookeeper:
+  persistence: false
+
+volumePermissions:
+  enabled: true

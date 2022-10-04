@@ -1,0 +1,46 @@
+entryPoints:
+
+  internal:
+
+    ingress:
+      # Whether ingress will start
+      enabled: true
+      # Ingress annotations
+      annotations:
+        cert-manager.io/cluster-issuer: $CERT_ISSUER
+      ingressClassName: $INGRESS_CLASS_INTERNAL
+      # Paths to ingress relative to hostname
+      paths: ["/"]
+      # Host names
+      hosts:
+        - gws-int.${DOMAIN}
+      # TLS configuration
+      tls:
+        - secretName: gws-secret-int
+          hosts:
+            - gws-int.${DOMAIN}
+
+  # For access outside K8s cluster
+  external:
+    ingress:
+      # Whether ingress will start
+      enabled: true
+      # Ingress annotations
+      annotations:
+        #appgw.ingress.kubernetes.io/connection-draining: "true"
+        #appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+        #appgw.ingress.kubernetes.io/cookie-based-affinity: "true"
+        #appgw.ingress.kubernetes.io/ssl-redirect: "false"
+        #ingress.kubernetes.io/ssl-redirect: "false"
+        cert-manager.io/cluster-issuer: $CERT_ISSUER
+      ingressClassName: $INGRESS_CLASS
+      # Paths to ingress relative to hostname
+      paths: ["/"]
+      # Host names
+      hosts:
+        - gws.${DOMAIN}
+      # TLS configuration
+      tls:
+        - secretName: gws-secret-ext
+          hosts:
+            - gws.${DOMAIN}

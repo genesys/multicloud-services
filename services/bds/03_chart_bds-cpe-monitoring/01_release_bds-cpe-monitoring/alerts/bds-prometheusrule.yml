@@ -1,0 +1,56 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: bds-cronjob
+    meta.helm.sh/release-namespace: bds
+  name: bds-t100-prometheus-alerts
+  namespace: bds
+spec:
+  groups:
+    - name: 'bds-map[]'
+      rules:
+        - alert: BDS-ContainerRestartCount
+          annotations:
+            information: >-
+              Scheduled run has failed in CronJob bds-t100. Container with BDS
+              for tenant "T100" restarted unexpectedly.
+            summary: >-
+              Container with BDS service for tenant "T100" did not start or
+              faild on run.
+          expr: >-
+            kube_pod_container_status_restarts_total{container="scripts-t100",namespace="bds"}
+            > 0
+          for: 5m
+          labels:
+            emailto: test@test.com
+            service: bds
+            severity: medium
+        - alert: BDS-JobStartTime
+          annotations:
+            information: >-
+              Job triggered by CronJob bds-t100 for tenant "T100" started more
+              than 12 hours ago. Expected start is every 12 hours.
+            summary: >-
+              Job did not start at schedule for tenant "T100" or proccessing is
+              too long.
+          expr: >-
+            kube_job_status_start_time{job_name=~"bds-t100-.*"} < (time() -
+            44100)
+          for: 5m
+          labels:
+            emailto: test@test.com
+            service: bds
+            severity: medium
+        - alert: BDS-JobFailStatus
+          annotations:
+            information: >-
+              Job triggered by CronJob bds-t100 finished with failed status. BDS
+              processing failed for tenant "T100".
+            summary: Scheduled Job for tenant "T100" failed.
+          expr: 'kube_job_status_failed{job_name=~"bds-t100-.*",namespace="bds"} > 0'
+          for: 5m
+          labels:
+            emailto: test@test.com
+            service: bds
+            severity: medium

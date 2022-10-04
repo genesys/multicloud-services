@@ -1,0 +1,97 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  voice-common-dashboard:
+    NAME: voice-common-dashboard
+    KEY: voice-common-dashboard.json
+  voice-config-dashboard:
+    NAME: voice-config-dashboard
+    KEY: voice-config-dashboard.json
+  voice-config-drilldown-dashboard:
+    NAME: voice-config-drilldown-dashboard
+    KEY: voice-config-drilldown-dashboard.json
+  voice-cprs-dashboard:
+    NAME: voice-cprs-dashboard
+    KEY: voice-cprs-dashboard.json
+  voice-dialplan-dashboard:
+    NAME: voice-dialplan-dashboard
+    KEY: voice-dialplan-dashboard.json
+  voice-dialplan-drilldown-dashboard:
+    NAME: voice-dialplan-drilldown-dashboard
+    KEY: voice-dialplan-drilldown-dashboard.json
+  voice-registrar-dashboard:
+    NAME: voice-registrar-dashboard
+    KEY: voice-registrar-dashboard.json
+  voice-registrar-drilldown-dashboard:
+    NAME: voice-registrar-drilldown-dashboard
+    KEY: voice-registrar-drilldown-dashboard.json
+  voice-rq-dashboard:
+    NAME: voice-rq-dashboard
+    KEY: voice-rq-dashboard.json
+  voice-rqclient-dashboard:
+    NAME: voice-rqclient-dashboard
+    KEY: voice-rqclient-dashboard.json
+  voice-agent-dashboard:
+    NAME: voice-agent-dashboard
+    KEY: voice-agent-dashboard.json
+  voice-alerts-dashboard:
+    NAME: voice-alerts-dashboard
+    KEY: voice-alerts-dashboard.json
+  voice-callthread-dashboard:
+    NAME: voice-callthread-dashboard
+    KEY: voice-callthread-dashboard.json
+  voice-kafka-metrics:
+    NAME: voice-kafka-metrics
+    KEY: voice-kafka-metrics.json
+  voice-service-alerts-dashboard:
+    NAME: voice-service-alerts-dashboard
+    KEY: voice-service-alerts-dashboard.json
+  voice-service-status:
+    NAME: voice-service-status
+    KEY: voice-service-status.json
+  voice-service-tenant-metrics:
+    NAME: voice-service-tenant-metrics
+    KEY: voice-service-tenant-metrics.json
+  voice-service-versions:
+    NAME: voice-service-versions
+    KEY: voice-service-versions.json
+  voice-sip-media-service-metrics:
+    NAME: voice-sip-media-service-metrics
+    KEY: voice-sip-media-service-metrics.json
+  voice-sip-server-dialplan:
+    NAME: voice-sip-server-dialplan
+    KEY: voice-sip-server-dialplan.json
+  voice-sip-media-service-metrics:
+    NAME: voice-sip-service-metrics
+    KEY: voice-sip-service-metrics.json
+  voice-sip-service-resources:
+    NAME: voice-sip-service-resources
+    KEY: voice-sip-service-resources.json
+  voice-sipfe-service-metrics:
+    NAME: voice-sipfe-service-metrics
+    KEY: voice-sipfe-service-metrics.json
+  voice-sipfe-service-resources:
+    NAME: voice-sipfe-service-resources
+    KEY: voice-sipfe-service-resources.json
+  voice-sipproxy-alerts:
+    NAME: voice-sipproxy-alerts
+    KEY: voice-sipproxy-alerts.json
+  voice-sipproxy-sipnodes:
+    NAME: voice-sipproxy-sipnodes
+    KEY: voice-sipproxy-sipnodes.json
+  voice-sipproxy-status:
+    NAME: voice-sipproxy-status
+    KEY: voice-sipproxy-status.json
+  voice-voicemail-drilldown-service-metrics:
+    NAME: voice-voicemail-drilldown-service-metrics
+    KEY: voice-voicemail-drilldown-service-metrics.json
+  voice-voicemail-drilldown-service-metrics:  
+    NAME: voice-voicemail-service-metrics
+    KEY: voice-voicemail-service-metrics.json

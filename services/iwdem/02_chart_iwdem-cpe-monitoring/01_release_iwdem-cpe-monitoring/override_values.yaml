@@ -1,0 +1,19 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  iwdem-api-calls-dashboard:
+    NAME: iwdem-api-calls-dashboard
+    KEY: APICalls.json
+  iwdem-email-connector-dashboard:
+    NAME: iwdem-email-connector-dashboard
+    KEY: EmailConnector.json
+  iwdem-email-processing-dashboard:
+    NAME: iwdem-email-processing-dashboard
+    KEY: EmailProcessing.json

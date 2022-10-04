@@ -1,0 +1,15 @@
+###############################################################################
+# Global Designer parameters
+# https://all.docs.genesys.com/DES/Current/DESPEGuide/Configure
+###############################################################################
+designer:
+  deployment:
+    strategy: blue-green-volume
+  volumes:
+    logsPvc:  # Logs to stdout only
+      create: false 
+    workspacePvc: # Workspace
+      create: true
+      mountPath: /designer/workspace      
+      claimSize: 3Gi
+      storageClass: $STORAGE_CLASS_RWX

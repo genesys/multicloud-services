@@ -1,0 +1,13 @@
+# ARO cluster specific
+# this installs Consul with pre-defined bootstrap token
+
+# server:
+#  extraConfig: |
+#    {
+#      "acl": {
+#        "tokens": {
+#          "master": "3a1e8406-152c-c7e8-7804-7a55a42594f6",
+#          "agent": "3a1e8406-152c-c7e8-7804-7a55a42594f6"
+#        }
+#      }
+#    }

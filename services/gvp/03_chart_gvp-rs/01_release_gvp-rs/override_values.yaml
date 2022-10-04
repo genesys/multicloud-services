@@ -1,0 +1,4 @@
+# Additional override values
+
+image:
+  snmptag: 100.0.100.0027

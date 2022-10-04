@@ -1,0 +1,10 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+clusterName: $CLUSTER
+disableCloudRouting: true
+sinksConfig:
+- ms_teams_sink:
+    name: main_ms_teams_sink
+    webhook_url: $MON_ROBUSTA_WEBHOOK       # your MS Teams webhook

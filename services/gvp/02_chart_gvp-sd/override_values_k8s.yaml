@@ -1,0 +1,12 @@
+# k8s specific
+
+podSecurityContext: 
+  fsGroup: 0
+  runAsUser: 0
+  runAsGroup: 0
+  runAsNonRoot: false
+  
+securityContext:
+  runAsUser: 0
+  runAsGroup: 0
+  runAsNonRoot: false

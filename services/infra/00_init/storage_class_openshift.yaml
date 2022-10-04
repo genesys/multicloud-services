@@ -1,0 +1,17 @@
+# Required for Openshift deployments (CPE-2630)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: infra-storage
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  # this is specific to target namespace/project
+  - uid=$ARB_UID
+  - gid=0
+  - mfsymlinks
+  - cache=strict
+provisioner: $STORAGE_CLASS_PROVISIONER
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+allowVolumeExpansion: true

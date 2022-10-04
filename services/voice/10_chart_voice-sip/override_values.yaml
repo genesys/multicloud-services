@@ -1,0 +1,58 @@
+# no of instances to be created during starup default is 1
+deployment:
+  namespace: ${NS}
+  replicaCount: 1
+
+# override the registry from where the image will be deployed
+image:
+  registry: $IMAGE_REGISTRY
+  pullPolicy: Always
+  imagePullSecrets: "pullsecret"
+
+loggingSidecar:
+  enabled: true
+  image:
+    registry: fluent
+    repository: fluent-bit
+
+sipsLoggingSidecar:
+  enabled: true
+  image:
+    registry: fluent
+    repository: fluent-bit
+    
+# Set the redis port to be used.
+context:
+  envs:
+    dnsServer: $voice_dns_ip
+    redis:
+      port: $voice_redis_port
+
+# Set the consul volume to be mounted
+secrets:
+  consulACL:
+    volumes:
+    - name: consul-shared-secret
+      secret:
+        secretName: consul-voice-token
+
+# pvc will be created for logs
+volumes:
+  pvcLog:
+    create: false
+
+  pvcJsonLog:
+    create: false
+
+  log:
+    mountPath:
+
+  jsonLog:
+    mountPath:
+
+# Enable HPA and set the target CPU and memory for scale up and down
+hpa:
+  targetCPUPercent: 60
+  targetMemoryPercent: 60
+  enabled: true
+  scaledownDisabled: true

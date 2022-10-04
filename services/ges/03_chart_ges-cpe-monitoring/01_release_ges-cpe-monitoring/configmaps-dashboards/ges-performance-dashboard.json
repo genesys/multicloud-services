@@ -1,0 +1,1604 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "A dashboard for monitoring the performance of GES in an Azure Deploymen",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "iteration": 1638480318439,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 5,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateRdYlGn",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "max": 1,
+          "min": 0,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "$$hashKey": "object:360",
+              "color": "red",
+              "tooltip": "Down",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:361",
+              "color": "green",
+              "tooltip": "Up",
+              "value": "0"
+            }
+          ]
+        },
+        "datasource": null,
+        "description": "Detailed health of GES and the downstream services it relies upon.",
+        "gridPos": {
+          "h": 11,
+          "w": 23,
+          "x": 0,
+          "y": 0
+        },
+        "highlightCards": true,
+        "id": 56,
+        "interval": "",
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 5,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "avg by (cloud, environment, location, pod) (GES_HEALTH{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "GES {{cloud}}-{{environment}}-{{location}}-{{pod}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg by (cloud, environment, location, pod) (GWS_CONFIG_STATUS{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "interval": "",
+            "legendFormat": "GWS CONFIG {{cloud}}-{{environment}}-{{location}}-{{pod}}",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg by (cloud, environment, location, pod)(GWS_ENV_STATUS{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "interval": "",
+            "legendFormat": "GWS ENV {{cloud}}-{{environment}}-{{location}}-{{pod}}",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg by (cloud, environment, location, pod)(GWS_AUTH_STATUS{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "interval": "",
+            "legendFormat": "GWS AUTH {{cloud}}-{{environment}}-{{location}}-{{pod}}",
+            "refId": "H"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg by (cloud, environment, location, pod)(REDIS_CONNECTION{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "interval": "",
+            "legendFormat": "REDIS {{cloud}}-{{environment}}-{{location}}-{{pod}}",
+            "refId": "E"
+          },
+          {
+            "exemplar": true,
+            "expr": "avg by (cloud, environment, location, pod)(ORS_REDIS_STATUS{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "interval": "",
+            "legendFormat": "ORS REDIS {{cloud}}-{{environment}}-{{location}}-{{pod}}",
+            "refId": "F"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Health and Liveliness",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "usingPagination": true,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 11
+        },
+        "id": 12,
+        "panels": [],
+        "title": "System Performance",
+        "type": "row"
+      },
+      {
+        "columns": [],
+        "datasource": null,
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 0,
+          "y": 12
+        },
+        "id": 2,
+        "pageSize": null,
+        "pluginVersion": "6.7.3",
+        "showHeader": true,
+        "sort": {
+          "col": 0,
+          "desc": true
+        },
+        "styles": [
+          {
+            "alias": "Time",
+            "align": "auto",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "pattern": "Time",
+            "type": "hidden"
+          },
+          {
+            "alias": "GES Pod",
+            "align": "left",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "decimals": 2,
+            "pattern": "Metric",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "alias": "Uptime",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value",
+            "thresholds": [],
+            "type": "number",
+            "unit": "s"
+          }
+        ],
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "time() - ges_process_start_time_seconds{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{pod}} ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Uptime",
+        "transform": "timeseries_to_rows",
+        "type": "table-old"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "fieldConfig": {
+          "defaults": {
+            "links": [],
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 10,
+          "x": 4,
+          "y": 12
+        },
+        "hiddenSeries": false,
+        "id": 10,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "avg by (pod, cloud, environment, location) (irate(ges_process_cpu_seconds_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[1m]))",
+            "interval": "",
+            "legendFormat": "CPU Usage - {{pod}} {{cloud}}-{{environment}}-{{location}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "CPU Usage",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:605",
+            "format": "percentunit",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:606",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "fieldConfig": {
+          "defaults": {
+            "links": [],
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 14,
+          "y": 12
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "ges_nodejs_eventloop_lag_seconds{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}",
+            "interval": "",
+            "legendFormat": "Event Loop Lag - ({{pod}}) ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 0.005,
+            "yaxis": "left"
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Event Loop Lag",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "s",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 20
+        },
+        "hiddenSeries": false,
+        "id": 58,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (pod, cloud, environment, location) (container_memory_working_set_bytes{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}) / sum by (pod, cloud, environment, location) (kube_pod_container_resource_limits_memory_bytes{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"})",
+            "interval": "",
+            "legendFormat": " {{pod}} ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Memory Use (%)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "Memory in Use (%)",
+            "logBase": 1,
+            "max": "1",
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 10,
+          "x": 12,
+          "y": 20
+        },
+        "hiddenSeries": false,
+        "id": 6,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "ges_process_resident_memory_bytes{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}",
+            "interval": "",
+            "legendFormat": " {{pod}} ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Memory Usage",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:819",
+            "format": "bytes",
+            "label": "Memory Usage",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:820",
+            "format": "percent",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 28
+        },
+        "id": 41,
+        "panels": [],
+        "title": "Kube Performance",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "The number of active pods for Conversation Provider in the Deployment",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 0,
+          "y": 29
+        },
+        "hiddenSeries": false,
+        "id": 60,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (cloud, environment, location) (kube_pod_status_phase{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\", pod=~\"ges-prod.*\", phase=~\"Running\"})",
+            "interval": "",
+            "legendFormat": "Pods Running ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Active GES Kube Pods",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:297",
+            "format": "short",
+            "label": "Pods",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:298",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 39
+        },
+        "id": 14,
+        "panels": [],
+        "title": "API Performance (General)",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 10,
+          "x": 0,
+          "y": 40
+        },
+        "hiddenSeries": false,
+        "id": 18,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(rate(ges_http_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[5m]) * 60) ",
+            "interval": "",
+            "legendFormat": "All Requests",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(rate(ges_http_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[5m]) * 60) - sum(rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "Success",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "Failures",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "API Calls / Minute",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:910",
+            "format": "short",
+            "label": "calls / min",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:911",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "The average response time of GES to incoming API requests across all API Endpoints. A 15 minute moving average. Unfortunately, due to limitations this only looks at internal endpoints.",
+        "fieldConfig": {
+          "defaults": {
+            "links": [],
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 10,
+          "y": 40
+        },
+        "hiddenSeries": false,
+        "id": 23,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (pod, cloud, environment, location) (increase(ges_http_request_duration_seconds_sum{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[15m])) / sum by (pod, cloud, environment, location) (increase(ges_http_request_duration_seconds_count{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",pod=~\"$Pod\"}[15m]))",
+            "interval": "",
+            "legendFormat": "All [Internal] Routes -- {{pod}} ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 0.2,
+            "yaxis": "left"
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Avg. Response Time (By Pod}}",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:963",
+            "format": "s",
+            "label": "Response Time (s)",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:964",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "HTTP 500 Errors over time on the selected GES pod & tenant",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 4,
+          "x": 0,
+          "y": 48
+        },
+        "hiddenSeries": false,
+        "id": 53,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (cloud, environment, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"500\", pod=~\"$Pod\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "{{cloud}}-{{environment}}-{{location}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (exported_tenant, cloud, environment, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"500\", pod=~\"$Pod\", exported_tenant=~\"($Tenant|undefined)\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "{{exported_tenant}} ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "HTTP 500 Errors / Hr",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1118",
+            "format": "short",
+            "label": "Errors / Hr",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "HTTP 400 Errors over time on the selected GES pod ",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 4,
+          "y": 48
+        },
+        "hiddenSeries": false,
+        "id": 51,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (cloud, environment, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"400\", pod=~\"$Pod\", exported_tenant=~\"$Tenant\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": " {{cloud}}-{{environment}}-{{location}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (exported_tenant, cloud, environment, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"400\", pod=~\"$Pod\", exported_tenant=~\"$Tenant\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "{{exported_tenant}} ( {{cloud}}-{{environment}}-{{location}})",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "HTTP 400 Errors / Min",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:812",
+            "format": "short",
+            "label": "Errors / Min",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:813",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "HTTP 401 Errors over time on the selected GES pod & tenant",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 10,
+          "y": 48
+        },
+        "hiddenSeries": false,
+        "id": 52,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (cloud, environment, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"401\", pod=~\"$Pod\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": " {{cloud}}-{{environment}}-{{location}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "HTTP 401 Errors / min",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:865",
+            "format": "short",
+            "label": "Errors / min",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:866",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "HTTP 404 Errors over time on the selected GES pod. Due to how requests resulting in a 404 are handled they are not able to be tracked on a per-tenant basis.",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 16,
+          "y": 48
+        },
+        "hiddenSeries": false,
+        "id": 54,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.2.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (cloud, environment, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"404\", pod=~\"$Pod\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "HTTP 404 Errors / Min ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (exported_tenant, cloud, environmemt, location) (rate(ges_http_failed_requests_total{cloud=~\"$Cloud\",environment=~\"$Environment\",location=~\"$Location\",httpCode=\"404\", pod=~\"$Pod\", exported_tenant=~\"($Tenant|undefined)\"}[5m]) * 60)",
+            "interval": "",
+            "legendFormat": "{{exported_tenant}} ({{cloud}}-{{environment}}-{{location}})",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "HTTP 404 Errors / Min",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:918",
+            "format": "short",
+            "label": "Errors / Min",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:919",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 32,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": ".*ges-prod-deployment.*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$DataSource",
+          "definition": "label_values(pod)",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": "",
+          "multi": false,
+          "name": "Pod",
+          "options": [],
+          "query": {
+            "query": "label_values(pod)",
+            "refId": "Genesys-Metrics-Pod-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "/.*ges-prod-deployment.*/",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$DataSource",
+          "definition": "label_values(ges_callbacks_created, exported_tenant)",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": true,
+          "name": "Tenant",
+          "options": [],
+          "query": {
+            "query": "label_values(ges_callbacks_created, exported_tenant)",
+            "refId": "Genesys-Metrics-Tenant-Variable-Query"
+          },
+          "refresh": 1,
+          "regex": "t\\d+",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "azure",
+            "value": "azure"
+          },
+          "datasource": "${DataSource}",
+          "definition": "up{}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "Cloud",
+          "options": [],
+          "query": {
+            "query": "up{}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "/.*cloud=\\\"(\\w+)\\\".*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "Genesys-Metrics",
+            "value": "Genesys-Metrics"
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "DataSource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": true,
+            "text": [
+              "eastus2"
+            ],
+            "value": [
+              "eastus2"
+            ]
+          },
+          "datasource": "${DataSource}",
+          "definition": "up{environment=\"${Environment}\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": true,
+          "name": "Location",
+          "options": [],
+          "query": {
+            "query": "up{environment=\"${Environment}\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "/.*location=\\\"([A-z0-9]+)\\\".*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "prod001",
+            "value": "prod001"
+          },
+          "datasource": "${DataSource}",
+          "definition": "up{cloud=\"${Cloud}\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "Environment",
+          "options": [],
+          "query": {
+            "query": "up{cloud=\"${Cloud}\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "/.*environment=\\\"([A-z0-9]+)\\\".*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-12h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "GES - Performance",
+    "version": 16
+  }

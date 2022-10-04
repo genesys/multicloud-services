@@ -1,0 +1,23 @@
+# openshift specific
+
+primary:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+readReplicas:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+serviceAccount:
+  name: infra-sa
+
+volumePermissions:
+  enabled: true
+  
+metrics:
+  containerSecurityContext:
+    enabled: false

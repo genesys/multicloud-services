@@ -1,0 +1,16 @@
+###############################################################################
+# Global UCSX image parameters
+# https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Configure
+###############################################################################
+gauth:
+  auth:
+    clientId: $ucsx_gws_client_id
+    clientSecret: $ucsx_gws_client_secret
+
+db:
+  user: $POSTGRES_USER
+  password: $POSTGRES_PASSWORD
+  host: $POSTGRES_ADDR
+  name: $ucsx_db_name
+  port: "5432"
+  ssl: "false"

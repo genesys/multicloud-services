@@ -1,0 +1,7 @@
+###############################################################################
+# Find more: https://github.com/helm/charts/tree/master/stable/mssql-linux
+###############################################################################
+
+securityContext:
+  fsGroup: 10001
+  runAsUser: 0

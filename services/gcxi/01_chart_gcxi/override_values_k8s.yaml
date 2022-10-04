@@ -1,0 +1,10 @@
+# K8s specific overrides
+
+gcxi:
+  ingress:
+    external:
+      annotations:
+        cert-manager.io/cluster-issuer: $CERT_ISSUER
+      tls:
+        enabled: true
+        secretName: gcxi-ingress-ext

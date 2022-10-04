@@ -1,0 +1,16 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+# image:
+#   tag: 14.1.0-debian-10-r80
+
+
+# increase disk space for historical reporting
+primary:
+  persistence:
+    size: 10Gi
+
+readReplicas:
+  persistence:
+    size: 10Gi

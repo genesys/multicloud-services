@@ -1,0 +1,16 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  gauth-auth:
+    KEY: gauth-auth.json
+    NAME: gauth-auth
+  gauth-auth-svc-dashboard:
+    KEY: gauth-auth-svc-dashboard.json
+    NAME: gauth-auth-svc-dashboard

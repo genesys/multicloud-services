@@ -1,0 +1,53 @@
+###############################################################################
+# Additional IXN parameters
+# https://all.docs.genesys.com/IXN/Current/IXNPEGuide/Configure
+###############################################################################
+tenant:
+  id: "$TENANT_UUID"
+  sid: "$TENANT_SID"
+
+ixnService:
+  image:
+    ixnServer:
+      repository: "ixn/interaction_server"
+      tag: 100.0.007.0400
+    logSidecar:
+      registry: "fluent"
+      enabled: true
+      repository: "fluent-bit"
+      tag: "1.8.5"
+    ixnNode:
+      repository: "ixn/ixn_node"
+      tag: 100.0.008.0501
+
+  ixnServer:
+    secrets:
+      db:
+        enabled: true
+        secretName: "ixn-db-secret-$TENANT_SID"
+        username: "$ixn_db_user"
+        password: "$ixn_db_password"
+    db:
+      name: $ixn_db_name
+      host: $POSTGRES_ADDR
+  
+  ixnNode:
+    secrets:
+      db:
+        enabled: true
+        secretName: "ixn-node-db-secret-$TENANT_SID"
+        username: "$ixn_db_user"
+        password: "$ixn_db_password"
+    db:
+      name: $ixn_node_db_name
+      host: $POSTGRES_ADDR
+    redis:
+    - host: $REDIS_ADDR
+      port: 6379
+      is_redis_cluster: "true"
+
+ixnVQNode:
+  image:
+    ixnVQNode:
+      repository: "ixn/ixn_vq_node"
+      tag: 100.0.008.0201

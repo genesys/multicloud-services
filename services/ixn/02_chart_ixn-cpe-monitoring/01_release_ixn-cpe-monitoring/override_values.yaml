@@ -1,0 +1,31 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  interaction-server-event-loggers:
+    KEY: interaction-server-event-loggers.json
+    NAME: dashboard-interaction-server-event-loggers
+  interaction-server-node:
+    KEY: interaction-server-node.json
+    NAME: dashboard-interaction-server-node
+  interaction-server-protocol-requests:
+    KEY: interaction-server-protocol-requests.json
+    NAME: dashboard-interaction-server-protocol-requests 
+  interaction-server-routing:
+    KEY: interaction-server-routing.json
+    NAME: dashboard-interaction-server-routing
+  interaction-server-vq-node:
+    KEY: interaction-server-vq-node.json
+    NAME: dashboard-interaction-server-vq-node
+  interaction-server:
+    KEY: interaction-server.json
+    NAME:  dashboard-interaction-server
+  ixn-ors-healthcheck:
+    KEY: ixn-ors-healthcheck.json
+    NAME: dashboard-ixn-ors-healthcheck

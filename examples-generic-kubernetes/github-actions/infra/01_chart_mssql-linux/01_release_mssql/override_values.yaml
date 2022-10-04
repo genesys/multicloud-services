@@ -1,7 +1,0 @@
-###############################################################################
-# Define here application version if needed
-###############################################################################
-
-image:
-  repository: mcr.microsoft.com/mssql/server
-  tag: 2019-latest

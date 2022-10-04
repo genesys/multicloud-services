@@ -1,0 +1,159 @@
+###############################################################################
+# Global GES parameters
+# https://all.docs.genesys.com/PEC-CAB/Current/CABPEGuide/Configure
+###############################################################################
+
+ges:
+  labels:
+    globalLabels: 
+      version: "{{ .Release.Name }}"
+
+  configMap:
+    env:
+      extendEnv: false
+      azureDeployment: true
+      regionAffinity: "$CONSUL_DC_LOCATION"
+      devOpsAccessGroups: "Platform Read Only,Platform Provisioning,Platform Internal Administrator"
+
+      log:
+        level: "DEBUG"
+        max_len: 2048
+
+      server:
+        internal_port: 3050
+        external_port: 3005
+        internal_url: "ges.${NS}"
+
+    integrations:
+
+      redis:
+        host: ges-redis-headless.${NS}.svc.${DNS_SCOPE}
+        port: $REDIS_PORT
+        secure: "false"
+      
+      db:
+        host: $POSTGRES_ADDR
+        name: $ges_db_name
+        secure: "false"
+      
+      gws:
+        auth: http://gauth-auth.${GAUTH_NAMESPACE}.svc
+        env: http://gauth-environment.${GAUTH_NAMESPACE}.svc
+        conf: http://gws-service-proxy.${GWS_NAMESPACE}.svc
+        public_auth: https://gauth.${DOMAIN}
+        stats: http://gws-service-proxy.${GWS_NAMESPACE}.svc
+      
+      vmcs:
+        redis_host: $ges_ors_redis_host
+        redis_port: $REDIS_PORT
+        redis_cluster_mode: "false"
+        redis_stream_name: "NewCallbackStream"
+        ors_redis_location: "{{ .Values.ges.configMap.integrations.vmcs.redis_host }}:{{ .Values.ges.configMap.integrations.vmcs.redis_port | default 10000 }}"
+        
+  deployment:
+    update_strategy: 
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 100%
+    env: []
+
+    envFrom:
+      - configMapRef:
+          name: "{{.Values.ges.servicename}}-{{.Release.Name}}-configmap"
+
+    replicas: 1
+
+    nodeSelector: {}
+
+    image:
+      imagePullSecrets:
+        - name: pullsecret
+      imagePullPolicy: "IfNotPresent"
+      registry: "$IMAGE_REGISTRY"
+      name: "genesys/ges"
+
+    hpa:
+      enabled: true
+      maximumReplicas: 5
+      mimimumReplicas: 1
+      targetMetrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 50
+      behavior: 
+        scaleDown:
+          stabilizationWindowSeconds: 60
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 30
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 30
+          selectPolicy: Max
+
+  priorityClassName: ""
+
+  resources:
+    limits:
+        cpu: "1250m"
+        memory: "2048Mi"
+    requests:
+        cpu: "500m"
+        memory: "512Mi"
+
+  
+   
+
+  monitoring:
+    grafana:
+      enabled: "true"
+      useConfigMaps: "true"
+    prometheus:
+      enabled: "true"
+      use_service_monitor: "true"
+    newRelic:
+      enabled: "true"
+    
+    
+
+  podDisruptionBudget: 
+    enabled: true
+    strategy:
+      minAvailable: 1
+
+  tolerations: {}
+
+  secrets:
+    configFolders: "/secrets-infra,/secrets-ors,/secrets-gws"
+    volumes:
+      enabled: true
+      list:
+      - name: secrets-infra
+        secret:
+          secretName: ges-secrets-infra
+      - name: secrets-ors
+        secret:
+          secretName: voice-redis-ors-stream
+      - name: secrets-gws
+        secret:
+          secretName: gws-client-credentials
+    volumeMounts:
+      enabled: true
+      list:
+        - mountPath: /secrets-infra
+          name: secrets-infra
+          readOnly: true
+        - mountPath: /secrets-ors
+          name: secrets-ors
+          readOnly: true
+        - mountPath: /secrets-gws
+          name: secrets-gws
+          readOnly: true

@@ -1,0 +1,13 @@
+# Openshift specific
+gcxi:
+  securityContext:
+    control:
+      fsGroup: null
+      runAsGroup: 0
+      runAsNonRoot: true
+      runAsUser: null
+    worker:
+      fsGroup: null
+      runAsGroup: 0
+      runAsNonRoot: true
+      runAsUser: null

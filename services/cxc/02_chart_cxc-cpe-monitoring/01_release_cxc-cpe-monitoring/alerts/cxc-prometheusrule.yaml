@@ -1,0 +1,288 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: cxc
+    meta.helm.sh/release-namespace: cxc
+  name: cxc-prometheus-alerts
+  namespace: cxc
+spec:
+  groups:
+    - name: CXC
+      rules:
+        - alert: CXC-CPUUsage
+          annotations:
+            information: >-
+              CXContact {{ $labels.pod }} CPU usage is above 300% of CPU Request
+              for last 5m at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact {{ $labels.pod }} CPU usage alarm at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            sum(rate(container_cpu_usage_seconds_total{namespace="cxc",
+            pod!~"cxc-es-.*",pod=~"cxc-.*", container!="POD"}[1m])) by (pod) > 3
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-MemoryUsage
+          annotations:
+            information: >-
+              CXContact {{ $labels.pod }} Memory usage is above 70% of Memory
+              Limit for last 5m at {{ $externalLabels.environment_prometheus
+              }}-{{ $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact {{ $labels.pod }} Memory usage alarm at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            sum(container_memory_usage_bytes{namespace="cxc",
+            pod!~"cxc-es-.*",pod=~"cxc-.*", container!="POD"}) by (pod)
+            /sum(container_spec_memory_limit_bytes{namespace="cxc",
+            pod!~"cxc-es-.*",pod=~"cxc-.*", container!="POD"}) by (pod) *100 >70
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-PodRestartsCount
+          annotations:
+            information: >-
+              CXContact {{ $labels.container }} restart count is above threshold
+              for last 5m at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact {{ $labels.container }} restart count is above threshold
+              for last 5m at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            sum(rate(kube_pod_container_status_restarts_total{namespace="cxc",
+            pod!~"cxc-es-.*", pod =~"cxc-.*"}[5m])*5*60) by (container) >= 2
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-MemoryUsagePD
+          annotations:
+            information: >-
+              CXContact {{ $labels.pod }} Memory usage is above 90% of Memory
+              Limit for last 5m at {{ $externalLabels.environment_prometheus
+              }}-{{ $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact {{ $labels.pod }} Memory usage alarm at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            sum(container_memory_usage_bytes{namespace="cxc",
+            pod!~"cxc-es-.*",pod=~"cxc-.*", container!="POD"}) by (pod)
+            /sum(container_spec_memory_limit_bytes{namespace="cxc",
+            pod!~"cxc-es-.*",pod=~"cxc-.*", container!="POD"}) by (pod) *100 >
+            90
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-PodRestartsCountPD
+          annotations:
+            information: >-
+              CXContact {{ $labels.container }} restart count is above critical
+              threshold for last 5m at {{ $externalLabels.environment_prometheus
+              }}-{{ $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact {{ $labels.container }} restart count is above critical
+              threshold for last 5m at {{ $externalLabels.environment_prometheus
+              }}-{{ $externalLabels.location_prometheus }}
+          expr: >-
+            sum(rate(kube_pod_container_status_restarts_total{namespace="cxc",
+            pod!~"cxc-es-.*", pod =~"cxc-.*"}[5m])*5*60) by (container) >= 5
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-PodsNotReadyPD
+          annotations:
+            information: >-
+              Deployment {{ $labels.deployment }}  has 0 ready pods for a
+              CXContact deployment for last 1m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact {{ $labels.deployment }} Ready Pods count is 0 for last
+              1m at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            kube_deployment_status_replicas_available{namespace="cxc",
+            deployment!~"cxc-es-.*", deployment =~"cxc-.*"} == 0
+          for: 1m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-JS-LatencyHigh
+          annotations:
+            summary: >-
+              CXContact Job Scheduler Latency is above thershold for last 5m at
+              {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            histogram_quantile (0.80, sum by
+            (le)(rate(cxc_js_request_latencies_ms_bucket{pod=~"cxc-.*"}[5m])))
+            >= 5000
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-LM-LatencyHigh
+          annotations:
+            information: >-
+              CXContact List Manager Latency is above 5000ms for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact List Manager Latency is above thershold for last 5m at
+              {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            histogram_quantile (0.80, sum by
+            (le)(rate(cxc_list_manager_request_latencies_ms_bucket{pod=~"cxc-.*"}[5m])))
+            >= 5000
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-LB-LatencyHigh
+          annotations:
+            information: >-
+              CXContact List Builder Latency is above 5000ms for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact List Builder Latency is above thershold for last 5m at
+              {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            histogram_quantile (0.80, sum by
+            (le)(rate(cxc_lb_request_latencies_ms_bucket{pod=~"cxc-.*"}[5m])))
+            >= 5000
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-DM-LatencyHigh
+          annotations:
+            information: >-
+              CXContact Dial Manager Latency is above 5000ms for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact Dial Manager is above thershold for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            histogram_quantile (0.80, sum by
+            (le)(rate(cxc_dm_request_latencies_ms_bucket{pod=~"cxc-.*"}[5m])))
+            >= 5000
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-Compliance-LatencyHigh
+          annotations:
+            information: >-
+              CXContact Compliance Manager Latency is above 5000ms for last 5m
+              at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact Compliance Manager is above thershold for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            histogram_quantile (0.80, sum by
+            (le)(rate(cxc_compliance_request_latencies_ms_bucket{pod=~"cxc-.*"}[5m])))
+            >= 5000
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-API-LatencyHigh
+          annotations:
+            information: >-
+              CXContact API Aggregator Latency is above 25000ms for last 5m at
+              {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact API Aggregator is above thershold for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            histogram_quantile (0.80, sum by
+            (le)(rate(cxc_api_aggregator_request_latencies_ms{pod=~"cxc-.*"}[5m])))
+            >= 25000
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-Redis-Connection-Failed
+          annotations:
+            information: >-
+              CXContact API Aggregator redis connection is failed for last 1m at
+              {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact API Aggregator redis connection is failed for last 1m at
+              {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: 'cxc_api_aggregator_redis_connection_failed{pod=~"cxc-.*"} > 0'
+          for: 1m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-EXT-Ingress-Error-Rate
+          annotations:
+            information: >-
+              CXContact API Aggregator Ingres Error Rate is above 20% for last
+              5m at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact API Aggregator Ingres Error Rate is above 20% for last
+              5m at {{ $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            (sum(rate(nginx_ingress_controller_requests{exported_namespace="cxc",
+            exported_service="cxc-amark-app", status=~"5..|4.."}[1m]))
+
+            /
+
+            sum(rate(nginx_ingress_controller_requests{exported_namespace="cxc",
+            exported_service="cxc-amark-app"}[1m])) *100) > 20
+          for: 5m
+          labels:
+            service: cxc
+            severity: HIGH
+        - alert: CXC-INT-Ingress-Error-Rate
+          annotations:
+            information: >-
+              CXContact Internal Ingres Error Rate for {{
+              $labels.exported_service }} is above 20% for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+            summary: >-
+              CXContact Internal Ingres Error Rate for {{
+              $labels.exported_service }} is above 20% for last 5m at {{
+              $externalLabels.environment_prometheus }}-{{
+              $externalLabels.location_prometheus }}
+          expr: >-
+            (
+
+            sum(rate(nginx_ingress_controller_requests{exported_namespace="cxc",
+            ingress="int-cxc", status=~"5..|4.."}[1m])) by (exported_service)
+
+            /
+
+            sum(rate(nginx_ingress_controller_requests{exported_namespace="cxc",
+            ingress="int-cxc"}[1m])) by (exported_service)
+
+            ) > 20
+          labels:
+            service: cxc
+            severity: HIGH

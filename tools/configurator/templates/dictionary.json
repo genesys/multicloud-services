@@ -1,0 +1,254 @@
+{
+	"global-deployment-secrets": {
+        "DEBUG_HELM": "ZmFsc2U=",
+
+        "LOCATION": "d2VzdHVzMg==",
+        "CONSUL_DC_LOCATION": "d2VzdHVzMg==",
+
+        "TENANT_SID": "MTAw",
+        "TENANT_UUID": "OTM1MGUyZmMtYTFkZC00YzY1LThkNDAtMWY3NWEyZTA4MGRk",
+        "SIP_DOMAIN": "dCR7VEVOQU5UX1NJRH0uZGV2LmdlbmF6dXJlLmNvbQ==",
+
+        "DNS_SCOPE": "Y2x1c3Rlci5sb2NhbA==",
+        "DOMAIN": "YXBwcy5leGFtcGxlLmNvbQ==",
+
+        "CONSUL_ADDR": "Y29uc3VsLXNlcnZlci5jb25zdWwuc3ZjLiR7RE5TX1NDT1BFfQ==",
+        "CONSUL_BOOT_TOKEN": "UExBQ0VIT0xERVI=",
+
+        "REDIS_ADDR": "aW5mcmEtcmVkaXMtcmVkaXMtY2x1c3Rlci5pbmZyYQ==",
+        "REDIS_PASSWORD": "UExBQ0VIT0xERVI=",
+        "REDIS_PORT": "NjM3OQ==",
+
+        "POSTGRES_ADDR": "cGdkYi1zdGQtcG9zdGdyZXNxbC5pbmZyYQ==",
+        "POSTGRES_PORT": "NTQzMg==",
+        "POSTGRES_USER": "cG9zdGdyZXM=",
+        "POSTGRES_PASSWORD": "UExBQ0VIT0xERVI=",
+        "POSTGRES_STD_ADDR": "cGdkYi1zdGQtcG9zdGdyZXNxbC5pbmZyYQ==",
+        "POSTGRES_GWS_ADDR": "cGdkYi1nd3MtcG9zdGdyZXNxbC5pbmZyYQ==",
+        "POSTGRES_DGT_ADDR": "cGdkYi1kZ3QtcG9zdGdyZXNxbC5pbmZyYQ==",
+        "POSTGRES_RPTHIST_ADDR": "cGdkYi1ycHRoaXN0LXBvc3RncmVzcWwuaW5mcmE=",
+        "POSTGRES_RPTRT_ADDR": "cGdkYi1ycHRydC1wb3N0Z3Jlc3FsLmluZnJh",
+        "POSTGRES_UCSX_ADDR": "cGdkYi11Y3N4LXBvc3RncmVzcWwuaW5mcmE=",
+
+        "MSSQL_ADDR": "bXNzcWwtZGVwbG95bWVudC5pbmZyYQ==",
+        "MSSQL_ADMIN_PASSWORD": "UExBQ0VIT0xERVI=",
+
+        "KAFKA_ADDR": "a2Fma2Eua2Fma2E=",
+        "KAFKA_PORT": "OTA5Mg==",
+
+        "ES_ADDR": "ZWxhc3RpYy1lcy1odHRwLmluZnJh",
+
+        "INGRESS_CLASS": "bmdpbng=",
+        "INGRESS_CLASS_INTERNAL": "bmdpbng=",
+        "CERT_ISSUER": "UExBQ0VIT0xERVI=",
+        
+        "STORAGE_CLASS_RWO": "YXp1cmUtZmlsZXM=",
+        "STORAGE_CLASS_RWO_PREMIUM": "bWFuYWdlZC1wcmVtaXVt",
+        "STORAGE_CLASS_RWX": "YXp1cmUtZmlsZXM=",
+        "STORAGE_CLASS_PROVISIONER": "a3ViZXJuZXRlcy5pby9henVyZS1maWxl",
+
+        "GAUTH_NAMESPACE": "Z2F1dGg=",
+        "GWS_NAMESPACE": "Z3dz",
+        "VOICE_NAMESPACE": "dm9pY2U=",
+        "IXN_NAMESPACE": "aXhu",
+        "PULSE_NAMESPACE": "cHVsc2U=",
+
+        "gauth_admin_password_plain": "b3Bz",
+        "gauth_admin_username": "b3Bz",
+
+        "auth_client_gws": "ZXh0ZXJuYWxfYXBpX2NsaWVudA==",
+        "auth_client_gws_ws": "Z3dzLWFwcC13b3Jrc3BhY2U=",
+        "auth_client_gws_prov": "Z3dzLWFwcC1wcm92aXNpb25pbmc=",
+        "auth_client_tenant": "ZXh0ZXJuYWxfYXBpX2NsaWVudA==",
+        "auth_client_bds": "YmRzX2NsaWVudA==",
+        "auth_client_cxc": "Y3hjX2NsaWVudA==",
+        "auth_client_designer": "ZGVzaWduZXJfY2xpZW50",
+        "auth_client_ges": "Z2VzX2NsaWVudA==",
+        "auth_client_gcxi": "Z2N4aV9jbGllbnQ=",
+        "auth_client_pulse": "cHVsc2VfY2xpZW50",
+        "auth_client_tlm": "Z3dzLWFwcC13b3Jrc3BhY2U=",
+        "auth_client_ucsx": "dWNzeF9jbGllbnQ="
+	},
+    "bds": {
+        "bds_gws_client_id": "YmRzX2NsaWVudA==",
+        "bds_gws_client_secret": "c2VjcmV0",
+        "bds_sftp_host": "MTAuMTAuMTAuMTA=",
+        "bds_sftp_path": "L3NmdHAvYmRz",
+        "bds_sftp_user": "ZGVtbw==",
+        "bds_sftp_pass": "ZGVtbw=="
+    },
+    "cxc": {
+        "cxc_configserver_user_name": "Y3hjVXNlcg==",
+        "cxc_configserver_user_password": "Y3hjUGFzcw==",
+        "cxc_gws_client_id": "Y3hjX2NsaWVudA==",
+        "cxc_gws_client_secret": "c2VjcmV0",
+        "cxc_prov_gwsauthpass": "b3Bz",
+        "cxc_prov_gwsauthuser": "b3Bz",
+        "cxc_prov_tenant_pass": "cGFzc3dvcmQ=",
+        "cxc_prov_tenant_user": "ZGVmYXVsdA==",
+        "cxc_redis_password": "JFJFRElTX1BBU1NXT1JE"
+    },
+    "designer": {
+        "designer_gws_client_id": "ZGVzaWduZXJfY2xpZW50",
+        "designer_gws_client_secret": "c2VjcmV0"
+    },
+    "gauth": {
+        "gauth_pg_dbname": "Z2F1dGg=",
+        "gauth_pg_username": "UExBQ0VIT0xERVI=",
+        "gauth_pg_password": "UExBQ0VIT0xERVI=",
+        "gauth_admin_username": "b3Bz",
+        "gauth_admin_password": "JDJhJDEwJDcuak9PeW0yR2hoVnRwU1BYT1Ftd2VWcVk0Z0xLT1hGYk5EUnVsN1VNZVA0MGtRVlZ4L2F1",
+        "gauth_admin_password_plain": "b3Bz",
+        "gauth_gws_client_id": "ZXh0ZXJuYWxfYXBpX2NsaWVudA==",
+        "gauth_gws_client_secret": "QTM0Qk9tWERlZFp3YlRLcndtZDRlQT09",
+        "gauth_jks_keyPassword": "Z2VuZXN5cw==",
+        "gauth_jks_keyStorePassword": "Z2VuZXN5cw==",
+        "gauth_jks_key": "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"
+    },
+    "gcxi": {
+        "gcxi_gws_client_id": "Z2N4aV9jbGllbnQ=",
+        "gcxi_gws_client_secret": "c2VjcmV0",
+        "gcxi_db_host": "JFBPU1RHUkVTX1JQVEhJU1RfQUREUg==",
+        "gcxi_gim_db_host": "JFBPU1RHUkVTX1JQVEhJU1RfQUREUg==",
+        "gcxi_gim_db_name": "Z2lt",
+        "gcxi_gim_db_pass": "Z2lt",
+        "gcxi_gim_db_user": "Z2lt",
+        "gcxi_iwd_db_host": "JFBPU1RHUkVTX0RHVF9BRERS",
+        "gcxi_iwd_db_name": "aXdkZG0tMTAw",
+        "gcxi_iwd_db_pass": "aXdkZG0tMTAw",
+        "gcxi_iwd_db_user": "aXdkZG0tMTAw"
+    },
+    "ges": {
+        "ges_redis_password": "c2VjcmV0",
+        "ges_redis_ors_host": "cmVkaXMtb3JzLXN0cmVhbS5zZXJ2aWNlLiRDT05TVUxfRENfTE9DQVRJT04uY29uc3Vs",
+        "ges_gws_client_id": "Z2VzX2NsaWVudA==",
+        "ges_gws_client_secret": "c2VjcmV0",
+        "ges_db_name": "Z2Vz",
+        "ges_db_user": "Z2Vz",
+        "ges_db_password": "Z2Vz",
+        "ges_devops_username": "YWRtaW4=",
+        "ges_devops_password": "bGV0bWVpbg=="
+    },
+    "gim": {
+        "gim_pgdb_etl_name": "Z2lt",
+        "gim_pgdb_etl_password": "Z2lt",
+        "gim_pgdb_etl_user": "Z2lt"
+    },
+    "gsp": {
+        "gsp_s3_bucket_host": "c3RvcmFnZS5nb29nbGVhcGlzLmNvbQ==",
+        "gsp_s3_bucket_port": "NDQz",
+        "gsp_s3_bucket_name": "UExBQ0VIT0xERVI=",
+        "gsp_s3_access_key": "UExBQ0VIT0xERVI=",
+        "gsp_s3_secret_key": "UExBQ0VIT0xERVI=",
+        "gsp_azure_wasb_host": "UExBQ0VIT0xERVI="
+    },
+    "gvp": {
+        "gvp_cm_configserver_password": "cGFzc3dvcmQ=",
+        "gvp_cm_configserver_user": "ZGVmYXVsdA==",
+        "gvp_cm_pg_db_name": "Z3Zw",
+        "gvp_cm_pg_db_password": "JFBPU1RHUkVTX1VTRVI=",
+        "gvp_cm_pg_db_user": "JFBPU1RHUkVTX1BBU1NXT1JE",
+        "gvp_consul_token": "JENPTlNVTF9CT09UX1RPS0VO",
+        "gvp_pg_db_server": "JFBPU1RHUkVTX1NURF9BRERS",
+        "gvp_rs_mssql_admin_password": "JE1TU1FMX0FETUlOX1BBU1NXT1JE",
+        "gvp_mssql_db_server": "JE1TU1FMX0FERFI=",
+        "gvp_rs_mssql_db_name": "Z3ZwX3Jz",
+        "gvp_rs_mssql_db_password": "Z3Zw",
+        "gvp_rs_mssql_db_user": "Z3Zw",
+        "gvp_rs_mssql_reader_password": "JE1TU1FMX0FETUlOX1BBU1NXT1JE"
+    },
+    "gws": {
+        "gws_app_provisioning": "QTM0Qk9tWERlZFp3YlRLcndtZDRlQT09",
+        "gws_app_workspace": "QTM0Qk9tWERlZFp3YlRLcndtZDRlQT09",
+        "gws_as_pg_pass": "cHJvdg==",
+        "gws_as_pg_user": "cHJvdg==",
+        "gws_pg_dbname_prov": "cHJvdg==",
+        "gws_consul_token": "JENPTlNVTF9CT09UX1RPS0VO",
+        "gws_client_id": "ZXh0ZXJuYWxfYXBpX2NsaWVudA==",
+        "gws_client_secret": "QTM0Qk9tWERlZFp3YlRLcndtZDRlQT09",
+        "workspc_client_id": "Z3dzLWFwcC13b3Jrc3BhY2U=",
+        "prov_client_id": "Z3dzLWFwcC1wcm92aXNpb25pbmc=",
+        "gws_ops_pass_encr": "JDJhJDEwJDcuak9PeW0yR2hoVnRwU1BYT1Ftd2VWcVk0Z0xLT1hGYk5EUnVsN1VNZVA0MGtRVlZ4L2F1",
+        "gws_ops_user": "b3Bz",
+        "gws_ops_pass": "b3Bz",
+        "gws_pg_dbname": "Z3dz",
+        "gws_pg_pass": "Z3dz",
+        "gws_pg_user": "Z3dz",
+        "gws_set_clients": "ZmFsc2U="
+    },
+    "iwd": {
+        "iwd_db_name": "aXdkLSR7VEVOQU5UX1NJRH0=",
+        "iwd_db_password": "aXdkLSR7VEVOQU5UX1NJRH0=",
+        "iwd_db_user": "aXdkLSR7VEVOQU5UX1NJRH0=",
+        "iwd_gws_client_id": "aXdkX2NsaWVudA==",
+        "iwd_gws_client_secret": "c2VjcmV0",
+        "iwd_nexus_api_key": "UExBQ0VIT0xERVI=",
+        "iwd_tenant_api_key": "UExBQ0VIT0xERVI=",
+        "iwd_tenant_api_key_iwddm": "UExBQ0VIT0xERVI=",
+        "iwd_tenant_api_key_tenant": "UExBQ0VIT0xERVI="
+    },
+    "iwddm": {
+        "iwddm_nexus_api_key": "UExBQ0VIT0xERVI=",
+        "iwddm_db_user": "aXdkZG0tJHtURU5BTlRfU0lEfQ==",
+        "iwddm_db_password": "aXdkZG0tJHtURU5BTlRfU0lEfQ==",
+        "iwddm_gim_db_addr": "JFBPU1RHUkVTX1JQVEhJU1RfQUREUg==",
+        "iwddm_gim_db_name": "Z2lt",
+        "iwddm_gim_db_password": "Z2lt",
+        "iwddm_gim_db_user": "Z2lt"
+    },
+    "iwdem": {
+        "iwdem_nexus_api_key": "UExBQ0VIT0xERVI="
+    },
+    "ixn": {
+        "ixn_db_name": "aXhuLSRURU5BTlRfU0lE",
+        "ixn_node_db_name": "aXhuLW5vZGUtJFRFTkFOVF9TSUQ=",
+        "ixn_db_password": "aXhu",
+        "ixn_db_user": "aXhu"
+    },
+    "nexus": {
+        "nexus_db_password": "bmV4dXM=",
+        "nexus_db_user": "bmV4dXM=",
+        "nexus_gws_client_id": "bmV4dXNfY2xpZW50",
+        "nexus_gws_client_secret": "c2VjcmV0",
+        "nexus_tenant_locations": "d2VzdHVzMg==",
+        "nexus_tenant_adm_user": "ZGVmYXVsdA==",
+        "nexus_tenant_adm_password": "cGFzc3dvcmQ="
+    },
+    "pulse": {
+        "pulse_gws_client_id": "cHVsc2VfY2xpZW50",
+        "pulse_gws_client_secret": "c2VjcmV0",
+        "pulse_db_name": "cHVsc2U=",
+        "pulse_db_user": "cHVsc2U=",
+        "pulse_db_password": "cHVsc2U=",
+        "pulse_redis_host": "cHVsc2UtcmVkaXMtbWFzdGVy",
+        "pulse_redis_key": "c2VjcmV0",
+        "pulse_redis_port": "NjM3OQ=="
+    },
+    "tlm": {
+        "tlm_gws_client_id": "Z3dzLWFwcC13b3Jrc3BhY2U=",
+        "tlm_gws_client_secret": "c2VjcmV0"
+    },
+    "ucsx": {
+        "ucsx_gws_client_id": "dWNzeF9jbGllbnQ=",
+        "ucsx_gws_client_secret": "c2VjcmV0",
+        "ucsx_db_name": "dWNzeA==",
+        "ucsx_tenant_100_db_name": "dWNzeF90MTAw",
+        "ucsx_tenant_100_db_password": "dWNzeA==",
+        "ucsx_tenant_100_db_user": "dWNzeF90MTAw"
+    },
+    "voice": {
+        "voice_consul_token": "JENPTlNVTF9CT09UX1RPS0VO",
+        "voice_dns_ip": "UExBQ0VIT0xERVI=",
+        "voice_redis_ip": "JFJFRElTX0FERFI=",
+        "voice_redis_port": "JFJFRElTX1BPUlQ=",
+        "voice_redis_password": "JFJFRElTX1BBU1NXT1JE",
+        "tenant_gws_client_id": "ZXh0ZXJuYWxfYXBpX2NsaWVudA==",
+        "tenant_gws_client_secret": "c2VjcmV0",
+        "tenant_pg_admin": "JFBPU1RHUkVTX1VTRVI=",
+        "tenant_pg_admin_pass": "JFBPU1RHUkVTX1BBU1NXT1JE",
+        "tenant_pg_db_server": "JFBPU1RHUkVTX0FERFI=",
+        "tenant_t100_pg_db_name": "dDEwMA==",
+        "tenant_t100_pg_db_password": "dDEwMA==",
+        "tenant_t100_pg_db_user": "dDEwMA=="
+    }
+}

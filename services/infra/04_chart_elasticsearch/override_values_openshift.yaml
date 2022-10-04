@@ -1,0 +1,36 @@
+# Openshift specifics
+
+sysctlImage:
+  enabled: false
+
+master:
+  serviceAccount:
+    name: infra-sa
+  podSecurityContext:
+    fsGroup: null
+  containerSecurityContext:
+    runAsUser: null
+
+coordinating:
+  serviceAccount:
+    name: infra-sa
+  podSecurityContext:
+    fsGroup: null
+  containerSecurityContext:
+    runAsUser: null
+
+data:
+  serviceAccount:
+    name: infra-sa
+  podSecurityContext:
+    fsGroup: null
+  containerSecurityContext:
+    runAsUser: null
+
+curator:
+  serviceAccount:
+    name: infra-sa
+  podSecurityContext:
+    fsGroup: null
+  containerSecurityContext:
+    runAsUser: null

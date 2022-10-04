@@ -1,0 +1,18 @@
+###############################################################################
+# Additional GES parameters
+# https://all.docs.genesys.com/PEC-CAB/Current/CABPEGuide/Configure
+###############################################################################
+
+ges:
+  ambassador:
+    enabled: false
+  deployment:
+    image:
+      version: 100.0.002.2105
+
+  configMap:
+    env:
+      azureDeployment: false  
+      ui:
+        devops_username: $ges_devops_username
+        devops_password: $ges_devops_password

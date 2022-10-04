@@ -1,0 +1,31 @@
+###############################################################################
+# Global ucsx-addtenent image parameters
+# https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
+###############################################################################
+
+image:
+  registry: $IMAGE_REGISTRY
+  pullSecrets: 
+    - name: pullsecret
+
+command: "register_ucsx_tenant" #"unregister_ucsx_tenant" 
+       
+ucsx:
+  addr: ucsx.${NS}.svc:8500
+  restaddr: http://ucsx.${DOMAIN}
+
+configNameBase: ucsx-config
+secretNameBase: ucsx-secret
+
+keepPod: true
+
+wwe:
+  restMode: true
+
+gauth:
+  auth:
+    url: http://gauth-auth.${GAUTH_NAMESPACE}.svc
+  env:
+    url: http://gauth-environment.${GAUTH_NAMESPACE}.svc
+
+resources: {}

@@ -1,0 +1,5 @@
+*.DS_Store
+README_TEMPLATE.md
+deploy_service_aks.yaml
+examples-aks.md
+override_values_aks.yaml

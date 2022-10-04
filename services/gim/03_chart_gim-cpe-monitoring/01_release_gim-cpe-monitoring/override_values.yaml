@@ -1,0 +1,13 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  gim-dashboard:
+    NAME: gim-dashboard
+    KEY: gim_dashboard.json

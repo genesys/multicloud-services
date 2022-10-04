@@ -1,8 +1,0 @@
-# Override values
-
-# For Openshift only
-
-openShift:
-  enabled: true
-securityContext:
-	privileged: true

@@ -1,0 +1,34 @@
+###############################################################################
+# Global IWDDM parameters
+# https://all.docs.genesys.com/PEC-IWD/Current/IWDDMPEGuide/Configure
+###############################################################################
+
+image:
+  tag: 100.0.012.2187
+
+iwddm:
+
+  tenantId: ${TENANT_SID}
+
+  db:
+    createConfigmap: true
+    host: $POSTGRES_ADDR
+    port: 5432
+    dbname: iwddm-${TENANT_SID}
+    user: $IWDDM_USER
+
+    secret:
+      enabled: true
+      secretName: iwddm-db-secret-${TENANT_SID}
+      password: $IWDDM_PASSWORD
+
+  volumes: |-
+    - name: iwddm-db-secrets
+      secret:
+        secretName: iwddm-db-secret-${TENANT_SID}
+    - name: iwd-secrets
+      secret:
+        secretName: iwd-secrets-${TENANT_SID}
+    - name: gim-secrets
+      secret:
+        secretName: gim-secrets-${TENANT_SID}

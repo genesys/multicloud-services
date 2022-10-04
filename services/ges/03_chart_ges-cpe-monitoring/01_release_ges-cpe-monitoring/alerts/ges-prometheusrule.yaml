@@ -1,0 +1,507 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: ges
+    meta.helm.sh/release-namespace: ges
+  name: ges-prometheus-rules
+  namespace: ges
+spec:
+  groups:
+    - name: ges-performance
+      rules:
+        - alert: GES_UP
+          annotations:
+            note: This may indicate issues connecting to REDIS
+            summary: Fewer than 2 GES pods have been up for the last 15 minutes
+          expr: 'count(up{pod =~ ".*ges.*"}) < 2'
+          for: 15m
+          labels:
+            action: page
+            service: GES
+            severity: critical
+        - alert: GES_CPU_USAGE
+          annotations:
+            dashboard: See GES - Performance > System Performance > CPU Usage
+            summary: 'CPU usage high for {{ $labels.pod }}'
+          expr: 'irate(ges_process_cpu_seconds_total[1m]) > .9'
+          for: 5m
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_MEMORY_USAGE
+          annotations:
+            dashboard: See GES - Performance > System Performance > Memory Usage
+            summary: 'Memory usage high for {{ $labels.pod }}'
+          expr: >-
+            sum by (pod) (ges_nodejs_heap_space_size_used_bytes{pod=~"$Pod"}) /
+            sum by (pod)
+            (ges_nodejs_heap_space_size_available_bytes{pod=~"$Pod"}) > .80
+          for: 90s
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES-NODE-JS-DELAY-WARNING
+          annotations:
+            dashboard: See GES - Performance > Sysem Performance > NodeJS Delay
+            information: 'Actual values {{ $value }}'
+            summary: '{{ $labels.pod }}''s Event loop is lagging by more than 5ms'
+          expr: application_ccecp_nodejs_eventloop_lag_seconds > .005
+          for: 5m
+          labels:
+            action: email
+            service: CCE
+            severity: warning
+        - alert: GES_NOT_READY_CRITICAL
+          annotations:
+            description: >-
+              This trigger will raise an alert when more than 50% of GES
+              containers are in not ready state
+            notes: This could be indicative of REDIS connection issues
+            summary: More than 50% of GES containers are in not ready state
+          expr: >-
+            sum(kube_pod_container_status_ready{pod=~".*ges.*"}) /  sum(count by
+            (pod) (kube_pod_container_status_ready{pod=~".*ges.*"})) < .50
+          for: 5m
+          labels:
+            action: page
+            service: GES
+            severity: critical
+        - alert: GES_NOT_READY_WARNING
+          annotations:
+            description: >-
+              This trigger will raise an alert when more than 25% of GES
+              containers are in not ready state
+            notes: This could be indicative of REDIS connection issues
+            summary: More than 25% of GES containers are in not ready state
+          expr: >-
+            sum(kube_pod_container_status_ready{pod=~".*ges.*"}) /  sum(count by
+            (pod) (kube_pod_container_status_ready{pod=~".*ges.*"})) < .75
+          for: 10m
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_PODS_RESTART
+          annotations:
+            description: >-
+              This trigger will raise an alert when GES containers in the region
+              have restarted more than 5 times in last 15 minutes
+            notes: This could be indicative of REDIS connection issues
+            summary: '{{ $value }} GES containers have restarted in the past 15 minutes'
+          expr: >-
+            sum(increase(kube_pod_container_status_restarts_total{pod=~".*ges.*"}[15m]))
+            > 5
+          labels:
+            action: page
+            service: GES
+            severity: critical
+    - name: ges-health
+      rules:
+        - alert: GES_HEALTH
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness panel to track
+              dependency health over time.
+            runbook: >-
+              This alert should fire alongside a health alert indicating that
+              ORS Redis, Postgres or GWS connections are down. Check if any
+              other alerts are firing and work to resolving those. This will not
+              fire when REDIS is down.
+            summary: 'One or more component(s) is down for {{ $labels.pod }}'
+          expr: GES_HEALTH > 0
+          labels:
+            action: page
+            service: GES
+            severity: critical
+        - alert: GES_ALL_URS_DOWN
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track URS Health
+              over time
+
+            summary: 'All URS instances down for {{ $labels.pod }}'
+          expr: ALL_URS_DOWN > 0
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_REDIS_DOWN
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track Redis Health
+              over time
+
+            summary: 'Redis Connection down for {{ $labels.pod }}'
+          expr: REDIS_CONNECTION > 0
+          labels:
+            action: page
+            service: GES
+            severity: critical
+        - alert: GES_ORS_REDIS_DOWN
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track ORS Redis
+              Health over time
+
+            summary: 'ORS REDIS Connection down for {{ $labels.pod }}'
+          expr: ORS_REDIS_STATUS > 0
+          for: 5m
+          labels:
+            action: page
+            service: GES
+            severity: critical
+        - alert: GES_GWS_AUTH_DOWN
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track GWS Auth
+              Status over time
+
+            summary: >-
+              The GES node at {{ $labels.pod }} unable to connect to the GWS
+              Auth Sevice
+          expr: GWS_AUTH_STATUS > 0
+          for: 5m
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_GWS_ENVIRONMENT_DOWN
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track GWS
+              Environment Status over time
+
+            summary: >-
+              The GES node at {{ $labels.pod }} unable to connect to the GWS
+              Environment Sevice
+          expr: GWS_ENV_STATUS > 0
+          for: 5m
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_GWS_CONFIG_DOWN
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track GWS Config
+              Status over time
+
+            summary: >-
+              The GES node at {{ $labels.pod }} unable to connect to the GWS
+              Config Sevice
+          expr: GWS_CONFIG_STATUS > 0
+          for: 5m
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_GWS_SERVER_ERROR
+          annotations:
+            dashboard: >-
+              See GES Performance > Health and Liveliness to track GWS health
+              over time
+
+            summary: >-
+              The GES node at {{ $labels.pod }} is encountering server or
+              connection errors with GWS
+          expr: 'increase(GWS_SERVER_ERROR[5m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: warning
+    - name: ges-networking
+      rules:
+        - alert: GES_HTTP_400_POD
+          annotations:
+            dashboard: >-
+              For Errors by Tenant: See Public API Failures By Endpoint Graph in
+              GES Business Logic Dashbord, To see errors across the pods consult
+              GES - Performance > API Performance section
+            notes: Excessive 404 or 400 errors is a sign of a phishing attack
+
+            summary: 'HTTP 400''s are exceeding tolerances for {{ $labels.pod }}'
+          expr: >-
+            sum by (pod)
+            (increase(ges_http_failed_requests_total{httpCode="400"}[2m])) >
+            on(pod) http_400_tolerance
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_404_POD
+          annotations:
+            dashboard: >-
+              To see errors across the pods consult GES - Performance > API
+              Performance section
+            notes: Excessive 404 or 400 errors is a sign of a phishing attack
+
+            summary: 'HTTP 404''s are exceeding tolerances for {{ $labels.pod }}'
+          expr: >-
+            (sum by (pod)
+            (increase(ges_http_failed_requests_total{httpCode="404"}[2m]))) >
+            on(pod) http_404_tolerance
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_500
+          annotations:
+            dashboard: >-
+              For Errors by Tenant: See Public API Failures By Endpoint Graph in
+              GES Business Logic Dashbord, To see errors across the pods consult
+              GES - Performance > API Performance section
+            notes: >-
+              Excessive 500 errors is one sign of a DDoS attack. It may also
+              indicate an internal error within GES
+
+            summary: 'HTTP 500''s are exceeding tolerances for {{ $labels.pod }}'
+          expr: >-
+            sum by (pod)
+            (increase(ges_http_failed_requests_total{httpCode="500"}[2m])) >
+            on(pod) http_500_tolerance
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_401_POD
+          annotations:
+            dashboard: >-
+              For Errors by Tenant: See Public API Failures By Endpoint Graph in
+              GES Business Logic Dashbord, To see errors across the pods consult
+              GES - Performance > API Performance section
+            notes: >-
+              HTTP 401 is returned on unauthenticated attempts to access Admin
+              APIs. This might be a sign of attempts to hack into the system.
+
+            summary: 'HTTP 401''s are exceeding tolerances for {{ $labels.pod }}'
+          expr: >-
+            sum by (pod)
+            (increase(ges_http_failed_requests_total{httpCode="401"}[2m])) >
+            on(pod) http_401_tolerance
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_400_TENANT
+          annotations:
+            dashboard: >-
+              For Errors by Tenant: See Public API Failures By Endpoint Graph in
+              GES Business Logic Dashbord, To see errors across the pods consult
+              GES - Performance > API Performance section
+            notes: Excessive 404 or 400 errors is a sign of a phishing attack
+
+            summary: >-
+              HTTP 400's are exceeding tolerances for {{ $labels.exported_tenant
+              }}
+          expr: >-
+            sum by (exported_tenant)
+            (increase(ges_http_failed_requests_total{httpCode="400"}[2m])) > 0
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_404_TENANT
+          annotations:
+            dashboard: >-
+              To see errors across the pods consult GES - Performance > API
+              Performance section
+            notes: Excessive 404 or 400 errors is a sign of a phishing attack
+
+            summary: >-
+              HTTP 404's are exceeding tolerances for {{ $labels.exported_tenant
+              }}
+          expr: >-
+            sum by (exported_tenant)
+            (increase(ges_http_failed_requests_total{httpCode="404"}[2m])) > 0
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_500_TENANT
+          annotations:
+            dashboard: >-
+              For Errors by Tenant: See Public API Failures By Endpoint Graph in
+              GES Business Logic Dashbord, To see errors across the pods consult
+              GES - Performance > API Performance section
+            notes: >-
+              Excessive 500 errors is one sign of a DDoS attack. It may also
+              indicate an internal error within GES
+
+            summary: >-
+              HTTP 500's are exceeding tolerances for {{ $labels.exported_tenant
+              }}
+          expr: >-
+            sum by (exported_tenant)
+            (increase(ges_http_failed_requests_total{httpCode="500"}[2m])) > 0
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_HTTP_401_TENANT
+          annotations:
+            dashboard: >-
+              For Errors by Tenant: See Public API Failures By Endpoint Graph in
+              GES Business Logic Dashbord, To see errors across the pods consult
+              GES - Performance > API Performance section
+            notes: >-
+              HTTP 401 is returned on unauthenticated attempts to access Admin
+              APIs. This might be a sign of attempts to hack into the system.
+
+            summary: >-
+              HTTP 401's are exceeding tolerances for {{ $labels.exported_tenant
+              }}
+          expr: >-
+            sum by (exported_tenant)
+            (increase(ges_http_failed_requests_total{httpCode="401"}[2m])) > 0
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_SLOW_HTTP_RESPONSE_TIME
+          annotations:
+            dashboard: >-
+              See GES Performance > API Performance (General) > Avg Response
+              Time to identify which pods and endpoints are slow to respond. It
+              may help to filter out requests to the liveness and readiness
+              endpoints
+            note: >-
+              Remember to check other vital signs to diagnose if this is just a
+              symptom of another problem.
+            runbook: >-
+              Check GES's health such as CPU, memory usage, incoming request
+              rate to determine whether this is caused by overloading. If GES is
+              over-loaded, Double check how many K8s pods are running, if there
+              are fewer than 5 pods running, GES might be encountering
+              difficulties auto-scaling Check GES log for errors.
+            summary: >-
+              The GES node at {{ $labels.pod }} is taking longer than an average
+              of 1.5 seconds to respond to incoming HTTP requests
+          expr: >-
+            avg by (pod) (increase(ges_http_request_duration_seconds_sum[15m]) /
+            increase(ges_http_request_duration_seconds_count[15m])) > 1.5
+          labels:
+            action: email
+            service: GES
+            severity: warning
+    - name: ges-business-logic
+      rules:
+        - alert: GES_RBAC_CREATE_VQ_PROXY_ERROR
+          annotations:
+            summary: 'There are issues managing VQ proxy objects on {{ $labels.pod }}'
+          expr: >-
+            increase(RBAC_CREATE_VQ_PROXY_ERROR[10m]) > on(pod)
+            rbac_create_vq_proxy_error_tolerance
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_LOGGING_FAILURE
+          annotations:
+            summary: 'There are logging issues on {{ $labels.pod }}'
+          expr: 'increase(LOGGING_FAILURE[1m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_UNCAUGHT_EXCEPTION
+          annotations:
+            dashboard: >-
+              To see errors across GES pods consult the GES - Performance > API
+              Performance dashboards
+            runbook: >-
+              This will likely fire alongside a HTTP_500_POD alert for the same
+              pod. Consult GES logs for the relevant pod
+            summary: 'There have been recent uncaught exceptions on {{ $labels.pod }}'
+          expr: 'increase(UNCAUGHT_EXCEPTION[1m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_INVALID_CONTENT_LENGTH
+          annotations:
+            summary: >-
+              The GES node at {{ $labels.pod }} has recently received multiple
+              messages that exceed the max content length
+          expr: >-
+            increase(INVALID_CONTENT_LENGTH[2m]) > on(pod)
+            invalid_content_length_tolerance
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_DNS_FAILURE
+          annotations:
+            summary: >-
+              The GES node at {{ $labels.pod }} is encountering DNS resolution
+              issues
+          expr: 'increase(DNS_FAILURE[30m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_MONITOR_LAGGING_BEHIND
+          annotations:
+            summary: >-
+              The callback monitor on {{ $labels.pod }} is beginning to fall
+              behind
+          expr: 'increase(MONITOR_LAGGING_BEHIND[1m]) > 100'
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_CB_TTL_LIMIT_REACHED
+          annotations:
+            summary: >-
+              The exported_tenant {{ $labels.exported_tenant }} is now
+              throttling callbacks
+          expr: 'increase(CB_TTL_LIMIT_REACHED[2m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_CB_ENQUEUE_LIMIT_REACHED
+          annotations:
+            runbook: Check GES Logs for more info
+            summary: >-
+              The tenant {{ $labels.exported_tenant }} is throttling callback
+              bookings for a given number. Check logs for more info
+          expr: 'increase(CB_ENQUEUE_LIMIT_REACHED[2m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_CB_SUBMIT_FAILED
+          annotations:
+            runbook: Check GES Logs for more info
+            summary: >-
+              The pod {{ $labels.pod }} has encountered difficulties submitting
+              a callback to ORS. Check logs for more info
+          expr: 'increase(CB_SUBMIT_FAILED[2m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: info
+        - alert: GES_GWS_INCORRECT_CLIENT_CREDENTIALS
+          annotations:
+
+            summary: >-
+              The GES node at {{ $labels.pod }} has an incorrect copy of GWS
+              client credentials
+          expr: 'increase(GWS_INCORRECT_CLIENT_CREDENTIALS[5m]) > 0'
+          labels:
+            action: email
+            service: GES
+            severity: warning
+        - alert: GES_NEXUS_ACCESS_FAILURE
+          annotations:
+            summary: >-
+              The GES host {{ $labels.pod }} has been having difficulty
+              accessing nexus
+          expr: 'increase(NEXUS_ACCESS_FAILURE[30m]) > 60'
+          labels:
+            action: email
+            service: GES
+            severity: warning

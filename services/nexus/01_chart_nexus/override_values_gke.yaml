@@ -1,0 +1,9 @@
+# GKE specific overrides
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: $CERT_ISSUER
+  className: $INGRESS_CLASS
+  tls:
+    - hosts:
+      - digital.$DOMAIN
+      secretName: letsencrypt

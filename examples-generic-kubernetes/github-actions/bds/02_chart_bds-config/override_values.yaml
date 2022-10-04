@@ -1,3 +1,0 @@
-# Default values for bds-config
-metadata:
-  namespace: ${NS}

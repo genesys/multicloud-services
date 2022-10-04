@@ -1,0 +1,4 @@
+apiVersion: v2
+name: infra-cpe-monitoring
+description: Genesys PE infra monitoring
+version: 0.1

@@ -1,0 +1,232 @@
+# Default values for templates
+
+replicaCount: 1
+
+nameOverride: ""
+fullnameOverride: ""
+
+##########################################################################
+
+# tenant identification, or empty for shared deployment
+tenant:
+  # cloud tenant ID
+  id: "${TENANT_UUID}"
+  # cloud tenant SID (like 0001)
+  sid: "${TENANT_SID}"
+
+# deployment parameters
+deployment:
+  # deployment type: local|azure (TBD more)
+  type: local
+
+##########################################################################
+
+# common log configuration
+log:
+  # target directory where log will be stored, leave empty for default
+  logDir: ""
+  # path where volume will be mounted
+  volumeMountPath: /data/log
+  # log volume type: none | hostpath | pvc
+  volumeType: none # log to stdout
+  # log volume hostpath, used with volumeType "hostpath"
+  volumeHostPath: /mnt/log
+  # log PVC parameters, used with volumeType "pvc"
+  pvc:
+    name: pulse-lds-logs
+    accessModes:
+      - ReadWriteMany
+    capacity: 10Gi
+    class: ${STORAGE_CLASS_RWX}
+
+##########################################################################
+
+# container image common settings
+image:
+  pullPolicy: IfNotPresent
+  registry: "$IMAGE_REGISTRY"
+  imagePullSecrets:
+    - name: pullsecret
+
+##########################################################################
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+##########################################################################
+
+podAnnotations: {}
+
+podLabels: {}
+
+priorityClassName: ""
+
+# you can configure nodeSelector if needed
+nodeSelector: {}
+
+# tolerations settings
+tolerations: {}
+
+# monitoring settings
+monitoring:
+  # enable the Prometheus metrics endpoint
+  enabled: true
+  # port number of the Prometheus metrics endpoint
+  port: 9091
+  # HTTP path to scrape for metrics
+  path: /metrics
+  # additional annotations required for monitoring PODs
+  # you can reference values of other variables as {{.Values.variable.full.name}}
+  podAnnotations: {}
+    # prometheus.io/scrape: "true"
+    # prometheus.io/port: "{{.Values.monitoring.port}}"
+    # prometheus.io/path: "/metrics"
+  podMonitor:
+    # enables PodMonitor creation for the POD
+    enabled: true
+    # interval at which metrics should be scraped
+    scrapeInterval: 30s
+    # timeout after which the scrape is ended
+    scrapeTimeout:
+    # namespace of the PodMonitor, defaults to the namespace of the POD
+    namespace:
+    additionalLabels: {}
+  alerts:
+    # enables alert rules
+    enabled: true
+    # alert condition duration
+    duration: 5m
+    # namespace of the alert rules, defaults to the namespace of the POD
+    namespace:
+    additionalLabels: {}
+  goldenSignals:
+    enabled: false
+
+# limit the number of concurrent disruptions
+podDisruptionBudget:
+  enabled: false
+
+# volume claim template settings
+volumeClaims: {}
+
+##########################################################################
+
+# configuration for the LDS container
+lds:
+  # container image settings
+  image:
+    repository: "pulse/lds"
+  # application parameters
+  params:
+    # Application name on the Configuration Server
+    cfgApp: "pulse-lds-$((K8S_POD_INDEX % 2))"
+    # Port number of the upstream SIP Server
+    sipPort: 8000
+  # ports exposed outside by container
+  ports:
+    default: 8000
+    http: 8180
+  # configuraiton of the K8S probes for container
+  probes:
+    # disabled: true
+    startupProbe:
+      failureThreshold: 30
+      periodSeconds: 10
+    livenessProbe:
+      periodSeconds: 20
+    readinessProbe:
+      periodSeconds: 20
+  # resource limits for container
+  resources:
+    # disabled: true
+    # minimum resource requirements to start container
+    requests:
+      # minimal amount of memory required to start a container
+      memory: "50Mi"
+      # minimal CPU to reserve
+      cpu: "50m"
+    # resource limits for containers
+    limits:
+      # maximum amount of memory a container can use before being evicted
+      # by the OOM Killer
+      memory: "4Gi"
+      # maximum amount of CPU resources that can be used and should be tuned to reflect
+      # what the application can effectively use before needing to be horizontally scaled out
+      cpu: "4000m"
+
+##########################################################################
+
+# configuration for the monitor sidecar container
+monitorSidecar:
+  # container image settings
+  image:
+    repository: "pulse/monitor_lds_push_agent"
+  # application parameters
+  params:
+    # application metrics polling interval
+    pollPeriod: 15
+    # initial polling delay
+    initialDelay: 1
+    # max allowed connections
+    maxConnections: 4
+  # configuraiton of the K8S probes for container
+  probes:
+    # disabled: true
+    startupProbe:
+      failureThreshold: 10
+      periodSeconds: 5
+      timeoutSeconds: 2
+    livenessProbe:
+      periodSeconds: 20
+      timeoutSeconds: 2
+  # resource limits for container
+  resources:
+    # disabled: true
+    # minimum resource requirements to start container
+    requests:
+      # minimal amount of memory required to start a container
+      memory: "30Mi"
+      # minimal CPU to reserve
+      cpu: "2m"
+    # resource limits for containers
+    limits:
+      # maximum amount of memory a container can use before being evicted
+      # by the OOM Killer
+      memory: "70Mi"
+      # maximum amount of CPU resources that can be used and should be tuned to reflect
+      # what the application can effectively use before needing to be horizontally scaled out
+      cpu: "10m"
+
+# configuration for the Configuration Server Proxy container
+csproxy:
+  image:
+    repository: "pulse/cs_proxy"
+  # application parameters
+  params:
+    # Hostname of the Configuration Server
+    # If empty, use hostname based on naming conventions
+    cfgHost: tenant-${TENANT_UUID}.${VOICE_NAMESPACE}.svc.${DNS_SCOPE}.
+  # resource limits for container
+  resources:
+    # disabled: true
+    # minimum resource requirements to start container
+    requests:
+      # minimal amount of memory required to start a container
+      memory: "200Mi"
+      # minimal CPU to reserve
+      cpu: "50m"
+    # resource limits for containers
+    limits:
+      # maximum amount of memory a container can use before being evicted
+      # by the OOM Killer
+      memory: "2Gi"
+      # maximum amount of CPU resources that can be used and should be tuned to reflect
+      # what the application can effectively use before needing to be horizontally scaled out
+      cpu: "1000m"
+

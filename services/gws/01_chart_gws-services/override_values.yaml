@@ -1,0 +1,343 @@
+imageGlobals:
+  # Docker registry address
+  registry: $IMAGE_REGISTRY/gws
+  # Specifies whether chart will pull images
+  pullPolicy: Always
+  # Secrets for pulling image
+  imagePullSecrets:
+    - name: pullsecret
+
+deploymentGlobals:
+  deploymentTag: blue
+  # Location of the deployment
+  location: /$LOCATION
+  # Specifies the default security context for all pods
+  securityContext:
+    # Whether a container must run as a non-root user
+    runAsNonRoot: true
+    # The UID to run the entrypoint of the container process
+    runAsUser: 500
+    # The GID to run the entrypoint of the container process
+    runAsGroup: 500
+    # A supplemental group ID that applies to all containers in a pod
+    fsGroup: 500
+    
+
+gwsServices:
+
+  gwsAppProvisioning:
+    clientId: $prov_client_id
+    # PostgreSQL connection info for Agent Setup
+    postgres:
+      # PostgreSQL hostname
+      address: $POSTGRES_ADDR
+      # PostgreSQL port
+      port: 5432
+      # PostgreSQL database name
+      db: $gws_pg_dbname_prov
+
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 2
+        memory: 3200Mi
+      requests:
+        cpu: 1
+        memory: 3200Mi
+
+    context:
+      env:
+        GWS_PROVISIONING_COMMON_LOGLEVEL: info
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_CONF_URL: http://gws-service-proxy.${GWS_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
+        # Enables/disables SSL connection to PostgreSQL. Possible values: disable, prefer, require, verify-ca, verify-full
+        PGSSLMODE: disable
+
+        GWS_PROVISIONING_OBJECTCACHE_DB_TYPE: postgres
+        GWS_PROVISIONING_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USER: $gws_as_pg_user
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PASSWORD: $gws_as_pg_pass
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_HOST: $POSTGRES_ADDR
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_PORT: 5432
+        GWS_PROVISIONING_OBJECTCACHE_POSTGRES_USE_SSL: false
+        GWS_SECURE_COOKIE: false
+
+  gwsAppWorkspace:
+    clientId: $wrkspc_client_id
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_WORKSPACE_SERVICES_AUTH_FOR_REDIRECT: https://gauth.${DOMAIN}
+        GWS_WORKSPACE_SERVER_USE_SECURE_COOKIE: true
+        GWS_SECURE_COOKIE: true
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_VOICEMAIL_URL: http://voice-voicemail-service.voice.svc:8081/fs
+        GWS_WORKSPACE_CONSUL_AUTH_ENV_DISABLED: true
+
+  gwsPlatformChat:
+    enabled: true    
+
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 0.2
+        memory: 700Mi
+
+  gwsPlatformConfiguration:
+    clientId: $gws_client_id
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_CONFIGURATION_COMMON_DISCOVERY_TENANTS: true
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_CONFIGURATION_timeouts_environmentRefreshMs: 300000
+        GWS_CONFIGURATION_cache_tenantRefreshIntervalMin: 1
+        GWS_CS_CLUSTER_SUPPORT: true
+        GWS_CONFIGURATION_common_discovery_ixn_intercept:  false
+
+  gwsPlatformDatacollector:
+    clientId: $gws_client_id
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_DATACOLLECTOR_timeouts_environmentRefreshMs: 300000
+
+  gwsPlatformIxn:
+    clientId: $gws_client_id
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_IXN_timeouts_environmentRefreshMs: 60000
+
+  gwsPlatformOcs:
+    clientId: $gws_client_id
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_OCS_timeouts_environmentRefreshMs: 300000
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+
+  gwsPlatformSetting:
+    clientId: $gws_client_id
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_SETTING_timeouts_environmentRefreshMs: 300000
+
+  gwsPlatformStatistics:
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_STATISTICS_timeouts_environmentRefreshMs: 300000
+
+  gwsPlatformUcs:
+    enabled: true   
+
+  gwsPlatformVoice:
+    deployment:
+      replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 0.8
+        memory: 700Mi
+      requests:
+        cpu: 0.4
+        memory: 500Mi
+
+    context:
+      env:
+        GWS_SERVICE_AUTH_URL: http://gauth-auth.${GAUTH_NAMESPACE}:80
+        GWS_SERVICE_ENV_URL: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        GWS_VOICE_timeouts_requestTimeoutMs: 30000
+        GWS_VOICE_timeouts_environmentRefreshMs: 10000
+        GWS_AUTH_COMMON_ENV_SERVICE: http://gauth-environment.${GAUTH_NAMESPACE}:80
+        #GWS_PSDK_ENHANCED_PROTOCOL_SECURITY: true
+
+  gwsUiCrmworkspace:
+    deployment:
+      replicaCount: 1
+
+  gwsUiProvisioning:
+    deployment:
+      replicaCount: 1
+
+
+### 3rd Party services
+postgres:
+  # FQDN or IP of PostgreSQL server
+  address: $POSTGRES_ADDR
+  # Database name
+  db: $gws_pg_dbname
+
+elasticSearch:
+  # FQDN or IP of ElasticSearch cluster
+  address: $ES_ADDR
+  # ElasticSearch port
+  port: 9200
+  # Enable/disable TLS connection to Elasticsearch cluster
+  enableTls: false
+
+redis:
+  # Redis cluster host name
+  address: $REDIS_ADDR
+  # Redis port
+  port: 6379
+  # Enable/disable TLS connection to Redis cluster
+  enableTls: false
+
+consul:
+  # Port of local Consul agent
+  port: 8500
+  # Prefix to locate GWS data in the Consul KV storage
+  kv_prefix: "gws"
+
+prometheus:
+  # Enables annotation based discovery to scrape metrics
+  metricServer:
+    enabled: true
+
+# Secrets that should be provided to GWS components:
+secrets:
+  # public-secret
+  gws-screen-recording-public-secret: test
+  # private-secret
+  gws-screen-recording-private-secret: test
+
+
+
+###############################################################################
+# Values below recommended to save in secrets/deployment-secrets for privacy 
+# 
+# Don`t change values below if using secrets/deployment-secrets. 
+# It will be read and replaced by values from secrets/deployment-secrets
+###############################################################################
+
+  # Password to access Redis cluster
+  gws-redis-password: $REDIS_PASSWORD
+  # API token to access Consul
+  gws-consul-token: $gws_consul_token
+  # Username to access PostgreSQL database
+  gws-postgres-username: $gws_pg_user
+  # Password to access PostgreSQL database
+  gws-postgres-password: $gws_pg_pass
+  # Username to access PostgreSQL database  for Agent Setup
+  agentsetup-postgres-username: $gws_as_pg_user
+  # Password to access PostgreSQL database for Agent Setup
+  agentsetup-postgres-password: $gws_as_pg_pass
+  # Encrypted client secret generated by GAUTH service for the gws-app-provisioning component
+  gws-app-provisioning-client-secret: $gws_app_provisioning
+  # Encrypted client secret generated by GAUTH service for the gws-app-workspace component
+  gws-app-workspace-client-secret: $gws_app_workspace
+  # Encrypted client secret generated by GAUTH service for the gws-platform-configuration component
+  gws-platform-configuration-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-datacollector component
+  gws-platform-datacollector-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-ixn component
+  gws-platform-ixn-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-ocs component
+  gws-platform-ocs-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-setting component
+  gws-platform-setting-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-statistics component
+  gws-platform-statistics-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-voice component
+  gws-platform-voice-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-chat component
+  gws-platform-chat-client-secret: $gws_client_secret
+  # Encrypted client secret generated by GAUTH service for the gws-platform-ucs component
+  gws-platform-ucs-client-secret: $gws_client_secret
+  # Username of an operational user
+  ops-username: $gws_ops_user
+  # Encrypted password of the operational user
+  ops-password: $gws_ops_pass_encr    

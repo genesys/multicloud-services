@@ -1,0 +1,2 @@
+python_bcrypt==0.3.2
+PyYAML==6.0

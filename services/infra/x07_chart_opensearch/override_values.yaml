@@ -1,0 +1,64 @@
+###############################################################################
+# https://github.com/opensearch-project/helm-charts/tree/main/charts/opensearch
+###############################################################################
+
+persistence:
+  enableInitChown: false
+  storageClass: $STORAGE_CLASS_RWO_PREMIUM
+  size: 8Gi
+
+extraEnvs: 
+  - name: DISABLE_SECURITY_PLUGIN
+    value: "true"
+  - name: DISABLE_INSTALL_DEMO_CONFIG
+    value: "true"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 100Mi
+
+# for backward compability
+# service name same as with elasticsearch
+extraObjects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        meta.helm.sh/release-name: opensearch
+      labels:
+        app.kubernetes.io/component: opensearch-cluster-master
+        app.kubernetes.io/instance: opensearch
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: opensearch
+      name: elastic-es-http
+    spec:
+      ports:
+        - name: http
+          port: 9200
+          protocol: TCP
+          targetPort: 9200
+        - name: transport
+          port: 9300
+          protocol: TCP
+          targetPort: 9300
+      selector:
+        app.kubernetes.io/instance: opensearch
+        app.kubernetes.io/name: opensearch
+      sessionAffinity: None
+      type: ClusterIP
+
+
+#rbac:
+#  create: true
+#  serviceAccountAnnotations: {}
+#  serviceAccountName: opensearch
+
+#### extra tuning, recommended by opensearch
+#extraInitContainers: 
+#  - name: ini-sysctl
+#    securityContext:
+#      runAsUser: 0
+#      privileged: true
+#    image: busybox:latest
+#    command: ['sysctl', '-w','vm.max_map_count=262144']

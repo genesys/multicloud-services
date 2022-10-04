@@ -1,0 +1,24 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+loki:
+  #persistence:
+  #  storageClassName: logging-storage
+  serviceAccount:
+    create: false
+    name: logging-sa
+  securityContext:
+    fsGroup: null
+    runAsGroup: 0
+    runAsNonRoot: true
+    runAsUser: null
+
+promtail:
+  # serviceAccount:
+  #   create: true
+  #   name: logging-sa-promtail
+  containerSecurityContext:
+    privileged: true
+    allowPrivilegeEscalation: true
+    

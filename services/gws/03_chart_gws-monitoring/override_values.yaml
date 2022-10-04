@@ -1,0 +1,7 @@
+prometheus:
+  gwsDefaultRulesEnabled: true
+  podMonitor:
+    enabled: true
+
+grafana:
+  gwsDefaultDashboardsEnabled: true

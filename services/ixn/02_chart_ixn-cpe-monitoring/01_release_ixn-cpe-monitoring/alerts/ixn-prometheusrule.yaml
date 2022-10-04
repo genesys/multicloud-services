@@ -1,0 +1,190 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: ixn-alerts
+    meta.helm.sh/release-namespace: ixn
+  name: ixn-alerts
+  namespace: ixn
+spec:
+  groups:
+    - name: ixn-kube-state-metrics
+      rules:
+        - alert: ixn Container Has Failed
+          annotations:
+            description: >-
+              Container {{$labels.namespace}}/{{$labels.container}} in pod
+              {{$labels.pod}} has failed with "{{$labels.reason}}" reason
+            summary: ixn - Container has failed
+          expr: >-
+            kube_pod_container_status_terminated_reason{namespace="ixn",
+            reason!="Completed"} >0
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: ixn
+        - alert: ixn Pod Has Been In Pending State For Too Long
+          annotations:
+            description: 'Pod ixn/{{$labels.pod}} has been in Pending state for too long'
+            summary: ixn - Pod has been in Pending state
+          expr: 'kube_pod_status_phase{namespace="ixn", phase="Pending"} > 0'
+          for: 10m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: digital
+        - alert: ixn Pod Has Start Up Issue
+          annotations:
+            description: >-
+              Pod ixn/{{$labels.pod}} has start up issue with a reason
+              {{$labels.reason}}
+            
+            summary: ixn - Pod has start up issue
+          expr: >-
+            avg_over_time(kube_pod_container_status_waiting_reason{namespace="ixn",
+            reason!="ContainerCreating"}[15m]) > 0
+          for: 2m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: ixn
+    - name: IXN Resources
+      rules:
+        - alert: ixn High Memory Usage of Container
+          annotations:
+            
+            summary: >-
+              ixn - Container named {{$labels.container}} in {{$labels.pod}} is
+              using more than 85% of Memory Limit
+          expr: >-
+            ((( sum(container_memory_working_set_bytes{namespace="ixn",
+            container!="consul-connect-lifecycle-sidecar"}) by (container,pod) 
+            /
+            sum(kube_pod_container_resource_limits_memory_bytes{namespace="ixn",
+            container!="consul-connect-lifecycle-sidecar"}) by (container,pod) )
+            * 100 ) < +Inf ) > 85
+          for: 5m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: ixn
+    - name: IXN Server alerts
+      rules:
+        - alert: ixn ODBC Connections Hang
+          annotations:
+            description: >-
+              Container ixn/{{$labels.container}} in pod ixn/{{$labels.pod}} has
+              DB hung connections
+            
+            summary: ixn - ODBC connections to DB hung
+          expr: >-
+            min_over_time(ixn_health_info_current_database_connections{namespace="ixn"}[10m])
+            > 0 AND
+
+            min_over_time(ixn_health_info_current_database_requests{namespace="ixn"}[10m])
+            > 0 AND
+
+            delta(ixn_health_info_total_database_requests{namespace="ixn"}[10m])
+            == 0
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: ixn
+        - alert: ixn High DB Stack Size
+          annotations:
+            description: >-
+              Container ixn/{{$labels.container}} in pod ixn/{{$labels.pod}} has
+              high DB request stack size for a long time
+            
+            summary: ixn - High IXN Server DB request stack size for a long time
+          expr: 'ixn_health_info_current_database_requests{namespace="ixn"} > 0'
+          for: 10m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: ixn
+        - alert: ixn Long Request Queue Wait Time
+          annotations:
+            description: >-
+              Container ixn/{{$labels.container}} in pod ixn/{{$labels.pod}} has
+              long wait time in request queue for a long time
+            
+            summary: ixn - Long IXN Server wait time in request queue for a long time
+          expr: 'ixn_health_info_current_request_queue_wait{namespace="ixn"} >= 1'
+          for: 5m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: ixn
+    - name: IXN Health Checks
+      rules:
+        - alert: ixn Health Check Fail
+          annotations:
+            description: >-
+              Health check for Tenant short id {{$labels.tenant_sid}} is
+              unsuccessul. Current value is {{ $value }}
+            
+            summary: ixn - Health Check Returned Non-Success Result
+          expr: >-
+            min by (tenant_sid) ( avg without (pod,instance) (
+            (ixn:maintenance:ixn_health_status<=0) or ignoring(step)
+            ((ixn:maintenance:ixn_health_duration_seconds{step="overall"}>bool
+            5)+1) ) ) < 0
+          for: 20m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: digital
+        - alert: ixn Connection To Redis Failed
+          annotations:
+            description: >-
+              Connection to Redis has been absent for {{
+              .Values.monitoring.noConnectionToRedis.forValue }}. Tenant short
+              id {{$labels.tenant}}
+            
+            summary: ixn - No Connection To Redis
+          expr: max(ixnnode_redis_client_status) without (instance) == 0
+          for: 20m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: digital
+        - alert: ixn Connection To RQ Node Failed
+          annotations:
+            description: >-
+              Connection to RQ Node has been absent for {{
+              .Values.monitoring.noConnectionToRqNode.forValue }}. Tenant short
+              id {{$labels.tenant}}. RQ Node {{$labels.rq_node}}
+            
+            summary: ixn - No Connection To RqNode
+          expr: max(ixnnode_rq_client_status) without (instance) == 0
+          for: 20m
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: digital
+        - alert: ixn No Connection To Config Server
+          annotations:
+            description: >-
+              Connection to Config Server has been absent for {{
+              .Values.monitoring.noConnectionToConfigServer.forValue }}. Tenant
+              short id {{$labels.tenant}}
+            
+            summary: ixn - No Connection To Config Server
+          expr: 'ixn_health_info_config_server_connected{namespace="ixn"} == 0'
+          for: 1h
+          labels:
+            action: page
+            service: ixn
+            servicename: ixn
+            team: digital

@@ -1,0 +1,18 @@
+###############################################################################
+# Addidtional Nexus parameters
+# https://all.docs.genesys.com/PEC-DC/Current/DCPEGuide/Configure
+###############################################################################
+version: 100.0.118.0865
+nexus:
+  redis:
+    enabled: true
+    nodes: "redis://$REDIS_ADDR:$REDIS_PORT"
+    useCluster: true
+    enableTls: false
+    password: $REDIS_PASSWORD
+  db:
+    host: $POSTGRES_ADDR
+    port: 5432
+    user: $nexus_db_user
+    password: $nexus_db_password
+    enableSsl: false

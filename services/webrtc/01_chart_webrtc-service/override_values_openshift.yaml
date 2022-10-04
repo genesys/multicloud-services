@@ -1,0 +1,21 @@
+
+deployment:
+  securityContext:
+    fsGroup: null
+    runAsNonRoot: true
+    runAsUser: null
+    runAsGroup: 0
+
+gateway: 
+  securityContext:
+    fsGroup: null
+    runAsNonRoot: true
+    runAsUser: null
+    runAsGroup: 0
+
+coturn:
+  securityContext:
+    fsGroup: null
+    runAsNonRoot: true
+    runAsUser: null
+    runAsGroup: 0

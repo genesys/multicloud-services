@@ -1,0 +1,53 @@
+# openshift specific
+
+sysctlImage:
+  enabled: false
+
+master:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  serviceAccount:
+    #create: true
+    name: logging-sa #elasticsearch
+
+data:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  serviceAccount:
+    name: logging-sa #elasticsearch
+  
+coordinating:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  serviceAccount:
+    name: logging-sa #elasticsearch
+
+ingest:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  serviceAccount:
+    name: logging-sa #elasticsearch
+
+curator:
+  serviceAccount:
+    create: false
+    name: logging-sa #elasticsearch
+
+kibana:
+  serviceAccount:
+    create: false
+    name: logging-sa #elasticsearch
+
+metrics:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false

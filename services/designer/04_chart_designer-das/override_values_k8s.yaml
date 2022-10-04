@@ -1,0 +1,6 @@
+# K8s specific
+das:
+  securityContext:  
+    runAsUser: 0
+    runAsGroup: 0 
+    runAsNonRoot: true

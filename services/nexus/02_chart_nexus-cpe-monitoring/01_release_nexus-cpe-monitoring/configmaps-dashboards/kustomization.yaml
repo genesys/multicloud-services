@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+    app: grafana
+resources: []
+configMapGenerator:
+  - name: nexus-agent-stream
+    files: 
+      - metrics-nexus-agent-stream.json
+  - name: nexus-api 
+    files: 
+      - metrics-nexus-api.json
+  - name: nexus-chat-session 
+    files: 
+      - metrics-nexus-chat-session.json
+  - name: nexus-resources-usage 
+    files: 
+      - metrics-nexus-resources-usage.json
+  - name: nexus-whatsapp 
+    files: 
+      - metrics-nexus-whatsapp.json

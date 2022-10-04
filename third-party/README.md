@@ -8,14 +8,13 @@ Consult with the individual third party resource for their full configuration an
 
 - postgres
 - redis
-- opensearch
 - kafka
 - consul
 - mssql
 - elasticsearch
 
-Select your cluster type to get started:
+#### Third party services:
 
-  [generic kubernetes](../examples-generic-kubernetes/github-actions/infra/)  
-  [GKE](../examples-gke/github-actions/infra/)  
-  [OpenShift](../examples-openshift/github-actions/infra/)  
+  [logging](/services/logging/)  
+  [monitoring](/services/monitoring/)  
+  [infra](/services/infra/)  

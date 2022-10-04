@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${REDIS_SERVICE_NAME}
+  namespace: ${NS}
+  annotations:
+    "consul.hashicorp.com/service-sync": "true"
+spec:
+  clusterIP: None
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: ${REDIS_SERVICE_NAME}
+  namespace: ${NS}
+subsets:
+  - addresses:
+      - ip: ${voice_redis_ip}
+    ports:
+      - port: ${voice_redis_port}
+        name: redisport
+        protocol: TCP

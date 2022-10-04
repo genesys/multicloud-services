@@ -1,0 +1,15 @@
+# k8s specific
+
+grafana:
+  ingress:
+    annotations: 
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+    ingressClassName: $INGRESS_CLASS_INTERNAL
+    tls: true
+
+  containerSecurityContext:
+    runAsUser: 0
+    #runAsGroup: 0
+    #privileged: false
+    runAsNonRoot: false
+    #allowPrivilegeEscalation: false

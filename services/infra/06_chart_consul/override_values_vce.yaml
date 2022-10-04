@@ -1,0 +1,7 @@
+## for VCE cluster
+
+server:
+  securityContext:
+    runAsUser: 0
+    runAsNonRoot: false
+    runAsGroup: 0

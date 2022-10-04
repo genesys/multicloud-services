@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - pulse-manage-agents-rules.yaml
+  - pulse-monitor-dcu-autoscale.yaml
+  - pulse-monitor-dcu-collector.yaml
+  - pulse-monitor-dcu-job.yaml
+  - pulse-monitor-dcu-monitor.yaml
+  - pulse-monitor-dcu-pod.yaml
+  - pulse-monitor-dcu-statserver.yaml
+  - pulse-monitor-lds-monitor.yaml
+  - pulse-monitor-lds-pod.yaml
+  - pulse-monitor-lds-server.yaml
+  - pulse-monitor-permissions-pod.yaml
+  - pulse-monitor-pulse-jvm.yaml
+  - pulse-monitor-pulse-pod.yaml
+  - pulse-monitor-pulse-requests.yaml
+  - pulse-monitor-pulse-service.yaml

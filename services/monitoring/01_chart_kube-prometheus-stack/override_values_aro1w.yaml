@@ -1,0 +1,8 @@
+# aro1w cluster specific
+
+prometheusOperator:
+  admissionWebhooks:
+    enabled: false
+
+nodeExporter:
+  enabled: false   # do not deploy node-exporters

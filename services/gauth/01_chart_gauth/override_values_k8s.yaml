@@ -1,0 +1,19 @@
+# K8s specific
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: $CERT_ISSUER
+  ingressClassName: $INGRESS_CLASS
+  tls:
+    - secretName: gauth-ingress-ext
+      hosts:
+      - gauth.$DOMAIN
+
+internal_ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: $CERT_ISSUER
+  ingressClassName: $INGRESS_CLASS_INTERNAL
+  tls:
+    - secretName: gauth-ingress-int
+      hosts:
+      - gauth-int.$DOMAIN

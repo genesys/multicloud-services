@@ -1,0 +1,18 @@
+###############################################################################
+# https://github.com/opensearch-project/helm-charts/tree/main/charts/opensearch
+###############################################################################
+
+rbac:
+  #create: true
+  serviceAccountName: infra-sa
+
+#### extra tuning, recommended by opensearch
+# if willing to enable, add privileged scc for SA
+
+#extraInitContainers: 
+#  - name: ini-sysctl
+#    securityContext:
+#      runAsUser: 0
+#      privileged: true
+#    image: busybox:latest
+#    command: ['sysctl', '-w','vm.max_map_count=262144']

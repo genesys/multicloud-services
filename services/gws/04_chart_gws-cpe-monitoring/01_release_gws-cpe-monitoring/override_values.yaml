@@ -1,0 +1,25 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  gws-workspace-grafana-dashboard:
+    NAME: gws-workspace-grafana-dashboard
+    KEY: workspace.json
+  gws-platform-instance-grafana-dashboard:
+    NAME: gws-platform-instance-grafana-dashboard
+    KEY: platform-instance.json
+  gws-errors-grafana-dashboard:
+    NAME: gws-errors-grafana-dashboard
+    KEY: errors.json
+  gws-components-versions-grafana-dashboard:
+    NAME: gws-components-versions-grafana-dashboard
+    KEY: gws-components-versions.json
+  gws-platform-overview-grafana-dashboard:
+    NAME: gws-platform-overview-grafana-dashboard
+    KEY: platform-overview.json

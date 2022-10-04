@@ -1,0 +1,6 @@
+# Default values for bds-config
+metadata:
+  namespace: ${NS}
+
+tenantName: t${TENANT_SID}
+tenantId: "${TENANT_SID}"

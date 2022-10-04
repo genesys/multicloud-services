@@ -1,0 +1,38 @@
+###############################################################################
+# Define override helm values
+###############################################################################
+
+global:
+  storageClass: $STORAGE_CLASS_RWO_PREMIUM
+  kibanaEnabled: true
+
+kibana:
+  
+  persistence:
+    size: 3Gi
+  
+  ingress:
+    enabled: true
+    hostname: kibana-logging.$DOMAIN
+    annotations:
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+      route.openshift.io/termination: edge
+    tls: false
+
+master:
+  persistence:
+    enabled: true
+    size: 8Gi
+
+data:
+  persistence:
+    enabled: true
+    size: 8Gi
+
+curator:
+  enabled: true
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true

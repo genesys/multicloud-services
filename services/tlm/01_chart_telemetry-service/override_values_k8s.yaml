@@ -1,0 +1,11 @@
+# K8s specific
+
+tlm:
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+      kubernetes.io/ingress.class: $INGRESS_CLASS
+    tls:
+      - secretName: tlm-ext-tls
+        hosts:
+        - tlm.$DOMAIN

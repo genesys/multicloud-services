@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+    app: grafana
+resources: []
+configMapGenerator:
+  - name: dashboard-interaction-server-event-loggers
+    files: 
+      - interaction-server-event-loggers.json
+  - name: dashboard-interaction-server-node 
+    files: 
+      - interaction-server-node.json 
+  - name: dashboard-interaction-server-protocol-requests
+    files: 
+      - interaction-server-protocol-requests.json
+  - name: dashboard-interaction-server-routing
+    files: 
+      - interaction-server-routing.json
+  - name: dashboard-interaction-server-vq-node
+    files: 
+      - interaction-server-vq-node.json
+  - name: dashboard-interaction-server
+    files: 
+      - interaction-server.json
+  - name: dashboard-ixn-ors-healthcheck
+    files: 
+      - ixn-ors-healthcheck.json

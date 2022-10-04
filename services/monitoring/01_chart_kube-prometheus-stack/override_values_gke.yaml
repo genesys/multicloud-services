@@ -1,0 +1,23 @@
+# GKE specific
+
+prometheus:
+  ingress:
+    enabled: true
+    annotations: 
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+    ingressClassName: $INGRESS_CLASS_INTERNAL
+    tls:
+    - hosts:
+      - prometheus.$DOMAIN
+      secretName: prometheus-ingress-cert
+
+alertmanager:
+  ingress:
+    enabled: true
+    annotations: 
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+    ingressClassName: $INGRESS_CLASS_INTERNAL
+    tls:
+    - hosts:
+      - alert-manager.$DOMAIN
+      secretName: alertmgr-ingress-cert

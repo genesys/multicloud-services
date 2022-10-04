@@ -1,0 +1,8 @@
+# Additional override values
+image:
+  snmp:
+    tag: 100.0.100.0034
+  rup:
+    tag: 100.0.1001610
+  fluentBit:
+    tag: 1.8.2

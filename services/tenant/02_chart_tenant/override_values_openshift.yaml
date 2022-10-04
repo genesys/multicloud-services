@@ -1,0 +1,6 @@
+tenant:
+  containerSecurityContext:
+    runAsUser: null
+    runAsGroup: 0
+  securityContext:
+    fsGroup: null

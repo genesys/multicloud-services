@@ -1,0 +1,27 @@
+###############################################################################
+# Find more: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
+###############################################################################
+
+password: $REDIS_PASSWORD
+
+volumePermissions:
+  enabled: true
+
+persistence:
+  enabled: true
+  size: 2Gi
+  storageClass: $STORAGE_CLASS_RWO
+
+redis:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
