@@ -1,0 +1,20 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+clusterName: infra-elastic
+
+coordinating:
+  fullnameOverride: "infra-elastic-es-http"
+
+# infra-elastic would be main ES cluster (mostly used)
+# extended capacity
+master:
+  replicas: 3
+  persistence:
+    size: 3Gi
+
+data:
+  replicas: 2
+  persistence:
+    size: 8Gi

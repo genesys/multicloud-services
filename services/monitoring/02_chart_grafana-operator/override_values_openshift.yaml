@@ -1,0 +1,12 @@
+# Openshift specific
+
+operator:
+  containerSecurityContext:
+    enabled: false
+
+grafana:
+  podSecurityContext:
+    enabled: false
+
+  containerSecurityContext:
+    enabled: false

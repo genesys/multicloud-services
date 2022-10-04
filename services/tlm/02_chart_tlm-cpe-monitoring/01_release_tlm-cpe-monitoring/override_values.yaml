@@ -1,0 +1,13 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  telemetry-service-grafana-dashboard:
+    NAME: telemetry-service-grafana-dashboard
+    KEY: telemetry-core-dashboard-telemetry-service.json

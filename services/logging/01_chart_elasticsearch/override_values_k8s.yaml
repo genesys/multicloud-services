@@ -1,0 +1,13 @@
+# k8s specific
+
+kibana:
+  
+  volumePermissions:
+    enabled: true
+  
+  ingress:
+    ingressClassName: $INGRESS_CLASS_INTERNAL
+    tls: true
+
+volumePermissions:
+  enabled: true

@@ -1,0 +1,63 @@
+image:
+  pullPolicy: IfNotPresent
+  registry: "$IMAGE_REGISTRY"
+  imagePullSecrets:
+    - name: pullsecret
+config:
+  # set "true" to create config maps
+  createConfigMap: true
+  # set "true" to create secrets
+  createSecret: true
+  # Postgres config map name
+  postgresConfig: "pulse-postgres-configmap"
+  # Postgres hostname
+  postgresHost: "${POSTGRES_ADDR}"
+  # Postgres port
+  postgresPort: "${POSTGRES_PORT}"
+  # Postgres User
+  postgresUser: "${POSTGRES_USER}"
+  # Postgres Password
+  postgresPassword: "${POSTGRES_PASSWORD}"
+  # fill database name
+  dbName: "$pulse_db_name"
+  # Postgres SSL mode
+  postgresEnableSSL: "prefer"
+  # Postgres User
+  postgresSecret: "pulse-postgres-secret"
+  # Secret key for postgres user
+  postgresSecretUser: "META_DB_ADMIN"
+  # Secret key for postgres  password
+  postgresSecretPassword: "META_DB_ADMINPWD"
+  # set "true" when need @host added for username
+  dbUserWithHost: false
+
+  # Redis config
+  # Redis config map name
+  redisConfig: "pulse-redis-configmap"
+  # Redis host
+  redisHost: "$pulse_redis_host"
+  # Redis port
+  redisPort: "$pulse_redis_port"
+  # Password for Redis
+  redisKey: "$pulse_redis_key"
+  # Redis SSL enabled
+  redisEnableSSL: "false"
+  # Secret name for Redis
+  redisSecret: "pulse-redis-secret"
+  # Secret key for Redis password
+  redisSecretKey: "REDIS01_KEY"
+
+  # GWS config
+  # Client ID
+  gwsClientId: "$pulse_gws_client_id"
+  # Client Secret
+  gwsClientSecret: "$pulse_gws_client_secret"
+  # Secret name
+  gwsSecret: "pulse-gws-secret"
+  # Secret key for Client ID
+  gwsSecretClientId: "clientId"
+  # Secret key for Client Secret
+  gwsSecretClientSecret: "clientSecret"
+
+  # set "true" for CSI secrets
+  mountSecrets: false

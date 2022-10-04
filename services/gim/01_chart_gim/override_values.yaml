@@ -1,0 +1,48 @@
+###############################################################################
+# Global GIM parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGIM
+###############################################################################
+
+tenant_id: t${TENANT_SID}
+tenant_uuid: $TENANT_UUID
+
+replicaCount: 1
+
+image:
+  registry: $IMAGE_REGISTRY
+  repository: gim/gim
+  pullPolicy: IfNotPresent
+
+db:
+  jdbcUrl: jdbc:postgresql://${POSTGRES_ADDR}:5432/${gim_pgdb_etl_name}?${gim_pgdb_etl_user}&sslmode=prefer
+  host: ${POSTGRES_ADDR}
+  name: ${gim_pgdb_etl_name}
+  username: ${gim_pgdb_etl_user}
+  password: ${gim_pgdb_etl_pass}
+
+imagePullSecrets:
+  pullsecret: {}
+
+monitoring:
+  enabled: true
+  port: 8249
+
+initContainers: ""
+extraVolumeMounts: ""
+kafka:
+  bootstrap: ${KAFKA_ADDR}:${KAFKA_PORT}
+  security:
+    protocol: plaintext
+  sasl:
+    mechanism: PLAIN
+
+resources:
+  requests:
+    memory:    "350Mi"
+    cpu:       "0.05"
+  limits:
+    memory:    "3Gi"
+    cpu:       "2"
+
+gim_export:
+  days_to_keep_output_files:  "14"

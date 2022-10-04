@@ -1,0 +1,31 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  cxc-grafana-dashboard-general:
+    KEY: cxc-general.json
+    NAME: cxc-grafana-dashboard-general
+  cxc-grafana-dashboard-api:
+    KEY: cxc-amark-app.json
+    NAME: cxc-grafana-dashboard-api
+  cxc-grafana-dashboard-cm:
+    KEY: cxc-campaign-manager.json
+    NAME: cxc-grafana-dashboard-cm
+  cxc-grafana-dashboard-com:
+    KEY: cxc-compliance.json
+    NAME: cxc-grafana-dashboard-com
+  cxc-grafana-dashboard-js:
+    KEY: cxc-job-scheduler.json
+    NAME: cxc-grafana-dashboard-js
+  cxc-grafana-dashboard-lb:
+    KEY: cxc-list-builder.json
+    NAME: cxc-grafana-dashboard-lb
+  cxc-grafana-dashboard-lm:
+    KEY: cxc-list-manager.json
+    NAME: cxc-grafana-dashboard-lm

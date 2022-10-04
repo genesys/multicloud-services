@@ -1,0 +1,13 @@
+# Openshift specific overrides
+
+k8s_optional:
+  securityContext:
+    fsGroup: null
+    runAsGroup: 0
+    runAsNonRoot: true
+    runAsUser: null
+
+storage:
+  pvc:
+    storageClassName: cxc-storage
+      

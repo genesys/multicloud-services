@@ -1,0 +1,25 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  gvp-rm-dashboard:
+    KEY: gvp-rm-dashboard.json
+    NAME: gvp-rm-dashboard
+  gvp-rs-dashboard:
+    KEY: gvp-rs-dashboard.json
+    NAME: gvp-rs-dashboard
+  gvp-configserver-dashboard:
+    KEY: gvp-configserver-dashboard-gvp-configserver.json
+    NAME: gvp-configserver-dashboard
+  gvp-mcp-utilization-dashboard:
+    KEY: mcp-grafana-dashboard-gvp-mcp.json
+    NAME: gvp-mcp-utilization-dashboard
+  gvp-mcp-log-alerts-dashboard:
+    KEY: mcp-grafana-log-alerts-dashboard-gvp-mcp.json
+    NAME: gvp-mcp-log-alerts-dashboard

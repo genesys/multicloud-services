@@ -1,0 +1,40 @@
+###############################################################################
+# Global IWD parameters
+# https://all.docs.genesys.com/PEC-IWD/Current/IWDPEGuide/Configure
+###############################################################################
+
+replicaCount: 1
+
+image:
+  registry: $IMAGE_REGISTRY
+  repository: nexus/iwd
+  pullSecrets:
+    - name: pullsecret
+
+gauth:
+  auth:
+    url: http://gauth-auth.gauth
+    redirectUrl: https://gauth.${DOMAIN}
+
+ingress:
+  enabled: true
+  annotations:
+    route.openshift.io/termination: edge
+  hosts:
+    - host: iwd.${DOMAIN}
+      paths:
+        - path: '/iwd/'
+          port: 4024
+  tls: []
+
+nexus:
+  url: http://nexus.nexus
+
+elasticsearch:
+  host: $ES_ADDR
+  port: 9200
+
+monitoring:
+  alarms: true
+  dashboards: true
+  enabled: true

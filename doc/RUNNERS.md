@@ -1,4 +1,4 @@
-# build your own self-hosted runner
+# Build your own self-hosted runner
 
 ## github-actions
 You can use:
@@ -119,7 +119,7 @@ Replace accordingly:
 
 `$ kubectl apply -f runner.yaml -n default`
 
-!note! You may need to create pull secret in default namespace, and specify it in runner deployment if it's not used by default.
+> ⚠ You may need to create pull secret in default namespace, and specify it in runner deployment if it's not used by default.
 
 Validate by checking deployment and pod status, pod logs and events.
 

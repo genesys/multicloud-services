@@ -1,0 +1,10 @@
+# GKE specific overrides
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: $CERT_ISSUER
+    kubernetes.io/ingress.class: nginx
+  tls:
+    - hosts:
+        - iwd.${DOMAIN}
+      secretName: letsencrypt

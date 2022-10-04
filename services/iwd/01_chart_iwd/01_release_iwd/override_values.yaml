@@ -1,0 +1,23 @@
+###############################################################################
+# Addidtional IWD parameters
+# https://all.docs.genesys.com/PEC-IWD/Current/IWDPEGuide/Configure
+###############################################################################
+
+redis:
+  nodes: redis://${REDIS_ADDR}:${REDIS_PORT}
+  useCluster: true
+  enableTLS: false
+  password: $REDIS_PASSWORD
+
+gws:
+  url: http://gauth-auth.gauth
+  clientId: $iwd_gws_client_id
+  clientSecret: $iwd_gws_client_secret
+  apiKey: None
+
+nexus:
+  apikey: $iwd_nexus_api_key
+
+iwd:
+  db:
+    host: $POSTGRES_ADDR

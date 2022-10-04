@@ -1,0 +1,92 @@
+{{- if .Values.dashboards.infra -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: grafana
+  name: cpe-dashboards-infra
+data:
+  alerts.json: |-
+{{- tpl (.Files.Get "dashboards/alerts.json") . | nindent 4 }}
+  pg-exporter.json: |-
+{{- tpl (.Files.Get "dashboards/pg-exporter.json") . | nindent 4 }}
+  redis-exporter.json: |-
+{{- tpl (.Files.Get "dashboards/redis-exporter.json") . | nindent 4 }}
+  kafka.json: |-
+{{- tpl (.Files.Get "dashboards/kafka.json") . | nindent 4 }}
+  kafka-zookeeper.json: |-
+{{- tpl (.Files.Get "dashboards/kafka-zookeeper.json") . | nindent 4 }}
+
+
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+  name: cpe-alerts
+spec:
+  configMapRef:
+    name: cpe-dashboards-infra
+    key: alerts.json
+  customFolderName: cpe-dashboards
+  json: ""
+
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+  name: cpe-pg-exporter
+spec:
+  configMapRef:
+    name: cpe-dashboards-infra
+    key: pg-exporter.json
+  customFolderName: cpe-dashboards
+  json: ""
+
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+  name: cpe-redis-exporter
+spec:
+  configMapRef:
+    name: cpe-dashboards-infra
+    key: redis-exporter.json
+  customFolderName: cpe-dashboards
+  json: ""
+
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+  name: cpe-kafka
+spec:
+  configMapRef:
+    name: cpe-dashboards-infra
+    key: kafka.json
+  customFolderName: cpe-dashboards
+  json: ""
+
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+  name: cpe-kafka-zookeeper
+spec:
+  configMapRef:
+    name: cpe-dashboards-infra
+    key: kafka-zookeeper.json
+  customFolderName: cpe-dashboards
+  json: ""
+
+  {{- end -}}

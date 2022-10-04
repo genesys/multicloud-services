@@ -1,0 +1,30 @@
+###############################################################################
+# Find more: https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch
+###############################################################################
+
+clusterDomain: $DNS_SCOPE
+
+volumePermissions:
+  enabled: true
+
+global:
+  storageClass: $STORAGE_CLASS_RWO_PREMIUM
+
+# reduced capacity cluster
+master:
+  replicas: 1
+  persistence:
+    size: 3Gi
+
+data:
+  replicas: 2
+  persistence:
+    size: 3Gi
+
+curator:
+  enabled: true
+
+#metrics:
+#  enabled: true
+#  serviceMonitor:
+#    enabled: true

@@ -1,0 +1,253 @@
+# GutHub Actions workflow for deployment to OpenShift cluster
+
+# 💁 Implements:
+# - Parsing inputs: service for deployment, namespace, helm-repo, command
+# - Checking for required secrets
+# - Checkout your repository
+# - Installing OpenShift cli and helm chart tools
+# - Adding helm repository
+# - Performing OpenShift cluster login
+# - Performing helm install/install/validate for service
+
+# ℹ️ Configure your repository and the workflow with the following steps:
+# 1. Have access to an OpenShift cluster. Refer to https://www.OpenShift.com/try
+# 2. Put required credentials to repository secrets:
+#    - your private OpenShift cluster info (we use OPENSHIFT_SERVER_xx, OPENSHIFT_TOKEN_xx secrets)
+#    - user creds for your private helm and image registries
+#   - https://github.com/redhat-actions/oc-login#readme
+#   - https://docs.github.com/en/actions/reference/encrypted-secrets
+#   - https://cli.github.com/manual/gh_secret_set
+# 3. (Optional) Edit the top-level 'env' section as marked with '🖊️' if the defaults are not suitable for your project.
+# 5. Commit and push the workflow file to your default branch. Manually trigger a workflow run.
+
+
+name: Deploy service to OpenShift
+
+env:
+  # ❗ Keep sensitive data in your GHA secrets
+  # Registries such as Jfrog, GHCR, Quay.io, and Docker Hub are supported
+  HELM_REGISTRY:            ${{ secrets.HELM_REGISTRY }}
+  HELM_REGISTRY_USER:       ${{ secrets.HELM_REGISTRY_USER }}          
+  HELM_REGISTRY_TOKEN:      ${{ secrets.HELM_REGISTRY_TOKEN }}
+  IMAGE_REGISTRY:           ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_REGISTRY_USER:      ${{ secrets.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_TOKEN:     ${{ secrets.IMAGE_REGISTRY_TOKEN }}
+  
+  # 🖊️ EDIT to suit your environment
+  CLUSTER_TYPE:             openshift
+  CLUSTER:                  ${{ github.event.inputs.cluster }}
+  SERVICE:                  ${{ github.event.inputs.service }}
+
+  # 🐞 Enable debug if needed
+  DEBUG_HELM: false
+
+on:
+  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+  workflow_dispatch:
+    inputs:
+      service:
+        type: choice
+        description: service(s) for deployment
+        required: true
+        default: infra
+        options:
+          - infra
+          - logging
+          - monitoring
+          - bds
+          - cxc
+          - designer
+          - gauth
+          - gca
+          - gcxi
+          - ges
+          - gim
+          - gsp
+          - gvp
+          - gws
+          - iwd
+          - iwddm
+          - iwdem
+          - ixn
+          - nexus
+          - pulse
+          - tenant
+          - tlm
+          - ucsx
+          - voice
+          - webrtc
+          - wwe
+      cluster:
+        type: choice
+        description: openshift cluster
+        required: true
+        default: aro
+        options:
+          - aro
+          - aro1w
+      namespace:
+        # by default will use namespace equal to service name
+        description: namespace (if not default)
+        required: false
+      helmrepo:
+        description: helm repo name in HELM_REGISTRY
+        required: true
+        default: helm-stage
+      command:
+        description: command install|validate|uninstall
+        required: true
+        default: validate
+        
+jobs:
+  openshift-ci-cd:
+    name: Deploy ${{ github.event.inputs.service }} (${{ github.event.inputs.command }}) to ${{ github.event.inputs.cluster }}
+     # 🖊️ EDIT (optional) if you want to use your own runner
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
+    # See https://github.com/redhat-actions/oc-login#readme for how to retrieve these values.
+    # To get a permanent token, refer to https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
+    - name: Define cluster connection variables 
+      run: |
+        case ${{ github.event.inputs.cluster }} in
+
+          aro)
+              echo "OPENSHIFT_SERVER=OPENSHIFT_SERVER_ARO"    >> $GITHUB_ENV
+              echo "TOKEN_NAME=OPENSHIFT_TOKEN_ARO"           >> $GITHUB_ENV
+            ;;
+
+          aro1w)
+              echo "OPENSHIFT_SERVER=OPENSHIFT_SERVER_ARO1W"  >> $GITHUB_ENV
+              echo "TOKEN_NAME=OPENSHIFT_TOKEN_ARO1W"         >> $GITHUB_ENV
+            ;;
+
+        esac
+
+    - name: Check for required secrets
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const secrets = {
+            OPENSHIFT_TOKEN:      `${{ secrets[env.TOKEN_NAME] }}`,
+            HELM_REGISTRY:        `${{ secrets.HELM_REGISTRY }}`,
+            HELM_REGISTRY_USER:   `${{ secrets.HELM_REGISTRY_USER }}`,
+            HELM_REGISTRY_TOKEN:  `${{ secrets.HELM_REGISTRY_TOKEN }}`,
+            IMAGE_REGISTRY:       `${{ secrets.IMAGE_REGISTRY }}`,
+            IMAGE_REGISTRY_USER:  `${{ secrets.IMAGE_REGISTRY_USER }}`,
+            IMAGE_REGISTRY_TOKEN: `${{ secrets.IMAGE_REGISTRY_TOKEN }}`
+          };
+
+          const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+            if (value.length === 0) {
+              core.error(`Secret "${name}" is not set`);
+              return true;
+            }
+            core.info(`✔️ Secret "${name}" is set`);
+            return false;
+          });
+
+          if (missingSecrets.length > 0) {
+            core.setFailed(`❌ At least one required secret is not set in the repository. \n` +
+              "You can add it using:\n" +
+              "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+              "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+          }
+          else {
+            core.info(`:heavy_check_mark: All the required secrets are set`);
+          }
+
+
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+
+    - name: Install OC CLI tool for OpenShift
+      #uses: redhat-actions/openshift-tools-installer@v1
+      uses: redhat-actions/oc-installer@v1
+      #with:
+        # 🖊️ EDIT (optional) if you want to specify oc cli version, for example "latest"
+        #oc: "latest"
+
+
+    - name: Install helm tool
+      uses: azure/setup-helm@v1
+      with:
+        # 🖊️ (Optional) EDIT if you want to specify helm version (default: "latest")
+        version: "v3.7.1"
+
+
+    - name: Helm repo add
+      run: |
+        helm repo add --force-update helm_repo ${{ env.HELM_REGISTRY }}${{ github.event.inputs.helmrepo }} \
+          --username ${{ env.HELM_REGISTRY_USER }} --password "${{ env.HELM_REGISTRY_TOKEN }}"
+
+
+
+    # https://github.com/redhat-actions/oc-login#readme
+    - name: Log in to OpenShift
+      uses: redhat-actions/oc-login@v1
+      with:
+        openshift_server_url: ${{ secrets[env.OPENSHIFT_SERVER] }}
+        openshift_token:      ${{ secrets[env.TOKEN_NAME] }}
+        insecure_skip_tls_verify: true
+
+    - name: Determine target namespace
+      run: |
+        SV=${{ github.event.inputs.service }}
+        NS=${{ github.event.inputs.namespace }}
+        # By default (if namespace not defined) we install in namespace=service_name
+        if [ ! "$NS" ] ; then
+          NS=$SV
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+        fi
+        echo "NS=$NS" >> $GITHUB_ENV
+
+    - name: Create or use project
+      run: |
+        NS=${{ env.NS }}
+        if ! oc project $NS; then
+           echo "Project $NS does not exist. Creating it.."
+           oc new-project $NS
+        else
+           echo "Project $NS already exists. Will use it."
+        fi
+
+    # Pull secret has to be created if you pull images from external registry
+    # Make sure you added your user name and password(token) in github secrets
+    - name: Create pull secret if absent
+      run: |
+        if ! kubectl get secret pullsecret ; then
+            kubectl create secret docker-registry pullsecret \
+              --docker-server=$IMAGE_REGISTRY \
+              --docker-username=$IMAGE_REGISTRY_USER --docker-password=$IMAGE_REGISTRY_TOKEN
+        fi
+        oc secrets link default pullsecret --for=pull
+
+    - name: DEPLOYMENT SCRIPT
+      env:
+        NS: ${{ env.NS }}
+        DOMAIN: "${{ env.OPENSHIFT_SERVER }}"
+      run: |
+        export DOMAIN=$(echo $DOMAIN | sed 's/:.*//' | sed 's/^api./apps./')
+
+        FULLCOMMAND="${{ github.event.inputs.command }}"
+        COMMAND=$(echo $FULLCOMMAND | cut -d' ' -f1)
+        if [[ "$FULLCOMMAND" == *" "* ]]; then
+          CHART_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f2)
+          RL_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f3)
+        fi
+
+        cd services/$SERVICE
+
+        source ../deployment.sh
+
+
+    - name: Save artifacts
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: services/${{ github.event.inputs.service }}/artifacts/

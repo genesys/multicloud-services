@@ -1,0 +1,4 @@
+# ARO cluster specific (k8s 1.19)
+# disable PDB
+podDisruptionBudget:
+  enabled: false

@@ -1,0 +1,9 @@
+###############################################################################
+# Additional GCXI parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GCXIPEGuide/Configure
+###############################################################################
+
+#gcxi:
+#  deployment:
+#    # By default it is taken from Chart.AppVersion
+#    gcxiVersion: 100.0.028.0000

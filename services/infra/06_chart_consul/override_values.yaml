@@ -1,0 +1,49 @@
+###############################################################################
+# Find more: https://www.consul.io/docs/k8s/helm#configuration-values
+###############################################################################
+
+global:
+
+  name: consul
+  datacenter: $CONSUL_DC_LOCATION
+
+  acls:
+    manageSystemACLs: true
+
+  tls:
+    enabled: true
+    httpsOnly: false
+    caCert:
+      secretName: consul-ca-cert
+      secretKey: tls.crt
+    caKey:
+      secretName: consul-ca-key
+      secretKey: tls.key
+
+server:
+  replicas: 4           # default is 3
+  resources:
+    limits:
+      memory: 200Mi     # increased from 100Mi
+  storage: 1Gi
+  storageClass: $STORAGE_CLASS_RWO_PREMIUM
+  
+  #securityContext:
+  #  runAsNonRoot: false
+  #  runAsGroup: 0
+  #  runAsUser: 0
+  #  fsGroup: 0
+
+client:
+  enabled: true
+connectInject:
+  enabled: true
+  transparentProxy:
+    defaultEnabled: false
+controller:
+  enabled: true
+syncCatalog:
+  enabled: true
+  toConsul: true
+  toK8S: false
+  addK8SNamespaceSuffix: false

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+    app: grafana
+resources: []
+configMapGenerator:
+  - name: gauth-auth
+    files: 
+      - gauth-auth.json
+  - name: gauth-auth-svc-dashboard
+    files: 
+      - gauth-auth-svc-dashboard.json

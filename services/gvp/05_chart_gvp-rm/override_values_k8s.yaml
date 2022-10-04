@@ -1,0 +1,9 @@
+# k8s specific
+
+securityContext:
+  fsGroup: 0
+  runAsNonRoot: false
+  runAsUserRM: 0
+  runAsGroupRM: 0
+  runAsUserCfghandler: 0
+  runAsGroupCfghandler: 0

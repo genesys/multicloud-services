@@ -1,0 +1,153 @@
+# Default values for pulse.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  pullPolicy: IfNotPresent
+  registry: "$IMAGE_REGISTRY"
+  imagePullSecrets:
+    - name: pullsecret
+
+replicaCount: 1
+
+# common configuration.
+config:
+  dbName: "$pulse_db_name"
+  # set "true" when need @host added for username
+  dbUserWithHost: false
+  # set "true" for CSI secrets
+  mountSecrets: false
+  # Postgres config map name
+  postgresConfig: "pulse-postgres-configmap"
+  # Postgres secret name
+  postgresSecret: "pulse-postgres-secret"
+  # Postgres secret key for user
+  postgresSecretUser: "META_DB_ADMIN"
+  # Postgres secret key for password
+  postgresSecretPassword: "META_DB_ADMINPWD"
+  # Redis config map name
+  redisConfig: "pulse-redis-configmap"
+  # Redis secret name
+  redisSecret: "pulse-redis-secret"
+  # Redis secret key for access key
+  redisSecretKey: "REDIS01_KEY"
+  # GAuth secret name
+  gwsSecret: "pulse-gws-secret"
+  # GAuth secret key for client_id
+  gwsSecretClientId: "clientId"
+  # GAuth secret key for client_secret
+  gwsSecretClientSecret: "clientSecret"
+
+# monitoring settings
+monitoring:
+  # enable the Prometheus metrics endpoint
+  enabled: true
+  # port is <options.managementPort>
+  # HTTP path is <options.managementContext><options.prometheusEndpoint>
+  # additional annotations required for monitoring PODs
+  # you can reference values of other variables as {{.Values.variable.full.name}}
+  podAnnotations: {}
+    # prometheus.io/scrape: "true"
+    # prometheus.io/port: "{{.Values.options.managementPort}}"
+    # prometheus.io/path: "{{.Values.options.managementContext}}{{.Values.options.prometheusEndpoint}}"
+  serviceMonitor:
+    # enables ServiceMonitor creation
+    enabled: true
+    # interval at which metrics should be scraped
+    scrapeInterval: 30s
+    # timeout after which the scrape is ended
+    scrapeTimeout:
+    # namespace of the ServiceMonitor, defaults to the namespace of the service
+    namespace:
+    additionalLabels: {}
+
+# common log configuration
+log:
+  # target directory where log will be stored, leave empty for default
+  logDir: ""
+  # path where volume will be mounted
+  volumeMountPath: /data/log
+  # log volume type: none | hostpath | pvc
+  volumeType: none # log to stdout
+  # log volume hostpath, used with volumeType "hostpath"
+  volumeHostPath: /mnt/log
+  # log PVC parameters, used with volumeType "pvc"
+  pvc:
+    name: pulse-logs
+    accessModes:
+      - ReadWriteMany
+    capacity: 10Gi
+    class: "${STORAGE_CLASS_RWX}"
+
+# application options
+options:
+  authUrl: "https://gauth.${DOMAIN}"
+  authUrlInt: "http://gauth-auth.${GAUTH_NAMESPACE}.svc"
+  gwsUrl: "https://gws.${DOMAIN}"
+  gwsUrlInt: "http://gws-service-proxy.${GWS_NAMESPACE}.svc"
+
+## Service account settings
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+## Ingress configuration
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: ${INGRESS_CLASS}
+    cert-manager.io/cluster-issuer: ${CERT_ISSUER}
+  #ingressClassName: nginx
+  hosts:
+    - host: "pulse.${DOMAIN}"
+      paths: [/]
+  tls:
+  - secretName: pulse-ingress-cert
+    hosts:
+    - pulse.${DOMAIN}
+gateway:
+  enabled: false
+
+## Resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  limits:
+    memory: 1Gi
+    cpu: 1
+  requests:
+    memory: 500Mi
+    cpu: 100m
+
+## HPA Settings
+## Not supported in this release!
+hpa:
+  enabled: false
+
+## Priority Class
+## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+##
+priorityClassName: ""
+
+## Node labels for assignment.
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for assignment.
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## Pod Disruption Budget Settings
+podDisruptionBudget:
+  enabled: false
+
+## Affinity for assignment.
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
+# control network policies
+networkPolicies:
+  enabled: false

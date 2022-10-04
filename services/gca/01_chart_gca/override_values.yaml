@@ -1,0 +1,20 @@
+###############################################################################
+# Global GCA parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGCA
+###############################################################################
+
+log:
+  level:   "debug"
+
+image:
+  registry: $IMAGE_REGISTRY
+
+imagePullSecrets:
+  pullsecret: {}
+
+kafka:
+  bootstrap: ${KAFKA_ADDR}:9092
+
+ssl_db_connection: false
+
+containerSecurityContext: {}

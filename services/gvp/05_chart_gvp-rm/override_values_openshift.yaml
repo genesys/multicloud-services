@@ -1,0 +1,9 @@
+# Openshift specific
+
+securityContext:
+  fsGroup: null
+  runAsNonRoot: true
+  runAsUserRM: null
+  runAsGroupRM: null
+  runAsUserCfghandler: null
+  runAsGroupCfghandler: null

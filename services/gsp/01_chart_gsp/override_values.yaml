@@ -1,0 +1,53 @@
+###############################################################################
+# Global GSP parameters
+# https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/ConfigureGSP
+###############################################################################
+
+image:
+  registry: $IMAGE_REGISTRY
+  repository: gim/gsp
+  pullPolicy: IfNotPresent
+  
+imagePullSecrets:
+  pullsecret: {}
+
+azure:
+  enabled: false
+
+job:
+  storage:
+    host: gspstate{{.Values.short_location}}{{.Values.environment}}.blob.core.windows.net
+    checkpoints: '{{ tpl .Values.job.storage.gspPrefix . }}checkpoints'
+    savepoints: '{{ tpl .Values.job.storage.gspPrefix . }}savepoints'
+    highAvailability: '{{ tpl .Values.job.storage.gspPrefix . }}ha'
+  log:
+    level: INFO
+    loggers:
+      org.apache.kafka: INFO
+monitoring:
+  enabled: true
+  port: 9249
+  dashboards:
+    targetDirectory: /var/lib/grafana/dashboards/{{ .Release.Namespace }}
+
+containerSecurityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: false
+  annotations: {}
+  hosts: []
+  tls: []
+
+kafka:
+  bootstrap: ${KAFKA_ADDR}:9092
+
+# Flink settings CPE-5007
+# Increasing timeouts may be useful to survive network connectivity and kube api disruptions
+# (if you see jm job is often failing/restarting)
+#flinkExtra:
+#  "high-availability.kubernetes.leader-election.lease-duration": 60 s
+#  "high-availability.kubernetes.leader-election.renew-deadline": 45 s
+#  "high-availability.kubernetes.leader-election.retry-period": 5 s

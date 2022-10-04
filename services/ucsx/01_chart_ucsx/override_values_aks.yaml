@@ -1,0 +1,8 @@
+ingress:
+  annotations: 
+    cert-manager.io/cluster-issuer: $CERT_ISSUER
+  className: $INGRESS_CLASS
+  tls:
+    - hosts: 
+      - ucsx.${DOMAIN}
+      secretName: ucsx-tls-secret

@@ -1,0 +1,52 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  dcu-collector-metrics:
+    NAME: dcu-collector-metrics
+    KEY: dcu-collector-metrics.json
+  dcu-container-metrics:
+    NAME: dcu-container-metrics
+    KEY: dcu-container-metrics.json
+  dcu-pod-metrics:
+    NAME: dcu-pod-metrics
+    KEY: dcu-pod-metrics.json
+  dcu-statserver-metrics:
+    NAME: dcu-statserver-metrics
+    KEY: dcu-statserver-metrics.json
+  lds-container-metrics:
+    NAME: lds-container-metrics
+    KEY: lds-container-metrics.json
+  lds-pod-metrics:
+    NAME: lds-pod-metrics
+    KEY: lds-pod-metrics.json
+  lds-server-metrics:
+    NAME: lds-server-metrics
+    KEY: lds-server-metrics.json
+  permissions-container-metrics:
+    NAME: permissions-container-metrics
+    KEY:  permissions-container-metrics.json
+  permissions-pod-metrics:
+    NAME: permissions-pod-metrics
+    KEY: permissions-pod-metrics.json
+  pulse-container-metrics:
+    NAME: pulse-container-metrics
+    KEY: pulse-container-metrics.json
+  pulse-jvm-metrics:
+    NAME: pulse-jvm-metrics
+    KEY: pulse-jvm-metrics.json
+  pulse-pod-metrics:
+    NAME: pulse-pod-metrics
+    KEY:  pulse-pod-metrics.json
+  pulse-requests-metrics:
+    NAME: pulse-requests-metrics
+    KEY: pulse-requests-metrics.json
+  pulse-overall-health:
+    NAME: pulse-overall-health
+    KEY: pulse-overall-health.json

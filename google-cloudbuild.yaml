@@ -1,0 +1,121 @@
+# This is Cloud Build configuration file
+# for automated deployment to your Google GKE cluster
+#
+# Read more about it: https://cloud.google.com/build/docs#docs
+#
+# 📃 Note: 
+#     - your Cloud Build service account (named like <PROJECT_NUMBER>@cloudbuild.gserviceaccount.com)
+#       should have following roles (make sure to add in GCP IAM):
+#       - Kubernetes Engine Admin
+#       - Secret Manager Secret Accessor (if using GCP Secret Manager)
+#       - Logging Admin (to observe pipeline logs in runs history)
+#     - your custom builder image should have installed: kubectl, helm3, yq
+
+steps:
+
+- id: 'Deploy Genesys services in GKE'
+
+  # 🖊️ EDIT to match your custom builder image
+  name: 'gcr.io/gcpe0003/privateedition'
+  timeout: '3600s'
+  env:
+    - 'VGCPPROJECT=${_VGCPPROJECT}'
+    - 'VGCPREGION=${_VGCPREGION}'
+    - 'VGKECLUSTER=${_VGKECLUSTER}'
+
+    - 'SERVICE=${_VSERVICE}'
+    - 'NS=${_VNAMESPACE}'
+    - 'FULLCOMMAND=${_VHELMCOMMAND}'
+    - 'IMAGE_REGISTRY=${_VIMAGEREGISTRY}'
+    - 'HELM_REGISTRY=${_VHELMREGISTRY}'
+    - 'ARTIFACTREPO=${_VARTIFACTREPO}'
+    - 'DOMAIN=${_VDOMAIN}'
+
+    # If 'true', we will try to fetch deployment&pull secrets from GCP Secret manager
+    - 'USE_GCP_SECRETS=${_VUSEGCPSM}'
+
+    # 🖊️ EDIT to suit your environment
+    - 'CLUSTER_TYPE=gke'
+
+  secretEnv: [ 'HELM_REGISTRY_USER', 'HELM_REGISTRY_TOKEN' ]
+
+  script: |
+      #!/bin/bash
+      echo "*********************************************"
+      echo "** K8s login"
+      gcloud init --no-launch-browser
+      gcloud container clusters get-credentials $VGKECLUSTER --region $VGCPREGION --project $VGCPPROJECT
+
+      echo "*********************************************"
+      echo "*** Determine internal cluster name"
+      [[ "$VGCPPROJECT" == "gcpe0003" && "$VGKECLUSTER" == "gke1" ]] && export CLUSTER="gke3-1"
+      [[ "$VGCPPROJECT" == "gcpe0003" && "$VGKECLUSTER" == "gke2" ]] && export CLUSTER="gke3-2"
+
+      echo "*********************************************"
+      echo "*** Determine target namespace and use it"
+      # By default (if namespace not defined) we install in namespace=service_name
+      if [ -z "$NS" ] ; then
+          NS=$SERVICE
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+      fi
+      if ! kubectl get namespace $NS; then
+          echo "Namespace $NS does not exist. Creating it.."
+          kubectl create namespace $NS
+      else
+          echo "Namespace $NS already exists. Will use it."
+      fi
+      kubectl config set-context --current --namespace=$NS
+
+      if [ "$USE_GCP_SECRETS" == "true" ]
+      then
+          echo "*********************************************"
+          echo "*** Create global-deployment-secrets, if defined"
+          gcloud secrets versions access 1 --secret="global-deployment-secrets-$CLUSTER" >ds 2>/dev/null || true
+          [[ -s ds ]] && kubectl apply -n default -f ds
+          kubectl get secret global-deployment-secrets -n default
+
+          echo "*********************************************"
+          echo "*** Create pull secret, if defined"
+          gcloud secrets versions access 1 --secret="PULLSECRET" >ds 2>/dev/null || true
+          [[ -s ds ]] && kubectl apply -f ds
+          kubectl get secrets pullsecret
+
+          echo "*********************************************"
+          echo "*** Create local deployment-secrets, if defined"
+          gcloud secrets versions access 1 --secret="$NS-deployment-secrets-$CLUSTER" >ds 2>/dev/null || true
+          [[ -s ds ]] && kubectl apply -f ds
+          kubectl get secret deployment-secrets
+      fi
+
+      echo "*********************************************"
+      echo "*** Add Helm Repo"
+      helm repo add --force-update helm_repo https://$HELM_REGISTRY \
+          --username "$HELM_REGISTRY_USER" --password "$HELM_REGISTRY_TOKEN"
+
+      echo "*********************************************"
+      echo "*** Parse Command"
+      COMMAND=$(echo $FULLCOMMAND | cut -d' ' -f1)
+      if [[ "$FULLCOMMAND" == *" "* ]]; then
+          CHART_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f2)
+          RL_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f3)
+      fi
+
+      echo "*********************************************"
+      echo "*** Service deployment"
+
+      cd services/$SERVICE
+
+      source ../deployment.sh
+
+
+timeout: '3600s'
+
+# 🖊️ EDIT to match your project number and secrets names
+availableSecrets:
+  secretManager:
+    - versionName: "projects/402866575973/secrets/JFROGUSR/versions/1"
+      env: "HELM_REGISTRY_USER"
+    - versionName: "projects/402866575973/secrets/JFROGPASS/versions/1"
+      env: "HELM_REGISTRY_TOKEN"
+options:
+  logging: CLOUD_LOGGING_ONLY

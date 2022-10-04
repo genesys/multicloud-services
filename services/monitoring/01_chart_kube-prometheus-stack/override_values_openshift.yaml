@@ -1,0 +1,52 @@
+# Openshift specific
+
+prometheusOperator:
+  serviceAccount:
+    create: false
+    name: monitoring-sa
+
+  admissionWebhooks:
+    patch:
+      securityContext:
+        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: null
+
+  # securityContext:
+  #   fsGroup: null
+  #   runAsGroup: 0
+  #   runAsNonRoot: true
+  #   runAsUser: null
+
+  # containerSecurityContext:
+  #   allowPrivilegeEscalation: false
+  #   readOnlyRootFilesystem: true
+
+prometheus:
+  serviceAccount:
+    create: false
+    name: monitoring-sa
+  
+  # prometheusSpec:
+  #   securityContext:
+  #     runAsGroup: 0
+  #     runAsNonRoot: true
+  #     runAsUser: null
+  #     fsGroup: null
+
+alertmanager:
+  serviceAccount:
+    create: false
+    name: monitoring-sa
+
+  # alertmanagerSpec:
+  #   securityContext:
+  #     runAsGroup: 0
+  #     runAsNonRoot: true
+  #     runAsUser: null
+  #     fsGroup: null
+
+# do not deploy node-exporters
+# Openshift already deploys node-exporters in openshift-monitoring namespace
+#nodeExporter:
+#  enabled: false

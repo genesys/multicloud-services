@@ -1,0 +1,9 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+#global:
+#  ### Will be using default versions from chart
+#  image: hashicorp/consul:1.13.1
+#  imageEnvoy: envoyproxy/envoy:v1.22.4
+#  imageK8S: hashicorp/consul-k8s-control-plane:0.46.0

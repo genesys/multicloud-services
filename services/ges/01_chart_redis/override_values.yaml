@@ -1,0 +1,19 @@
+###############################################################################
+# Find more: https://github.com/bitnami/charts/tree/master/bitnami/redis
+###############################################################################
+
+architecture: standalone
+
+auth:
+  password: $ges_redis_password
+
+master:
+  persistence:
+    storageClass: $STORAGE_CLASS_RWO_PREMIUM
+    size: 3Gi
+
+# replica:         #works when architecture = "replication"
+#   replicas: 2
+#   persistence:
+#     storageClass: $STORAGE_CLASS_RWO_PREMIUM
+#     size: 3Gi

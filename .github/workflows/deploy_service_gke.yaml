@@ -1,0 +1,277 @@
+# GutHub Actions workflow for deployment to Google Cloud GKE cluster
+
+# 💁 Implements:
+# - Parsing inputs: service for deployment, namespace, helm-repo, command
+# - Checking for required secrets
+# - Checkout your repository
+# - Installing gcloud cli and helm chart tools
+# - Adding helm repository
+# - Performing GKE cluster login
+# - Performing helm install/install/validate for service
+
+# ℹ️ Configure your repository and the workflow with the following steps:
+# 1. Have access to an GKE cluster. Refer to https://cloud.google.com/kubernetes-engine/docs/quickstart
+# 2. Put required credentials to repository secrets:
+#    - GKE_SA_KEY and GKE_SA_PROJECT (see https://github.com/marketplace/actions/set-up-gcloud-cloud-sdk-environment)
+#    - user creds for your private helm and image registries
+#    Refer to:
+#    - https://github.com/GoogleCloudPlatform/github-actions/tree/docs/service-account-key/setup-gcloud#inputs
+#    - https://docs.github.com/en/actions/reference/encrypted-secrets
+#    - https://cli.github.com/manual/gh_secret_set
+# 3. (Optional) Edit the top-level 'env' section as marked with '🖊️' if the defaults are not suitable for your project.
+# 5. Commit and push the workflow file to your default branch. Manually trigger a workflow run.
+
+
+name: Deploy service to GKE
+
+env:
+  # ❗ Keep sensitive data in your GHA secrets
+  # Registries such as Jfrog, GHCR, Quay.io, and Docker Hub are supported
+  HELM_REGISTRY:            ${{ secrets.HELM_REGISTRY }}
+  HELM_REGISTRY_USER:       ${{ secrets.HELM_REGISTRY_USER }}          
+  HELM_REGISTRY_TOKEN:      ${{ secrets.HELM_REGISTRY_TOKEN }}
+  IMAGE_REGISTRY:           ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_REGISTRY_USER:      ${{ secrets.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_TOKEN:     ${{ secrets.IMAGE_REGISTRY_TOKEN }}
+  
+  # 🖊️ EDIT to suit your environment
+  CLUSTER_TYPE:             gke
+  CLUSTER:                  ${{ github.event.inputs.cluster }}
+  SERVICE:                  ${{ github.event.inputs.service }}
+
+  # 🐞 Enable debug if needed
+  DEBUG_HELM: false
+
+on:
+  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+  workflow_dispatch:
+    inputs:
+      service:
+        type: choice
+        description: service(s) for deployment
+        required: true
+        default: infra
+        options:
+          - infra
+          - logging
+          - monitoring
+          - bds
+          - cxc
+          - designer
+          - gauth
+          - gca
+          - gcxi
+          - ges
+          - gim
+          - gsp
+          - gvp
+          - gws
+          - iwd
+          - iwddm
+          - iwdem
+          - ixn
+          - nexus
+          - pulse
+          - tenant
+          - tlm
+          - ucsx
+          - voice
+          - webrtc
+          - wwe
+      cluster:
+        type: choice
+        description: gke cluster
+        required: true
+        default: gke1-1
+        options:
+          - gke1-1
+          - gke1-2
+          - gke3-1
+          - gke3-2
+      namespace:
+        # by default will use namespace equal to service name
+        description: namespace (if not default)
+        required: false
+      helmrepo:
+        description: helm repo name in HELM_REGISTRY
+        required: true
+        default: helm-stage
+      command:
+        description: command install|validate|uninstall
+        required: true
+        default: validate
+        
+jobs:
+  gke-ci-cd:
+    name: Deploy ${{ github.event.inputs.service }} (${{ github.event.inputs.command }}) to ${{ github.event.inputs.cluster }}
+    # 🖊️ EDIT (optional) if you want to use your own runner
+    runs-on: ubuntu-latest    
+
+    steps:
+
+    # 🖊️ EDIT your repository secrets to log into your Gcloud cluster and set up the context.
+    # and define cluster name, zone and domain in the code below
+    - name: Define cluster connection variables 
+      run: |
+        case ${{ github.event.inputs.cluster }} in
+
+          gke1-1)
+              echo "GKE_SA_KEY_NAME=GKE_SA_KEY"               >> $GITHUB_ENV
+              echo "GKE_PROJECT_NAME=GKE_PROJECT"             >> $GITHUB_ENV
+              echo "GKE_CLUSTER=gke1"                         >> $GITHUB_ENV
+              echo "GKE_ZONE=us-west1"                        >> $GITHUB_ENV
+              echo "DOMAIN=test.dev"                          >> $GITHUB_ENV
+            ;;
+
+          gke1-2)
+              echo "GKE_SA_KEY_NAME=GKE_SA_KEY"               >> $GITHUB_ENV
+              echo "GKE_PROJECT_NAME=GKE_PROJECT"             >> $GITHUB_ENV
+              echo "GKE_CLUSTER=gke2"                         >> $GITHUB_ENV
+              echo "GKE_ZONE=us-east1"                        >> $GITHUB_ENV
+              echo "DOMAIN=test.staging"                      >> $GITHUB_ENV
+            ;;
+          
+          gke3-1)
+              echo "GKE_SA_KEY_NAME=GKE3_SA_KEY"              >> $GITHUB_ENV
+              echo "GKE_PROJECT_NAME=GKE3_PROJECT"            >> $GITHUB_ENV
+              echo "GKE_CLUSTER=gke1"                         >> $GITHUB_ENV
+              echo "GKE_ZONE=us-west1"                        >> $GITHUB_ENV
+              echo "DOMAIN=nlb01-uswest1.gcpe003.gencpe.com"  >> $GITHUB_ENV
+            ;;
+
+          gke3-2)
+              echo "GKE_SA_KEY_NAME=GKE3_SA_KEY"              >> $GITHUB_ENV
+              echo "GKE_PROJECT_NAME=GKE3_PROJECT"            >> $GITHUB_ENV
+              echo "GKE_CLUSTER=gke2"                         >> $GITHUB_ENV
+              echo "GKE_ZONE=us-east1"                        >> $GITHUB_ENV
+              echo "DOMAIN=nlb02-useast1.gcpe003.gencpe.com"  >> $GITHUB_ENV
+            ;;
+
+        esac
+
+
+    - name: Check for required secrets
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const secrets = {
+            GKE_SA_KEY:       `${{ secrets[env.GKE_SA_KEY_NAME] }}`,
+            GKE_PROJECT:      `${{ secrets[env.GKE_PROJECT_NAME] }}`,
+            HELM_REGISTRY:        `${{ secrets.HELM_REGISTRY }}`,
+            HELM_REGISTRY_USER:   `${{ secrets.HELM_REGISTRY_USER }}`,
+            HELM_REGISTRY_TOKEN:  `${{ secrets.HELM_REGISTRY_TOKEN }}`,
+            IMAGE_REGISTRY:       `${{ secrets.IMAGE_REGISTRY }}`,
+            IMAGE_REGISTRY_USER:  `${{ secrets.IMAGE_REGISTRY_USER }}`,
+            IMAGE_REGISTRY_TOKEN: `${{ secrets.IMAGE_REGISTRY_TOKEN }}`
+          };
+
+          const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+            if (value.length === 0) {
+              core.error(`Secret "${name}" is not set`);
+              return true;
+            }
+            core.info(`✔️ Secret "${name}" is set`);
+            return false;
+          });
+
+          if (missingSecrets.length > 0) {
+            core.setFailed(`❌ At least one required secret is not set in the repository. \n` +
+              "You can add it using:\n" +
+              "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+              "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+          }
+          else {
+            core.info(`:heavy_check_mark: All the required secrets are set`);
+          }
+
+
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+
+    - name: Setup gcloud CLI
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        service_account_key: ${{ secrets[env.GKE_SA_KEY_NAME] }}
+        project_id: ${{ secrets[env.GKE_PROJECT_NAME] }}
+
+
+    - name: Install helm tool
+      uses: azure/setup-helm@v1
+      with:
+        # 🖊️ EDIT (optional) if you want to specify helm version (default: "latest")
+        version: "v3.7.1"
+
+
+    - name: Helm repo add
+      run: |
+        helm repo add --force-update helm_repo ${{ env.HELM_REGISTRY }}${{ github.event.inputs.helmrepo }} \
+          --username ${{ env.HELM_REGISTRY_USER }} --password "${{ env.HELM_REGISTRY_TOKEN }}"
+
+
+    # Get the GKE credentials so we can deploy to the cluster
+    # This action configures authentication to a GKE cluster via a kubeconfig file that can be used 
+    # with kubectl or other methods of interacting with the cluster.
+    - uses: google-github-actions/get-gke-credentials@v0.2.1
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+        credentials: ${{ secrets[env.GKE_SA_KEY_NAME] }}
+
+    - name: Determine target namespace
+      run: |
+        SV=${{ github.event.inputs.service }}
+        NS=${{ github.event.inputs.namespace }}
+        # By default (if namespace not defined) we install in namespace=service_name
+        if [ ! "$NS" ] ; then
+          NS=$SV
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+        fi
+        echo "NS=$NS" >> $GITHUB_ENV
+
+    - name: Create or use namespace
+      run: |
+        NS="${{ env.NS }}"
+        if ! kubectl get namespace $NS; then
+           echo "Namespace $NS does not exist. Creating it.."
+           kubectl create namespace $NS
+        else
+           echo "Namespace $NS already exists. Will use it."
+        fi
+        kubectl config set-context --current --namespace=$NS
+
+    # Pull secret has to be created if you pull images from external registry
+    # Make sure you added your user name and password(token) in github secrets
+    - name: Create pull secret if absent
+      run: |
+        if ! kubectl get secret pullsecret ; then
+            kubectl create secret docker-registry pullsecret \
+              --docker-server=$IMAGE_REGISTRY \
+              --docker-username=$IMAGE_REGISTRY_USER --docker-password=$IMAGE_REGISTRY_TOKEN
+        fi
+
+    - name: DEPLOYMENT SCRIPT
+      env:
+        NS: ${{ env.NS }}
+        DOMAIN: "${{ env.DOMAIN }}"
+      run: |
+
+        FULLCOMMAND="${{ github.event.inputs.command }}"
+        COMMAND=$(echo $FULLCOMMAND | cut -d' ' -f1)
+        if [[ "$FULLCOMMAND" == *" "* ]]; then
+          CHART_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f2)
+          RL_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f3)
+        fi
+
+        cd services/$SERVICE
+
+        source ../deployment.sh
+
+
+    - name: Save artifacts
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: services/${{ github.event.inputs.service }}/artifacts/

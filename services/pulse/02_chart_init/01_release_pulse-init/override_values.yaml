@@ -1,0 +1,34 @@
+# Additional override_values
+image:
+  tag: "100.0.000.0012"
+
+# tenant identification, or empty for shared deployment
+tenants:
+  - id: "${TENANT_UUID}"
+    name: "t${TENANT_SID}"
+    key: "${TENANT_SID}"
+    dcu: "2"
+
+# common configuration.
+config:
+  # Postgres hostname
+  postgresHost: "${POSTGRES_ADDR}"
+  # Postgres port
+  postgresPort: "${POSTGRES_PORT}"
+  # Postgres User
+  postgresUser: "${POSTGRES_USER}"
+  # Postgres Password
+  postgresPassword: "${POSTGRES_PASSWORD}"
+  # fill database name
+  dbName: "$pulse_db_name"
+  # Redis host
+  redisHost: "$pulse_redis_host"
+  # Redis port
+  redisPort: "$pulse_redis_port"
+  # Password for Redis
+  redisKey: "$pulse_redis_key"
+  # GWS config
+  # Client ID
+  gwsClientId: "$pulse_gws_client_id"
+  # Client Secret
+  gwsClientSecret: "$pulse_gws_client_secret"

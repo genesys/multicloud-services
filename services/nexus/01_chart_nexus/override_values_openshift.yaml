@@ -1,0 +1,5 @@
+# Openshift specific overrides
+podSecurityContext:
+  fsGroup: null
+  runAsGroup: 0
+  runAsUser: null

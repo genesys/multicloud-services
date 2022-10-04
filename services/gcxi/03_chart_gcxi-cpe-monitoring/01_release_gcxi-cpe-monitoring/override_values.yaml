@@ -1,0 +1,16 @@
+# Default values for dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appGrafanaDashboards:  
+  # Dashboard Name: 
+  #   Name of configMap 
+  #   NAME:
+  #   Name of key
+  #   KEY: 
+  gcxi-health-dashboard:
+    KEY: gcxi-health.json
+    NAME: gcxi-health
+  gcxi-pods-dashboard:
+    KEY: gcxi-pods.json
+    NAME: gcxi-pods

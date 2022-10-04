@@ -1,0 +1,7 @@
+# Openshift specific
+das:
+  securityContext:  
+    runAsUser: $ARB_UID
+    runAsGroup: 0 
+    runAsNonRoot: true
+    fsGroup: null

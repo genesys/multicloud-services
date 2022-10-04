@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+    app: grafana
+resources: []
+configMapGenerator:
+  - name: pulse-dcu-monitor-dashboards
+    files: 
+      - dcu-collector-metrics.json
+      - dcu-container-metrics.json
+      - dcu-pod-metrics.json
+      - dcu-statserver-metrics.json
+  - name: pulse-lds-monitor-dashboards
+    files: 
+      - lds-container-metrics.json
+      - lds-pod-metrics.json
+      - lds-server-metrics.json
+  - name: pulse-permissions-monitor-dashboards
+    files: 
+      - permissions-container-metrics.json
+      - permissions-pod-metrics.json
+  - name: pulse-monitor-dashboards
+    files: 
+      - pulse-container-metrics.json
+      - pulse-jvm-metrics.json
+      - pulse-pod-metrics.json
+      - pulse-requests-metrics.json
+      - pulse-overall-health.json

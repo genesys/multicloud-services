@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+    app: grafana
+resources: []
+configMapGenerator:
+  - name: designer-das-dashboard
+    files: 
+      - designer-das-dashboard.json
+  - name: designer-dashboard
+    files: 
+      - designer-dashboard.json

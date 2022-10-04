@@ -1,0 +1,11 @@
+# openshift specific
+
+serviceAccount:
+  create: false
+  name: logging-sa
+
+openShift:
+  enabled: true
+
+securityContext:
+  privileged: true

@@ -1,8 +1,0 @@
-###############################################################################
-# Define here application version if needed
-###############################################################################
-
-global:
-  image: hashicorp/consul:1.9.5
-  imageEnvoy: envoyproxy/envoy-alpine:v1.16.0
-  imageK8S: hashicorp/consul-k8s:0.25.0

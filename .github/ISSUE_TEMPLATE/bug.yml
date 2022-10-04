@@ -6,7 +6,7 @@ labels: ["bug", "triage"]
 body:
   - type: markdown
     attributes:
-      value: |
+      value:
         Please make sure to search for existing [issues](https://github.com/genesys/multicloud-services/issues), review the [discussions](https://github.com/genesys/multicloud-services/discussions), and check the [FAQ](https://github.com/genesys/multicloud-services/wiki) before filing a new one.
   - type: textarea
     id: what-happened

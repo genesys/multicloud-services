@@ -1,1 +1,0 @@
-kubectl set env statefulset infra-kafka-cp-kafka KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1

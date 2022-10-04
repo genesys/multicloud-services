@@ -1,0 +1,146 @@
+# Default values for gvp-configserver.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: default
+
+## Deployment Configuration
+## replicaCount should be 1 for Config Server
+replicaCount: 1
+
+## Base Labels. Please do not change these.
+serviceName: gvp-configserver
+component: shared
+# Namespace
+partOf: ${NS}
+
+## Container image repo settings.
+image:
+  confserv:
+    registry: $IMAGE_REGISTRY
+    repository: gvp/gvp_confserv
+    pullPolicy: IfNotPresent
+    tag: "{{ .Chart.AppVersion }}"
+  serviceHandler:
+    registry: $IMAGE_REGISTRY
+    repository: gvp/gvp_configserver_servicehandler
+    pullPolicy: IfNotPresent
+    tag: "{{ .Chart.AppVersion }}"
+  dbInit:
+    registry: $IMAGE_REGISTRY
+    repository: gvp/gvp_configserver_configserverinit
+    pullPolicy: IfNotPresent
+    tag: "{{ .Chart.AppVersion }}"
+
+## Config Server App Configuration
+configserver:
+
+  alerts:
+    cpuUtilizationAlertLimit: 70
+    memUtilizationAlertLimit: 90
+    workingMemAlertLimit: 7
+    maxRestarts: 2
+
+## PVCs defined
+#  none
+
+## Define service(s) for application.
+## Note, this service is required, and must not be disabled.
+service:
+  enabled: true
+  type: ClusterIP
+  host: gvp-configserver-0
+  port: 8888
+  targetPort: 8888
+
+## Service Handler configuration.
+serviceHandler:
+  port: 8300
+
+## Secrets storage related settings - k8s secrets only
+secrets:
+  # Used for pulling images/containers from the respositories.
+  imagePull:
+    - name: pullsecret
+  
+  # Config Server secrets. If k8s is false, csi will be used, else k8s will be used. 
+  # Currently, only k8s is supported!
+  configServer:
+    k8s: true
+    secretName: configserver-secret
+    secretUserKey: username
+    secretPwdKey: password
+    csiSecretProviderClass: keyvault-gvp-gvp-configserver-secret
+
+  # Config Server Postgres DB secrets and settings.
+  postgres:
+    k8s: true
+    dbName: gvp
+    dbPort: 5432
+    secretName: postgres-secret
+    secretAdminUserKey: db-username
+    secretAdminPwdKey: db-password
+    secretHostnameKey: db-hostname
+    secretDbNameKey: db-name
+    csiSecretProviderClass: keyvault-gvp-postgres-secret
+
+## Ingress configuration
+ingress: {}
+
+## App resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  requests:
+    memory: "800Mi"
+    cpu: "1"
+  limits:
+    memory: "1Gi"
+    cpu: "1.25"
+
+## App containers' Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+##
+## Containers should run as genesys user and cannot use elevated permissions
+## Pod level security context
+podSecurityContext: 
+  fsGroup: 500
+  runAsUser: 500
+  runAsGroup: 500
+  runAsNonRoot: true
+
+## Container security context
+securityContext:
+  # fsGroup: 500
+  runAsUser: 500
+  runAsGroup: 500
+  runAsNonRoot: true
+
+## Priority Class
+## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+## NOTE: this is an optional parameter, but a value of critical priority is recommended.
+##
+priorityClassName: {}
+
+
+## Service/Pod Monitoring Settings
+prometheus:
+  createRule: true
+
+## Grafana dashboard Settings
+## Whether to create Grafana dashboard or not.
+grafana:
+  enabled: true
+  k8sSidecarTargetDirectory: /var/lib/grafana/dashboards/gvp
+
+## Enable network policies or not
+networkPolicies:
+  enabled: false
+  dnsPort: 53

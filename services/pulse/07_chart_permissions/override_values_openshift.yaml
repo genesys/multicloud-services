@@ -1,0 +1,11 @@
+# Openshift specific
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: null
+  runAsGroup: 0
+  fsGroup: null
+
+securityContext:
+  runAsUser:  null
+  runAsGroup: 0

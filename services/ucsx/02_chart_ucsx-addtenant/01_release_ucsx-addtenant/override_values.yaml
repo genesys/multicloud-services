@@ -1,0 +1,22 @@
+###############################################################################
+# Global ucsx-addtenent image parameters
+# https://all.docs.genesys.com/UCS/Current/UCSPEGuide/Provision
+###############################################################################
+tenant:
+  id: $TENANT_SID
+  ccid: $TENANT_UUID
+
+gauth:
+  auth:
+    clientId: $ucsx_gws_client_id
+    clientSecret: $ucsx_gws_client_secret
+    regions: /$LOCATION
+
+db:
+  host: $POSTGRES_ADDR
+  ssl: false
+  name: $ucsx_tenant_db_name
+  password: $ucsx_tenant_db_password
+  user: $ucsx_tenant_db_user
+  port: "5432"
+  ssl: "false"

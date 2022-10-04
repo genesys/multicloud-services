@@ -1,0 +1,6 @@
+# Openshift specific
+securityContext:
+  fsGroup: null
+  runAsGroup: 0
+  runAsNonRoot: true
+  runAsUser: null

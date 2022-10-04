@@ -1,0 +1,10 @@
+# K8s specific
+wwe:
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+    ingressClassName: $INGRESS_CLASS
+    tls:
+      - hosts:
+        - wwe.$DOMAIN
+        secretName: letsencrypt

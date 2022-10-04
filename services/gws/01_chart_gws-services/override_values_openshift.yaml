@@ -1,0 +1,14 @@
+############################
+# add Openshift Specific Overrides
+############################
+deploymentGlobals:
+  # Specifies the default security context for all pods
+  securityContext:
+    # Whether a container must run as a non-root user
+    runAsNonRoot: true
+    # The UID to run the entrypoint of the container process
+    runAsUser: null
+    # The GID to run the entrypoint of the container process
+    runAsGroup: 0
+    # A supplemental group ID that applies to all containers in a pod
+    fsGroup: null

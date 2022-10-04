@@ -1,0 +1,8 @@
+# Openshift-specific overrides
+
+bdsApp:
+  securityContext:
+    runAsUser: null
+    runAsGroup: 0
+    fsGroup: null
+    runAsNonRoot: true

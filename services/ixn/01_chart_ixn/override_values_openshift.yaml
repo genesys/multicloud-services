@@ -1,0 +1,15 @@
+# Openshift specific
+
+ixnService:
+  securityContext:
+    fsGroup: null
+    runAsGroup: 0
+    runAsNonRoot: true
+    runAsUser: null
+
+ixnVQNode:
+  securityContext:
+    fsGroup: null
+    runAsGroup: 0
+    runAsNonRoot: true
+    runAsUser: null

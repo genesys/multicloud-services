@@ -1,0 +1,253 @@
+# GutHub Actions workflow for deployment to generic Kubernetes cluster
+# As an example we use Microk8s (https://microk8s.io/),
+# small footprint cluster with very convenient eco system, multiple plugins,
+# which can be installed on local machine or remote VMs/nodes for high availability
+
+# 💁 Implements:
+# - Parsing inputs: service for deployment, namespace, helm-repo, command
+# - Checking for required secrets
+# - Checkout your repository
+# - Installing kubectl cli and helm chart tools
+# - Adding helm repository
+# - Performing kubectl cluster login
+# - Performing helm install/install/validate for service
+
+# ℹ️ Configure your repository and the workflow with the following steps:
+# 1. Have access to an MicroK8s cluster. Refer to https://microk8s.io/docs/working-with-kubectl
+# 2. Put required credentials to repository secrets:
+#    - K8S_CONFIG_FILE (for example, created by "microk8s config > ~/.kube/config")
+#    - user creds for your private helm and image registries
+#   - https://docs.github.com/en/actions/reference/encrypted-secrets
+#   - https://cli.github.com/manual/gh_secret_set
+# 3. (Optional) Edit the top-level 'env' section as marked with '🖊️' if the defaults are not suitable for your project.
+# 5. Commit and push the workflow file to your default branch. Manually trigger a workflow run.
+
+
+name: Deploy service to K8s
+
+env:
+  # 🖊️ EDIT your repository secrets to log into your MicroK8s cluster and set up the context.
+  MK8S_SERVER:   "mk8s.dev"
+
+  # ❗ Keep sensitive data in your GHA secrets
+  # Registries such as Jfrog, GHCR, Quay.io, and Docker Hub are supported
+  HELM_REGISTRY:            ${{ secrets.HELM_REGISTRY }}
+  HELM_REGISTRY_USER:       ${{ secrets.HELM_REGISTRY_USER }}          
+  HELM_REGISTRY_TOKEN:      ${{ secrets.HELM_REGISTRY_TOKEN }}
+  IMAGE_REGISTRY:           ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_REGISTRY_USER:      ${{ secrets.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_TOKEN:     ${{ secrets.IMAGE_REGISTRY_TOKEN }}
+  
+  # 🖊️ EDIT to suit your environment
+  CLUSTER_TYPE:             k8s
+  CLUSTER:                  mk8s
+  SERVICE:                  ${{ github.event.inputs.service }}
+
+  # 🐞 Enable debug if needed
+  DEBUG_HELM: false
+
+on:
+  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+  workflow_dispatch:
+    inputs:
+      service:
+        type: choice
+        description: service(s) for deployment
+        required: true
+        default: infra
+        options:
+          - infra
+          - logging
+          - monitoring
+          - bds
+          - cxc
+          - designer
+          - gauth
+          - gca
+          - gcxi
+          - ges
+          - gim
+          - gsp
+          - gvp
+          - gws
+          - iwd
+          - iwddm
+          - iwdem
+          - ixn
+          - nexus
+          - pulse
+          - tenant
+          - tlm
+          - ucsx
+          - voice
+          - webrtc
+          - wwe
+      namespace:
+        # by default will use namespace equal to service name
+        description: namespace (if not default)
+        required: false
+      helmrepo:
+        description: helm repo name in HELM_REGISTRY
+        required: true
+        default: helm-stage
+      command:
+        description: command install|validate|uninstall
+        required: true
+        default: validate
+        
+jobs:
+  mk8s-ci-cd:
+    name: Deploy ${{ github.event.inputs.service }} (${{ github.event.inputs.command }}) to mk8s
+     # 🖊️ EDIT to use your private runner
+     # Github-provided runners will not be able to login to your mk8s cluster
+     # Thus we suggest to deploy your self-hosted runner(s) in mk8s cluster
+     # Example: https://github.com/redhat-actions/openshift-actions-runners/tree/main/base
+    runs-on: [ "self-hosted", "mk8s-runner"]
+
+
+    steps:
+    - name: Check for required secrets
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const secrets = {
+            K8S_CONFIG_FILE:      `${{ secrets.K8S_CONFIG_FILE }}`,
+            HELM_REGISTRY:        `${{ secrets.HELM_REGISTRY }}`,
+            HELM_REGISTRY_USER:   `${{ secrets.HELM_REGISTRY_USER }}`,
+            HELM_REGISTRY_TOKEN:  `${{ secrets.HELM_REGISTRY_TOKEN }}`,
+            IMAGE_REGISTRY:       `${{ secrets.IMAGE_REGISTRY }}`,
+            IMAGE_REGISTRY_USER:  `${{ secrets.IMAGE_REGISTRY_USER }}`,
+            IMAGE_REGISTRY_TOKEN: `${{ secrets.IMAGE_REGISTRY_TOKEN }}`
+          };
+
+          const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+            if (value.length === 0) {
+              core.error(`Secret "${name}" is not set`);
+              return true;
+            }
+            core.info(`✔️ Secret "${name}" is set`);
+            return false;
+          });
+
+          if (missingSecrets.length > 0) {
+            core.setFailed(`❌ At least one required secret is not set in the repository. \n` +
+              "You can add it using:\n" +
+              "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+              "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+          }
+          else {
+            core.info(`:heavy_check_mark: All the required secrets are set`);
+          }
+
+
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Install kubectl CLI tool for MicroK8s
+      uses: azure/setup-kubectl@v1
+      with:
+        # 🖊️ EDIT (optional) if you want to specify kubectl cli version
+        version: "latest"
+
+
+    - name: Set login context for kubectl
+      uses: azure/k8s-set-context@v1
+      with:
+        # 🖊️ Set K8S_CONFIG_FILE in your github secrets
+        # (https://developer.github.com/actions/managing-workflows/storing-secrets/)
+        # Generate secret content by command on microk8s cluster: $ microk8s config
+        kubeconfig: ${{ secrets.K8S_CONFIG_FILE }} 
+
+
+    - name: Check helm version
+      id: helm-version
+      run: helm version
+      continue-on-error: true
+
+
+    # Installing helm if not pre-installed on runner
+    - name: Install helm tool
+      if: steps.helm-version.outcome == 'failure'
+      uses: azure/setup-helm@v1
+      #with:
+        # 🖊️ EDIT (optional) if you want to specify helm version (default: "latest")
+        #version: "v3.7.1"
+
+
+    - name: Helm repo add
+      run: |
+        helm repo add --force-update helm_repo ${{ env.HELM_REGISTRY }}${{ github.event.inputs.helmrepo }} \
+          --username ${{ env.HELM_REGISTRY_USER }} --password "${{ env.HELM_REGISTRY_TOKEN }}"
+
+
+    - name: Check config file mk8s and set kubectl context
+      run: |
+        echo "Connectivity check"
+        if ! kubectl get nodes; then 
+          echo "Login error using kube_mk8s_config"
+          echo "Recommendation: verify your K8S_CONFIG_FILE secret"
+          exit 1
+        fi 
+
+
+    - name: Determine target namespace
+      run: |
+        SV=${{ github.event.inputs.service }}
+        NS=${{ github.event.inputs.namespace }}
+        # By default (if namespace not defined) we install in namespace=service_name
+        if [ ! "$NS" ] ; then
+          NS=$SV
+          [[ $SV == "tenant" ]] && NS="voice"  # Tenant is exception, we deploy it in voice namespace by default
+        fi
+        echo "NS=$NS" >> $GITHUB_ENV
+
+    - name: Create or use namespace
+      run: |
+        NS="${{ env.NS }}"
+        if ! kubectl get namespace $NS; then
+           echo "Namespace $NS does not exist. Creating it.."
+           kubectl create namespace $NS
+        else
+           echo "Namespace $NS already exists. Will use it."
+        fi
+        kubectl config set-context --current --namespace=$NS
+
+    # Pull secret has to be created if you pull images from external registry
+    # Make sure you added your user name and password(token) in github secrets
+    - name: Create pull secret if absent
+      run: |
+        if ! kubectl get secret pullsecret ; then
+            kubectl create secret docker-registry pullsecret \
+              --docker-server=$IMAGE_REGISTRY \
+              --docker-username=$IMAGE_REGISTRY_USER --docker-password=$IMAGE_REGISTRY_TOKEN
+        fi
+
+    - name: DEPLOYMENT SCRIPT
+      env:
+        NS: ${{ env.NS }}
+        DOMAIN: "${{ env.DOMAIN }}"
+      run: |
+
+        FULLCOMMAND="${{ github.event.inputs.command }}"
+        COMMAND=$(echo $FULLCOMMAND | cut -d' ' -f1)
+        if [[ "$FULLCOMMAND" == *" "* ]]; then
+          CHART_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f2)
+          RL_NAME=$(echo $FULLCOMMAND | tr -s ' ' | cut -d' ' -f3)
+        fi
+
+        cd services/$SERVICE
+
+        source ../deployment.sh
+
+    - name: Reset to default kubectl context
+      run: |
+        export KUBECONFIG=
+
+
+    - name: Save artifacts
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: services/${{ github.event.inputs.service }}/artifacts/

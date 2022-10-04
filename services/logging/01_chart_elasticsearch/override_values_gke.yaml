@@ -1,0 +1,7 @@
+# GKE specific
+
+kibana:
+  
+  ingress:
+    ingressClassName: $INGRESS_CLASS_INTERNAL
+    tls: true
