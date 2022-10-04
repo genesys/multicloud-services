@@ -127,19 +127,19 @@ genesys/multicloud-services
 ## Related Sites
 All service and product documentation can be found at [all.docs.genesys.com](https://all.docs.genesys.com). 
 
-For sample platform reference architectures, please checkout [Genesys Multicloud Platform repository](https://github.com/genesysengage/multicloud-platform).
+For sample platform reference architectures, please checkout [Genesys Multicloud Platform repository](https://github.com/genesys/multicloud-platform).
 
 ## Issues
-Find known and resolved issues in the [issue tracker](https://github.com/genesysengage/multicloud-services/issues).
+Find known and resolved issues in the [issue tracker](https://github.com/genesys/multicloud-services/issues).
 
 ## Roadmap
-Upcoming features and accepted issues can be found on the [project page](https://github.com/genesysengage/multicloud-services/projects).
+Upcoming features and accepted issues can be found on the [project page](https://github.com/genesys/multicloud-services/projects).
 
 ## FAQ
-Find answers to frequent questions in the [discussions section](https://github.com/genesysengage/multicloud-services/discussions). 
+Find answers to frequent questions in the [discussions section](https://github.com/genesys/multicloud-services/discussions). 
 
 ## Wiki
-Find case studies and cheatsheets within the [wiki section](https://github.com/genesysengage/multicloud-services/wiki).
+Find case studies and cheatsheets within the [wiki section](https://github.com/genesys/multicloud-services/wiki).
 
 ## Contributing
 We are excited to work alongside our community. 
@@ -148,7 +148,7 @@ We are excited to work alongside our community.
 
 ## Communicating with the Team
 
-The easiest way to communicate with the team is via GitHub [issues](https://github.com/genesysengage/multicloud-services/issues/new/choose).
+The easiest way to communicate with the team is via GitHub [issues](https://github.com/genesys/multicloud-services/issues/new/choose).
 
 Please file new issues, feature requests and suggestions, but **please search for similar open/closed pre-existing issues before creating a new issue.**
 
