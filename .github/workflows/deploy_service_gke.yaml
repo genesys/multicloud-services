@@ -86,8 +86,6 @@ on:
         options:
           - gke1-1
           - gke1-2
-          - gke3-1
-          - gke3-2
       namespace:
         # by default will use namespace equal to service name
         description: namespace (if not default)
@@ -131,21 +129,7 @@ jobs:
               echo "DOMAIN=test.staging"                      >> $GITHUB_ENV
             ;;
           
-          gke3-1)
-              echo "GKE_SA_KEY_NAME=GKE3_SA_KEY"              >> $GITHUB_ENV
-              echo "GKE_PROJECT_NAME=GKE3_PROJECT"            >> $GITHUB_ENV
-              echo "GKE_CLUSTER=gke1"                         >> $GITHUB_ENV
-              echo "GKE_ZONE=us-west1"                        >> $GITHUB_ENV
-              echo "DOMAIN=nlb01-uswest1.gcpe003.gencpe.com"  >> $GITHUB_ENV
-            ;;
 
-          gke3-2)
-              echo "GKE_SA_KEY_NAME=GKE3_SA_KEY"              >> $GITHUB_ENV
-              echo "GKE_PROJECT_NAME=GKE3_PROJECT"            >> $GITHUB_ENV
-              echo "GKE_CLUSTER=gke2"                         >> $GITHUB_ENV
-              echo "GKE_ZONE=us-east1"                        >> $GITHUB_ENV
-              echo "DOMAIN=nlb02-useast1.gcpe003.gencpe.com"  >> $GITHUB_ENV
-            ;;
 
         esac
 
