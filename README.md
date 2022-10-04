@@ -73,7 +73,6 @@ genesys/multicloud-services
 │   │   ├── documentation-issue.md
 │   │   └── feature-request.md
 │   └── workflows
-│       ├── deploy_service_aks.yaml
 │       ├── deploy_service_gke.yaml
 │       ├── deploy_service_k8s.yaml
 │       └── deploy_service_openshift.yaml 
@@ -84,7 +83,6 @@ genesys/multicloud-services
 │   ├── ingress.md
 │   ├── examples-gke.md
 │   ├── examples-openshift.md
-│   ├── examples-aks.md
 │   ├── examples-k8s.md
 │   ├── ingress.md
 │   └── STYLE.md
@@ -99,7 +97,6 @@ genesys/multicloud-services
 │   │   │   │   ├── post-release-script.sh
 │   │   │   │   └── override_values.yaml
 │   │   │   ├── override_values.yaml
-│   │   │   ├── override_values_<i>azure</i>.yaml
 │   │   │   ├── override_values_<i>k8s</i>.yaml
 │   │   │   ├── override_values_<i>gke</i>.yaml
 │   │   │   ├── override_values_<i>openshift</i>.yaml
