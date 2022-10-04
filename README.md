@@ -67,8 +67,8 @@ Some helpful tools we've used.
 <details open><summary>Tools</summary>
   
 > Configuration : [configurator](/tools/configurator)    
-> Runner: [Actions Runner Controller](/tools/actions-runner-controller/)   
-> Manual Deployment: [manual_deployment.sh](/manual_deployment.sh)   
+> Runner: [Actions Runner Controller](/tools/actions-runner-controller/)
+
 </details>  
   
 #
