@@ -38,17 +38,6 @@ Ideal for Demos, Labs or Proof of Concepts. The content provided in this reposit
 :mag: Observability : [monitoring](/services/monitoring), [logging](/services/logging)    
 </details>
 
-<details>
-  <summary style="font-size:18px">Azure</summary>
-
-:zap: Quick Start : [GitHub Actions](/doc/gha.md) - [workflow](/doc/examples-aks.md)   
-:gear: Genesys services : [services](/services)     
-:sparkles: Third party services : [infra](/services/infra)    
-:mag: Observability : [monitoring](/services/monitoring), [logging](/services/logging)    
-</details>
-
-
-
 #
 
 There are many different CI/CD models available for use, we've included details for those we've had opportunity to work with.
@@ -66,8 +55,9 @@ Some helpful tools we've used.
 
 <details open><summary>Tools</summary>
   
-> Configuration : [configurator](/tools/configurator)    
-> Runner: [Actions Runner Controller](/tools/actions-runner-controller/)
+> Configuration: [configurator](/tools/configurator)    
+> Runner: [Actions Runner Controller](/tools/actions-runner-controller/)    
+> Manual Deployment: [manual_deployment.sh](manual_deployment.sh)     
 
 </details>  
   
