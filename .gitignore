@@ -1,2 +1,4 @@
 *.DS_Store
 README_TEMPLATE.md
+*_aks.yaml
+*-aks.md
