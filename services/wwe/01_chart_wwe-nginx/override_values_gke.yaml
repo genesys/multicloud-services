@@ -3,7 +3,7 @@ wwe:
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: $CERT_ISSUER
-  ingressClassName: $INGRESS_CLASS
+    ingressClassName: $INGRESS_CLASS
     tls:
       - hosts:
         - wwe.$DOMAIN
