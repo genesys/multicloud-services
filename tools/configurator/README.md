@@ -32,17 +32,34 @@ We recommend setting up a custom `dictionary.json`, with the values you need for
 
 ## How to install and run:
 
-1. This script assumes you are using Python 3.10 or above (for PEP-634 compatibility).
-2. Run pip against the `requirements.txt`: 
+1. This script assumes you are using **Python 3.10** or above (for PEP-634 compatibility).
+2. Install pip:
+
+Linux or Mac OS:
+
+```bash
+curl -sS https://bootstrap.pypa.io/get-pip.py | python3
+```
+or
+```bash
+curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
+```
+
+Windows:
+- Download https://bootstrap.pypa.io/get-pip.py
+- From the Windows command line, in the directory where get-pip.py is located, run:
+    - python get-pip.py
+
+3. After pip is installed, run pip against the `requirements.txt` to install the pre-requisite libraries: 
 ```bash:
 pip install -r requirements.txt
 ```
-3. Run python (Windows) or python3.10 (Linux or WSL) against `app.py`:
+4. Run python (Windows) or python3.10 (Linux or WSL) against `app.py`:
 ```bash
 python3.10 app.py
 ```
-4. Follow the prompts
-5. Generated yaml, and json files will be in the output folder. You can then run the following to setup the deployment-secrets into their respective namespaces.
+5. Follow the prompts
+6. Generated yaml, and json files will be in the output folder. You can then run the following to setup the deployment-secrets into their respective namespaces.
 
 For 'entire environments' (`option 2`):
 
