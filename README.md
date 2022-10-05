@@ -1,10 +1,15 @@
-[![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE) [![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)](https://all.docs.genesys.com/ReleaseNotes/Current/GenesysEngage-cloud/PrivateEdition)
+[![release](https://flat.badgen.net/github/release/genesys/multicloud-services?color=pink)](https://github.com/genesys/multicloud-services/)
+[![license](https://flat.badgen.net/github/license/genesys/multicloud-services?color=blue)](/LICENSE)
+[![K8ssupport](https://flat.badgen.net/badge/supported%20K8s%20release/1.22/cyan)](https://all.docs.genesys.com/ReleaseNotes/Current/GenesysEngage-cloud/PrivateEdition)
+[![discussions](https://img.shields.io/github/discussions/genesys/multicloud-services?style=flat-square&color=green)](https://github.com/genesys/multicloud-services/discussions)
+[![issues](https://flat.badgen.net/github/open-issues/genesys/multicloud-services)](https://github.com/genesys/multicloud-services/issues)
+[![wiki](https://img.shields.io/badge/wiki-documentation-forestgreen?style=flat-square)](https://github.com/genesys/multicloud-services/wiki)
 
 # Welcome to the Genesys services pipeline repository
 
 The purpose of this repository is to provide Genesys customers with examples related to Genesys Multicloud CX private edition services.  
 
-Ideal for Demos, Labs or Proof of Concepts. The content provided in this repository cannot be used for QA or Production environments as it is not designed to meet typical HA, DR, multi-region or Security requirements. All content is being provided AS-IS without any SLA, warranty or coverage via Genesys product support.
+Ideal for demos, labs, or a proof of concept. The content provided in this repository cannot be used for QA or production environments as it is not designed to meet typical HA, DR, multi-region or security requirements. All content is being provided AS-IS without any SLA, warranty or coverage via Genesys product support.
 
 #
 
@@ -55,10 +60,9 @@ Some helpful tools we've used.
 
 <details open><summary>Tools</summary>
   
-> Configuration: [configurator](/tools/configurator)    
-> Runner: [Actions Runner Controller](/tools/actions-runner-controller/)    
-> Manual Deployment: [manual_deployment.sh](manual_deployment.sh)     
-
+> Configuration : [configurator](/tools/configurator)    
+> Runner : [actions runner controller](/tools/actions-runner-controller/)    
+> Manual : [manual_deployment.sh](/manual_deployment.sh)
 </details>  
   
 #
