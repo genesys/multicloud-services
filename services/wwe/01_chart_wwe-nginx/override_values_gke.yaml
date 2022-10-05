@@ -3,7 +3,7 @@ wwe:
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: $CERT_ISSUER
-      kubernetes.io/ingress.class: nginx
+    ingressClassName: $INGRESS_CLASS
     tls:
       - hosts:
         - wwe.$DOMAIN
