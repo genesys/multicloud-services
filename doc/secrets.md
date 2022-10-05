@@ -1,3 +1,9 @@
+[![release](https://flat.badgen.net/github/release/genesys/multicloud-services?color=pink)](https://github.com/genesys/multicloud-services/)
+[![license](https://flat.badgen.net/github/license/genesys/multicloud-services?color=blue)](/LICENSE)
+[![K8ssupport](https://flat.badgen.net/badge/supported%20K8s%20release/1.22/cyan)](https://all.docs.genesys.com/ReleaseNotes/Current/GenesysEngage-cloud/PrivateEdition)
+[![discussions](https://img.shields.io/github/discussions/genesys/multicloud-services?style=flat-square&color=green)](https://github.com/genesys/multicloud-services/discussions)
+[![issues](https://flat.badgen.net/github/open-issues/genesys/multicloud-services?color=purple)](https://github.com/genesys/multicloud-services/issues)
+[![wiki](https://img.shields.io/badge/wiki-documentation-forestgreen?style=flat-square)](https://github.com/genesys/multicloud-services/wiki)
 # Secrets
 
 There are various secrets you will see referenced in this repository:
@@ -48,14 +54,14 @@ IMAGE_REGISTRY_TOKEN|:asterisk:|-||
 :asterisk: Indicates the variable is mandatory.
 |:key: Key||:anchor: Default Value |:pencil2: Sample Value|:book: Description
 |:-|:-:|:-:|:-:|:-|
-GCPPROJECT|:asterisk:|-|gcpe0003|
-GCPREGION|:asterisk:|-|us-east1|
-GKECLUSTER|:asterisk:|-|gke2|
-IMAGEREGISTRY|:asterisk:|-|pureengage-docker-staging.jfrog.io|
-ARTIFACTREPO|:asterisk:|-|helm-staging|
-DOMAIN|:asterisk:|-|nlb02-useast1.gcpe003.gencpe.com|
-HELM_REGISTRY_USER|:asterisk:|-||
-HELM_REGISTRY_TOKEN|:asterisk:|-||
+GCPPROJECT|:asterisk:|-|gcpe0003|Project identifier
+GCPREGION|:asterisk:|-|us-east1|Project region
+GKECLUSTER|:asterisk:|-|gke2|Cluster identifier
+IMAGEREGISTRY|:asterisk:|-|pureengage-docker-staging.jfrog.io|Image repository address 
+ARTIFACTREPO|:asterisk:|-|helm-staging|Repository name
+DOMAIN|:asterisk:|-|apps.example.com|Domain 
+HELM_REGISTRY_USER|:asterisk:|-||User for authentication
+HELM_REGISTRY_TOKEN|:asterisk:|-||Token for authentication
 USEGCPSM|:asterisk:|-|true|
 
 ##  <a name='DeploymentSecrets'></a>Deployment Secrets

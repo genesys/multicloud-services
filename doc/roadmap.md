@@ -25,5 +25,5 @@ Incoming issues are triaged several times a week, labeled appropriately, and ass
 * Issues and feature requests not related to existing features in the 22Q1/22Q2/22Q3/22Q4 quarters are assigned to the [Backlog] for subsequent triage, prioritization and scheduling.
 
 [v0.1](../../../wiki/Release-Notes#v01)  
-[v0.2](../../../wiki/Release-Notes#v02)  
+[v0.2](../../../wiki/Release-Notes#v02) 
 [Backlog](../../../wiki/Release-Notes#Backlog)
