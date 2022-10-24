@@ -55,7 +55,7 @@ POSTGRES_PASSWORD |  (global DS)||Postgres admin password
 REDIS_ADDR |  (global DS)||REDIS address
 KAFKA_ADDR |  (global DS)||Kafka address
 ixn_db_name|  ixn-$TENANT_SID|ixn-100|IXN DB name
-ixn_node_db_name|  ixn-node-$TENANT_SID|ixn-100|IXN tenant DB name
+ixn_node_db_name|  ixn-node-$TENANT_SID|ixn-node-100|IXN tenant DB name
 ixn_db_user | ixn||Username for IXNDB and IXN_NODE_DB
 ixn_db_password | ixn||Password for IXNDB and IXN_NODE_DB
 
@@ -69,7 +69,7 @@ metadata:
   namespace: ixn
 stringData:
   ixn_db_name: ixn-100
-  ixn_node_db_name: ixn-100
+  ixn_node_db_name: ixn-node-100
 ```
 
 ## Monitoring capabilities
