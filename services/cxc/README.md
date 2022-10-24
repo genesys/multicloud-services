@@ -48,7 +48,7 @@ Create the standard [pullsecret](/doc/secrets.md/#pull) for the workflow:
 `pullsecret`
 
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
-`secrets/deployment_secrets`
+`secrets/deployment-secrets`
 
 :asterisk: Indicates the variable is mandatory.
  

@@ -45,7 +45,7 @@ Create the standard [pullsecret](/doc/secrets.md/#pull) for the workflow:
 `pullsecret`
 
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
-`deployment_secrets`
+`deployment-secrets`
 
 :asterisk: Indicates the variable is mandatory.
 |:key: Key|:anchor: Default Value|:pencil2: Sample Value| :book: Description|
@@ -72,7 +72,7 @@ stringData:
 ```
 
 ### Notes
-As tenant will share the same namespace as voice services, we recommend using a common deployment secret `deployment_secrets` for the two services. 
+As tenant will share the same namespace as voice services, we recommend using a common deployment secret `deployment-secrets` for the two services. 
 
 ## Monitoring capabilities
 
