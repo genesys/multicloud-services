@@ -9,4 +9,4 @@
 [[ -z "$gim_pgdb_etl_pass" ]] && export gim_pgdb_etl_pass=gim
 
 # Creating GIM DB if not exist and init
-create_pg_db gim_pgdb_etl_name gim_pgdb_etl_user gim_pgdb_etl_pass
+create_pg_db $gim_pgdb_etl_name $gim_pgdb_etl_user $gim_pgdb_etl_pass

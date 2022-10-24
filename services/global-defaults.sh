@@ -17,7 +17,7 @@ export CONSUL_DC_LOCATION=westus2
 
 # Standard example tenant
 export TENANT_SID="100"
-export TENANT_UUID="9350e2fc-a1dd-4c65-8d40-1f75a2e080dd"
+export TENANT_UUID="9350e2fc-a1dd-4c65-8d40-1f75a2e00100"
 export SIP_DOMAIN="t${TENANT_SID}.dev.genazure.com"
 
 export DOMAIN=apps.example.com                 #external resolution, for ingresses
@@ -46,13 +46,15 @@ export POSTGRES_RPTHIST_ADDR=pgdb-rpthist-postgresql.infra
 export POSTGRES_RPTRT_ADDR=pgdb-rptrt-postgresql.infra
 export POSTGRES_UCSX_ADDR=pgdb-ucsx-postgresql.infra
 
-export MSSQL_ADDR=mssql-deployment.infra
+export MSSQL_ADDR=mssql-mssql-linux.infra                     #mssql-deployment.infra
 #export MSSQL_ADMIN_PASSWORD=xxx                              # define via global deployment secrets
 
 export KAFKA_ADDR=kafka.infra
 export KAFKA_PORT="9092"
 
 export ES_ADDR=elastic-es-http.infra
+export ES_ADDR_GWS=gws-elastic-es-http.infra
+export ES_ADDR_UCSX=ucsx-elastic-es-http.infra
 
 export INGRESS_CLASS=nginx
 export INGRESS_CLASS_INTERNAL=nginx

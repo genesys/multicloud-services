@@ -5,7 +5,7 @@
 clusterName: infra-elastic
 
 coordinating:
-  fullnameOverride: "infra-elastic-es-http"
+  fullnameOverride: "elastic-es-http"
 
 # infra-elastic would be main ES cluster (mostly used)
 # extended capacity

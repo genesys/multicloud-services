@@ -1,6 +1,9 @@
 # Openshift specific
 
 operator:
+  serviceAccount:
+    create: false
+    name: monitoring-sa
   containerSecurityContext:
     enabled: false
 

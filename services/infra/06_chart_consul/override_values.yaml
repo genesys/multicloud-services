@@ -40,6 +40,10 @@ connectInject:
   enabled: true
   transparentProxy:
     defaultEnabled: false
+  resources:
+    limits:
+      memory: "100Mi"   #50Mi
+      #cpu: "50m"
 controller:
   enabled: true
 syncCatalog:

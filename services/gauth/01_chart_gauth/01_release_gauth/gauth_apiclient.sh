@@ -2,25 +2,13 @@
 
 # INPUT_COMMAND shoulbe like "[show|add|update|delete] <client_id> <domain>"
 # three words separated by space:
-#   #2 - show, add, update (redirectURIs list), delete
-#   #3 - client_id (ex: gcxi_client) or "all" keyword 
-#   #4 - domain ex cluster03.gcp.demo.genesys.com
+#   #1 - show, add, update (redirectURIs list), delete
+#   #2 - client_id (ex: gcxi_client) or "all" keyword 
+#   #3 - domain ex cluster03.gcp.demo.genesys.com
 
-
-# API clients list for bulk operation ("all")
-CLIENTS=(\
-gws-app-provisioning \
-gws-app-workspace \
-cx_contact \
-designer_client \
-gcxi_client \
-ges_client \
-nexus_client \
-iwd_client \
-pulse_client \
-ucsx_api_client \
-webrtc-clientid \
-bds-clientid)
+# 🖊️ EDIT for your needs
+#    API clients list for bulk operation ("all")
+CLIENTS=(external_api_client)
 
 ACT=$1
 CLN=$2
@@ -34,18 +22,7 @@ echo "Domain: $domain"
 REDIRECT_URIS=$(cat << EOF
 "https://gauth.$domain",
 "https://gws.$domain",
-"https://wwe.$domain",
-"https://prov.$domain",
-"https://webrtc.$domain",
-"https://cxc.$domain",
-"https://designer.$domain",
-"https://iwd.$domain",
-"https://digital.$domain",
-"https://pulse.$domain",
-"https://web-gcxi.$domain",
-"https://web-gcxi-100.$domain",
-"https://ges.$domain",
-"https://webphone.$domain"
+"https://wwe.$domain"
 EOF
 )
 
@@ -60,27 +37,28 @@ CREDS="'$gauth_admin_username:$gauth_admin_password_plain'"
 [[ "$CLN" != "all" ]] && CLIENTS=($CLN)
 
 # We will Curl from gauth pod, because there may be no access from GH runner to ingress https://gauth.$domain
-GAPOD=$(kubectl get po -n ${GAUTH_NAMESPACE}| grep gauth-auth | grep Running | grep -v gauth-auth-ui -m1 | awk '{print $1}')
+GAPOD=$(kubectl get po | grep gauth-auth | grep Running | grep -v gauth-auth-ui -m1 | awk '{print $1}')
+echo $GAPOD
 
 echo "*** Pre-change list of clients:"
-#curl -skL https://gauth.$domain/auth/v3/ops/clients -u $CREDS | jq .data[].client_id
-kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
-    -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" | \
-    jq .data[].client_id || true
+#curl -skL https://gauth.$domain/auth/v3/ops/clients .. - via ingress
+kubectl exec $GAPOD --container gauth \
+    -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" \
+    | jq .data[].client_id || true
 
 
 ###++++++++ Show all settings except secrets and keys, for certain api client ++
 if [ "$ACT" == "show" ]; then
     if [ "$CLN" == "all" ]; then
         echo "*** Pre-change, all existing clients:"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD --container gauth \
             -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" | tee RSP
         [[ "$(cat RSP | jq .status.code)" != "0" ]] \
             && error_exit "Clients list not found? Failed http request to Gauth: $(cat RSP | jq .status)"
         cat RSP | jq .data[]
     else
         echo "*** Pre-change client $CLN properties:"
-        kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD --container gauth \
             -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients/$CLN -u $CREDS" | tee RSP
         [[ "$(cat RSP | jq .status.code)" != "0" ]] \
             && error_exit "Client not found? Failed http request to Gauth: $(cat RSP | jq .status)"
@@ -88,6 +66,20 @@ if [ "$ACT" == "show" ]; then
     fi
     return 0
 fi
+
+#################################
+# Check if Client exists
+#################################
+kubectl exec $GAPOD --container gauth \
+    -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients/$CLN -u $CREDS" | tee RSP
+RSP=$(cat RSP | jq .data.client_id | tr -d '"')
+echo "Response: $RSP"
+if [[ $RSP == $CLN ]]; then
+  echo "Auth Client Exists... updating it" && ACT="update"
+  echo "Current Action: $ACT"
+else
+  echo "Auth Client Does Not Exist... adding it"
+fi 
 
 ###+++++++++++++ Add new api client (will return error if already exists) ++++++
 if [ "$ACT" == "add" ]; then
@@ -125,13 +117,13 @@ EOF
 
     # can also bind client to environment, adding like:
     #   "contactCenterIds": [
-    #     "9350e2fc-a1dd-4c65-8d40-1f75a2e00010"
+    #     "9350e2fc-a1dd-4c65-8d40-1f75a2e00100"
     #   ],
 
-    for cl in ${CLIENTS[*]};
+    for cl in ${CLIENTS[*]}
     do
         echo "____________________ Adding apiclient: $cl __________________________________"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD --container gauth \
             -- bash -c "curl -s -XPOST http://gauth-auth/auth/v3/ops/clients -u $CREDS \
             -H 'Content-Type: application/json' -d '$(NEW_API_CLIENT $cl)'" | tee RSP
         sleep 5
@@ -145,7 +137,7 @@ if [ "$ACT" == "delete" ]; then
     for cl in ${CLIENTS[*]};
     do
         echo "____________________ Deleting apiclient: $cl __________________________________"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD --container gauth \
             -- bash -c "curl -s -XDELETE http://gauth-auth/auth/v3/ops/clients/$cl -u $CREDS" | tee RSP
         echo;echo "________________________________________________________________________________"
     done
@@ -172,8 +164,8 @@ EOF
 }
 
     for cl in ${CLIENTS[*]};do
-        echo "____________________Updating apiclient: $cl __________________________________"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        echo "____________________ Updating apiclient: $cl __________________________________"
+        kubectl exec $GAPOD --container gauth \
             -- bash -c "curl -s -XPUT http://gauth-auth/auth/v3/ops/clients/$cl -u $CREDS \
             -H 'Content-Type: application/json' -d '$(NEW_REDURI)'" | tee RSP
         echo;echo "_____________________________________________________________________________"
@@ -188,5 +180,5 @@ fi
 
 
 echo "*** Post-change, current list of cients:"
-kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+kubectl exec $GAPOD --container gauth \
     -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" | jq .data[].client_id

@@ -1,0 +1,8 @@
+###############################################################################
+# Define here application version if needed
+###############################################################################
+
+clusterName: gws-elastic
+
+coordinating:
+  fullnameOverride: "gws-elastic-es-http"

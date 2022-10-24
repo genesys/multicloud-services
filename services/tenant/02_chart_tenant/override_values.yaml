@@ -48,6 +48,8 @@ tenant:
     upstreamServices: "voice-sipfe:9101,voice-config:9100,ixn-server-${TENANT_UUID}:7120,ixn-vqnode-${TENANT_UUID}:7122"
     # example: t100.dev.genazure.com
     sipDomain: "$SIP_DOMAIN"
+    environment: "dev"
+    
   gws:
     enable: "true"
     authEndpoint: "gauth-auth.${GAUTH_NAMESPACE}.svc.${DNS_SCOPE}"

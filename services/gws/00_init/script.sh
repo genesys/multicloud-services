@@ -11,6 +11,9 @@
 # Otherwise use standard default instance
 [[ "$POSTGRES_GWS_ADDR" ]] && export POSTGRES_ADDR="$POSTGRES_GWS_ADDR"
 
+# if there is special ES instance for GWS, us it
+[[ "$ES_ADDR_GWS" ]] && export ES_ADDR=$ES_ADDR_GWS
+
 [[ ! "$gws_consul_token" ]] && export gws_consul_token=$CONSUL_BOOT_TOKEN
 [[ ! "$gws_consul_token" ]] && error_exit "need gws_consul_token or CONSUL_BOOT_TOKEN in deployment secrets"
 

@@ -1,5 +1,11 @@
 # Openshift specific
 
+volumePermissions:
+  enabled: true
+serviceAccount:
+  create: false
+  name: infra-sa
+
 podSecurityContext:
   enabled: false
 
@@ -7,6 +13,12 @@ containerSecurityContext:
   enabled: false
 
 zookeeper:
+  volumePermissions:
+    enabled: true
+  serviceAccount:
+    create: false
+    name: infra-sa
+  
   containerSecurityContext:
     enabled: false
   podSecurityContext:

@@ -2,14 +2,17 @@
 # Find more: https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster
 ###############################################################################
 
+volumePermissions:
+  enabled: true
+
 podSecurityContext:
   enabled: false
 
 containerSecurityContext:
-  enabled: false
+  enabled: true
 
 persistence:
-  storageClass: infra-storage
+  storageClass: $STORAGE_CLASS_RWO_PREMIUM #infra-storage
 
-#serviceAccount:
-#  name: infra-sa
+serviceAccount:
+ name: infra-sa
