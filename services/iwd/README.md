@@ -85,8 +85,8 @@ stringData:
 ```
 ### Notes
 - Nexus should be installed and provisioned for current tenant.
-- `iwd_nexus_api_key` should be assined value from Nexus DB, nex_apikeys table, name "iWD Cluster API Key"
-- `iwd_tenant_api_key` should be assined value from Nexus DB, nex_apikeys table, name like "t100"
+- `iwd_nexus_api_key` should be assigned value from Nexus DB, nex_apikeys table, name "iWD Cluster API Key"
+- `iwd_tenant_api_key` should be assigned value from Nexus DB, nex_apikeys table, name like "t100"
 - `iwd_tenant_api_key_iwddm` should be assigned new generated UUID
 - `iwd_tenant_api_key_tenant` should be assigned new generated UUID
 
