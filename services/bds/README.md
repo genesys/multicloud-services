@@ -45,7 +45,7 @@ Create the standard [pullsecret](/doc/secrets.md/#pull) for the workflow:
 `pullsecret`
 
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
-`deployment_secrets`
+`deployment-secrets`
 
 :warning: The BDS configuration file is `bds-manual-secrets.yaml` in `00_init` subfolder.
 Typically it does not require updating, but pay attention to the variables used within.

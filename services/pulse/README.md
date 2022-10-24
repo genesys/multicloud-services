@@ -44,7 +44,7 @@ Create the standard [pullsecret](/doc/secrets.md/#pull) for the workflow:
 `pullsecret`
 
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
-`deployment_secrets`
+`deployment-secrets`
 
 :asterisk: Indicates the variable is mandatory.
 |:key: Key|:anchor: Default Value|:pencil2: Sample Value| :book: Description|
@@ -88,7 +88,7 @@ stringData:
 To write logging to storage, please consult with our :book:[documentation](https://all.docs.genesys.com/PEC-REP/Current/PulsePEGuide).
 
 
-2. As Pulse supports only non-clustered versions of redis, the example pipeline install includes an non-clustered version for itself. If an non-clustered redis has already been deployed, `pulse_redis_host`, `pulse_redis_port`, and `pulse_redis_key` can be defined within the `deployment_secrets`.
+2. As Pulse supports only non-clustered versions of redis, the example pipeline install includes an non-clustered version for itself. If an non-clustered redis has already been deployed, `pulse_redis_host`, `pulse_redis_port`, and `pulse_redis_key` can be defined within the `deployment-secrets`.
 
 
 It will be used when defined code in `./pulse/01_chart_init/01_release_pulse-init/pre-release-script.sh` has been deleted or commented.  
