@@ -65,8 +65,8 @@ cxc_redis_password| $REDIS_PASSWORD (global DS)|| Common REDIS password
 :asterisk: cxc_configserver_user_password|-|cloudcon|
 :asterisk: cxc_prov_gwsauthuser|-|ops|
 :asterisk: cxc_prov_gwsauthpass|-|ops|
-:asterisk: cxc_prov_tenant_user|-|default|
-:asterisk: cxc_prov_tenant_pass|-|password|
+:asterisk: cxc_prov_t100_user|-|default|
+:asterisk: cxc_prov_t100_pass|-|password|
 
 
 Example `.yaml`
@@ -84,8 +84,8 @@ stringData:
   cxc_configserver_user_password: CloudContact2017!
   cxc_prov_gwsauthuser: ops
   cxc_prov_gwsauthpass: ops
-  cxc_prov_tenant_user: default
-  cxc_prov_tenant_pass: password
+  cxc_prov_t100_user: default
+  cxc_prov_t100_pass: password
 ```
  
 
