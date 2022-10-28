@@ -351,18 +351,18 @@ function gauth_update_cors {
 
     # Older API - add all origins in one request (update list if needed)
     CORS="https://gauth.$DOMAIN, \
-    https://gws.$DOMAIN, \
-    https://wwe.$DOMAIN, \
-    https://prov.$DOMAIN, \
-    https://webrtc.$DOMAIN, \
-    https://cxc.$DOMAIN, \
-    https://designer.$DOMAIN, \
-    https://iwd.$DOMAIN, \
-    https://digital.$DOMAIN, \
-    https://pulse.$DOMAIN, \
-    https://web-gcxi.$DOMAIN, \
-    https://web-gcxi-100.$DOMAIN, \
-    https://ges.$DOMAIN"
+https://gws.$DOMAIN, \
+https://wwe.$DOMAIN, \
+https://prov.$DOMAIN, \
+https://webrtc.$DOMAIN, \
+https://cxc.$DOMAIN, \
+https://designer.$DOMAIN, \
+https://iwd.$DOMAIN, \
+https://digital.$DOMAIN, \
+https://pulse.$DOMAIN, \
+https://web-gcxi.$DOMAIN, \
+https://web-gcxi-100.$DOMAIN, \
+https://ges.$DOMAIN"
 
     ORIGINS()
     {

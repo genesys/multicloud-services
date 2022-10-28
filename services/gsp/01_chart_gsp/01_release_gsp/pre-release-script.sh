@@ -23,7 +23,7 @@ fi
 # - gsp_s3_bucket_name
 # - gsp_s3_access_key
 # - gsp_s3_secret_key
-
+if [[ "$CLUSTER_TYPE" == "openshift" ]] || [[ "$CLUSTER_TYPE" == "gke" ]] && [[ $COMMAND == "install" ]]; then
 # If following variables are NOT set in Deployment Secrets, 
 # then we fetch them from local secret "gim" and configmap "gim" (created by Noobaa)
 [[ ! "$gsp_s3_bucket_host" ]] && export gsp_s3_bucket_host=$(kubectl get cm gim -o jsonpath='{.data.BUCKET_HOST}')
@@ -50,4 +50,5 @@ if ! kubectl get secret gim 2>/dev/null; then
       --from-literal=AWS_ACCESS_KEY_ID=$gsp_s3_access_key \
       --from-literal=AWS_SECRET_ACCESS_KEY=$gsp_s3_secret_key \
       --dry-run=client -o yaml | kubectl apply -f -
+fi
 fi

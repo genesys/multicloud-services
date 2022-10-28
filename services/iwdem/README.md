@@ -90,7 +90,7 @@ curl --location --request POST 'https://nexus.<domain>/nexus/v3/apikeys' \
 --header 'Cookie: ***cookie***' \
 --data-raw '{"data": {
 "enabled": true,
-"tenant": "9350e2fc-a1dd-4c65-8d40-1f75a2e080dd",
+"tenant": "9350e2fc-a1dd-4c65-8d40-1f75a2e00100",
 "name": "IWDEM API key for t100",
 "permissions": [
 "nexus:consumer:*"

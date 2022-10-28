@@ -54,11 +54,15 @@ Create the following secrets to store confidential information you may not want 
  
 |:key: Key|:anchor: Default Value|:pencil2: Sample Value|:book: Description
 |-|:-:|:-|-|
+POSTGRES_ADDR | $POSTGRES_GWS_ADDR (global DS)| | |
+ES_ADDR| (global DS)| | |
+REDIS_ADDR| (global DS)| | |
+REDIS_PORT| (global DS)| | |
+cxc_redis_password| $REDIS_PASSWORD (global DS)|| Common REDIS password
 :asterisk: cxc_gws_client_id |-| cx_contact|
 :asterisk: cxc_gws_client_secret|-| secret|
-cxc_redis_password|-| $REDIS_PASSWORD (global DS)|| Common REDIS password
 :asterisk: cxc_configserver_user_name|-|cloudcon|
-:asterisk: cxc_configserver_user_password|-|CloudContact2017!|
+:asterisk: cxc_configserver_user_password|-|cloudcon|
 :asterisk: cxc_prov_gwsauthuser|-|ops|
 :asterisk: cxc_prov_gwsauthpass|-|ops|
 :asterisk: cxc_prov_tenant_user|-|default|

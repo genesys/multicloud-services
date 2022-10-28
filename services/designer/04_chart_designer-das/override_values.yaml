@@ -27,7 +27,9 @@ das:
       DAS_LOG_LEVEL: "DEBUG"
       DAS_STDOUT_LOGGING_ENABLE: "true"
       DAS_SERVICES_ELASTICSEARCH_ENABLED: "true"
-      DAS_SERVICES_ELASTICSEARCH_HOST: "http://elastic-es-http.infra"
+      # Adding GLOBAL VAR instead of static
+      # DAS_SERVICES_ELASTICSEARCH_HOST: "http://elastic-es-http.infra"
+      DAS_SERVICES_ELASTICSEARCH_HOST: "http://${ES_ADDR}"
       DAS_SERVICES_ELASTICSEARCH_PORT: "9200"
   prometheus:
     enabled: true

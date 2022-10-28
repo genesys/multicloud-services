@@ -63,7 +63,7 @@ POSTGRES_USER|  (global DS)||Postgres DB admin user
 POSTGRES_PASSWORD|  (global DS)||Postgres DB admin password
 REDIS_ADDR|  (global DS)||REDIS address
 REDIS_PASSWORD|  (global DS)||REDIS password
-ES_ADDR|  (global DS)||Elasticsearch address
+ES_ADDR|  gws-elastic-es-http.infra or (global DS)||Elasticsearch address
 gws_consul_token|  $CONSUL_BOOT_TOKEN (global DS)||Consul bootstrap token
 gws_client_id|  auth_client_gws (global defaults)|external_api_client|
 wrkspc_client_id|  auth_client_gws_ws (global defaults)|gws-app-workspace|

@@ -17,13 +17,11 @@ cxcontact:
   deployDefaultInitContainer: false
 
   compliance_data:
-    cdp_url: false
     cdp_ng:
-      url: false
-      gcloud_auth: false
-      gcloud_id:
-      gcloud_secret:
-    embedded_basepath: "/list_builder/data/init_data"
+      url: "https://api.usw2.pure.cloud/api/v2/outbound/compliancedata"
+      gcloud_auth: "https://login.usw2.pure.cloud/oauth/token"
+      gcloud_id: $cxc_cdp_gcloud_id
+      gcloud_secret: $cxc_cdp_gcloud_secret
 
 #  override:                #if connecting to Nexus. Otherwise Dial Manager is off
 #    dial-manager:

@@ -5,3 +5,10 @@ server:
     runAsUser: 0
     runAsNonRoot: false
     runAsGroup: 0
+
+# client:
+#   securityContext:
+#     fsGroup: null
+#     runAsGroup: 0
+#     runAsNonRoot: false
+#     runAsUser: 0

@@ -7,9 +7,10 @@
 [[ ! "$gvp_rs_mssql_db_user" ]] && export gvp_rs_mssql_db_user="mssqladmin"
 [[ ! "$gvp_rs_mssql_db_password" ]] && export gvp_rs_mssql_db_password=$MSSQL_ADMIN_PASSWORD
 
-if ! kubectl get job init-mssql-for-gvp-rs-job
+if ! (kubectl get job init-mssql-for-gvp-rs-job | grep '1/1' >/dev/null)
 then
 
+kubectl delete job init-mssql-for-gvp-rs-job || true
 kubectl create job init-mssql-for-gvp-rs-job --image=mcr.microsoft.com/mssql-tools -- \
 sh -c "cat <<EOF | /opt/mssql-tools/bin/sqlcmd -S $gvp_mssql_db_server -U sa -P "$gvp_rs_mssql_admin_password" -i /dev/stdin -o /dev/stdout               
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '$gvp_rs_mssql_db_name')

@@ -1,0 +1,7 @@
+deployment:
+  ingress:
+    ingressClassName: $INGRESS_CLASS
+    annotations:
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+    tls:
+      secretName: webrtc-ingress-cert

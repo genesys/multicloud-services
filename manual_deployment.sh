@@ -16,11 +16,11 @@
 #  INPUT
 ###################################################################################################
 
-export CLUSTER=gke1-1                #target cluster
-export CLUSTER_TYPE=gke              #cluster type: [openshift, gke, aks, k8s]
-export SERVICE=monitoring
+export CLUSTER=aro1                  #target cluster
+export CLUSTER_TYPE=openshift        #cluster type: [openshift, gke, aks, k8s]
+export SERVICE=gws
 export NS=                           #target namespace, empty for default
-export FULLCOMMAND="install infra-cpe-monitoring"
+export FULLCOMMAND="install"
 
 
 # Your private registries info

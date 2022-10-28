@@ -2,6 +2,8 @@
 
 [[ "$POSTGRES_STD_ADDR" ]]    && export POSTGRES_ADDR=$POSTGRES_STD_ADDR
 [[ ! "$cxc_redis_password" ]] && export cxc_redis_password=$REDIS_PASSWORD
+export cxc_cdp_gcloud_id=${cxc_cdp_gcloud_id:=test}
+export cxc_cdp_gcloud_secret=${cxc_cdp_gcloud_secret:=test}
 
 
 ############ IMPORTANT for Openshift ############

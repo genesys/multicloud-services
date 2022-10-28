@@ -66,7 +66,7 @@ function consul_update_dns {
 		print_log "coredns-specific update"
 		# existing coredns config
 		kubectl get cm coredns -n kube-system -o yaml > coredns.yaml
-		cat coredns.yaml | yq .data.Corefile > cfg0
+		cat coredns.yaml | yq eval '.data.Corefile' - > cfg0
 		
 		# if no consul zone forwarding defined yet
 		if ! grep 'consul:53' cfg0 >/dev/null; then

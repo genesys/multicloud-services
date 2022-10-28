@@ -20,4 +20,4 @@
 ##############################################################################
 # Creating Nexus DB if not exist and init
 ###############################################################################
-create_pg_db nexus nexus_db_user nexus_db_password
+create_pg_db nexus $nexus_db_user $nexus_db_password

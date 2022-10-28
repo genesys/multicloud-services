@@ -1,9 +1,12 @@
 # Prometheus operator
-# Use in GKE and generic k8s (Openshift has its own monitoring stack)
+# Use in GKE and generic k8s
 # https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
 
 helm repo add --force-update helm_repo https://prometheus-community.github.io/helm-charts
 helm_repo_update
+
+# For Openshift we recommend using native prometheus stack:
+# see: https://docs.openshift.com/container-platform/4.6/monitoring/enabling-monitoring-for-user-defined-projects.html
 
 # if [ "$CLUSTER_TYPE" == "openshift" ]; then
 #     # node exporter requires hostPath access

@@ -9,18 +9,26 @@ prometheus:
   prometheusSpec:
     # Important to set these parameters to false
     # so that prometheus can discover CRD in all namespaces
+    podMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
-    serviceMonitorSelectorNilUsesHelmValues: false
+    
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
     ruleSelectorNilUsesHelmValues: false
+    
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
 
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: $STORAGE_CLASS_RWO_PREMIUM
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 8Gi
+    # storageSpec:
+    #   volumeClaimTemplate:
+    #     spec:
+    #       storageClassName: $STORAGE_CLASS_RWO_PREMIUM
+    #       accessModes: ["ReadWriteOnce"]
+    #       resources:
+    #         requests:
+    #           storage: 8Gi
 
   ingress:
     enabled: true

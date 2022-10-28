@@ -6,8 +6,9 @@
 # This is workaround for such services (using service account infra-sa):
 
 if [ "$CLUSTER_TYPE" == "openshift" ]; then
-    if ! oc get sa logging-sa; then
+    if ! oc get sa logging-sa >/dev/null 2>&1; then
         oc create sa logging-sa
+        print_log "Service account logging-sa is created"
     fi
     oc adm policy add-scc-to-user anyuid -z logging-sa -n $NS || true
 

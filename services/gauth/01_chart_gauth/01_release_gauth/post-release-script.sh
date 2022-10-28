@@ -3,9 +3,4 @@
 echo ##############################
 echo "Installing GAUTH Admin Client"
 echo ##############################
-source ./misc_apiclient.sh add external_api_client
-
-# echo ##############################
-# echo "Installing CCID"
-# echo ##############################
-# source ./misc_ccid.sh ccid 100 $LOCATION $DOMAIN
+source ./gauth_apiclient.sh add ${gauth_gws_client_id}

@@ -41,7 +41,7 @@ tenant_provisioning:
         create_environment: false
         
         # should be unique
-        #primary_host: tenant-9350e2fc-a1dd-4c65-8d40-1f75a2e080dd.${VOICE_NAMESPACE}.svc.${DNS_SCOPE}    #FQDN as it's SRV record
+        #primary_host: tenant-${TENANT_UUID}.${VOICE_NAMESPACE}.svc.${DNS_SCOPE}    #FQDN as it's SRV record
         primary_host: tenant-${TENANT_UUID}-cfgmaster.service.${CONSUL_DC_LOCATION}.consul
 
         primary_port: 8888

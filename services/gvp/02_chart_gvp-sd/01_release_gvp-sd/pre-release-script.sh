@@ -2,8 +2,6 @@
 # will be taken from global defaults:
 [[ ! "$gvp_consul_token" ]] && export gvp_consul_token=$CONSUL_BOOT_TOKEN
 
-[[ ! "$TENANT_SID" ]]  && export TENANT_SID="100"
-[[ ! "$TENANT_UUID" ]] && export TENANT_UUID="9350e2fc-a1dd-4c65-8d40-1f75a2e080dd"
 # last 4 chars of UUID
 export TID=$(echo $TENANT_UUID| rev| cut -c 1-4| rev)
 

@@ -42,7 +42,7 @@ tlm:
       API_LOG_LEVEL: "warn"
       TELEMETRY_HTTPS_ENABLED: "auto"
       TELEMETRY_CONFIG_PATH: "tlm-config"
-      TELEMETRY_CLOUD_PROVIDER: "openshift"
+      TELEMETRY_CLOUD_PROVIDER: "azure"
       TELEMETRY_CORS_DOMAIN: $DOMAIN
   resources:
     requests:

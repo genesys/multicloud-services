@@ -125,7 +125,7 @@ EOF
 
     # can also bind client to environment, adding like:
     #   "contactCenterIds": [
-    #     "9350e2fc-a1dd-4c65-8d40-1f75a2e080dd"
+    #     "9350e2fc-a1dd-4c65-8d40-1f75a2e00010"
     #   ],
 
     for cl in ${CLIENTS[*]};

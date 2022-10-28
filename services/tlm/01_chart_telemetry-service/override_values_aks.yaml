@@ -1,0 +1,11 @@
+# AKS Specific
+tlm:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: $CERT_ISSUER
+      kubernetes.io/ingress.class: $INGRESS_CLASS
+    tls:
+      - hosts:
+        - tlm.$DOMAIN
+        secretName: tlm-ingress-cert

@@ -1,0 +1,17 @@
+# AKS specific, using Azure Blob Storage
+# supported since gsp version 100.0.100_3700
+
+job:
+  storage:
+    # Replacing static value with gsp deployment secret VAR
+    # host: "gspwestus2akscpe.blob.core.windows.net"
+    host: "${gsp_azure_wasb_host}"
+    gspPrefix:    "wasbs://gsp-state@{{ tpl .Values.job.storage.host . }}/{{ .Release.Name }}/"
+    gcaSnapshots: "wasbs://gca@{{ tpl .Values.job.storage.host . }}/"
+    s3:
+      endpoint:   ""
+      accessKey:  ""
+      secretKey:  ""
+      pathStyleAccess: "true"
+      entropy:                                                                       
+        length: "4" 

@@ -19,4 +19,4 @@ fi
 
 # redefine chart version here
 # supporting k8s v.1.22+
-CHART_VER=0.42.0	#0.47.0
+CHART_VER=0.47.0

@@ -84,6 +84,7 @@ on:
         default: aro
         options:
           - aro
+          - aro1
           - aro1w
       namespace:
         # by default will use namespace equal to service name
@@ -116,6 +117,11 @@ jobs:
           aro)
               echo "OPENSHIFT_SERVER=OPENSHIFT_SERVER_ARO"    >> $GITHUB_ENV
               echo "TOKEN_NAME=OPENSHIFT_TOKEN_ARO"           >> $GITHUB_ENV
+            ;;
+
+          aro1)
+              echo "OPENSHIFT_SERVER=OPENSHIFT_SERVER_ARO1"   >> $GITHUB_ENV
+              echo "TOKEN_NAME=OPENSHIFT_TOKEN_ARO1"          >> $GITHUB_ENV
             ;;
 
           aro1w)

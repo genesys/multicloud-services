@@ -37,6 +37,7 @@ then
 
         # Note: keytool comes with JDK and may not be available in your runner
         #       If so, generate JKS key manually and provide it via depl secrets in gauth_jks_key variable
+        rm -f keystore.jks || true
         keytool -keystore keystore.jks -genkey -alias gws-auth-key -keyalg RSA \
             -storepass $gauth_jks_keyStorePassword \
             -keypass $gauth_jks_keyPassword  \

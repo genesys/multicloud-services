@@ -15,7 +15,7 @@
 # ℹ️ Configure your repository and the workflow with the following steps:
 # 1. Have access to an MicroK8s cluster. Refer to https://microk8s.io/docs/working-with-kubectl
 # 2. Put required credentials to repository secrets:
-#    - K8S_CONFIG_FILE (for example, created by "microk8s config > ~/.kube/config")
+#    - K8S_CONFIG_FILE (for example, created by "microk8s config")
 #    - user creds for your private helm and image registries
 #   - https://docs.github.com/en/actions/reference/encrypted-secrets
 #   - https://cli.github.com/manual/gh_secret_set
