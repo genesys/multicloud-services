@@ -37,6 +37,8 @@ config:
 
 configurator:
   enabled: true
+  # set configurator mode: setup|teardown|checkdiff|update
+  ctMode: setup
   # set service domain used to access voice service
   voiceDomain: ${VOICE_NAMESPACE}.svc.${DNS_SCOPE}
   # set service domain used to access ixn service

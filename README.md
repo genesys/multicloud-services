@@ -43,6 +43,17 @@ Ideal for demos, labs, or a proof of concept. The content provided in this repos
 :mag: Observability : [monitoring](/services/monitoring), [logging](/services/logging)    
 </details>
 
+<details>
+  <summary style="font-size:18px">Azure</summary>
+
+:zap: Quick Start : [GitHub Actions](/doc/gha.md) - [workflow](/doc/examples-aks.md)   
+:gear: Genesys services : [services](/services)     
+:sparkles: Third party services : [infra](/services/infra)    
+:mag: Observability : [monitoring](/services/monitoring), [logging](/services/logging)    
+</details>
+
+
+
 #
 
 There are many different CI/CD models available for use, we've included details for those we've had opportunity to work with.
@@ -77,6 +88,7 @@ genesys/multicloud-services
 │   │   ├── documentation-issue.md
 │   │   └── feature-request.md
 │   └── workflows
+│       ├── deploy_service_aks.yaml
 │       ├── deploy_service_gke.yaml
 │       ├── deploy_service_k8s.yaml
 │       └── deploy_service_openshift.yaml 
@@ -87,6 +99,7 @@ genesys/multicloud-services
 │   ├── ingress.md
 │   ├── examples-gke.md
 │   ├── examples-openshift.md
+│   ├── examples-aks.md
 │   ├── examples-k8s.md
 │   ├── ingress.md
 │   └── STYLE.md
@@ -101,6 +114,7 @@ genesys/multicloud-services
 │   │   │   │   ├── post-release-script.sh
 │   │   │   │   └── override_values.yaml
 │   │   │   ├── override_values.yaml
+│   │   │   ├── override_values_<i>azure</i>.yaml
 │   │   │   ├── override_values_<i>k8s</i>.yaml
 │   │   │   ├── override_values_<i>gke</i>.yaml
 │   │   │   ├── override_values_<i>openshift</i>.yaml

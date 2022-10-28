@@ -51,18 +51,14 @@ iwddm:
       gauth:
         enabled: false
         rest_url: http://gauth-auth.${GAUTH_NAMESPACE}.svc:80
-        client_id: iwddm_client
-        client_secret:
-          valueFrom:
-            secretKeyRef:
-              name: shared-gauth-iwddm-client-secret
-              key: gauth-iwddm-client-secret
+        client_id: $iwd_gws_client_id
+        client_secret: $iwd_gws_client_secret
     
-    monitoring:
+    # monitoring:
       # -- Enable push metrics to Pushgateway
-      enabled: true
+      # enabled: true
       # -- Since IWDDM is a short living cronjob, it uses Pushgateway for providing metrics
-      pushgateway_url: "http://prometheus-pushgateway.monitoring:9091"
+      # pushgateway_url: "http://prometheus-pushgateway.monitoring:9091"
 
   # -- Volumes mounted into an IWDDM container
   volumeMounts: |-

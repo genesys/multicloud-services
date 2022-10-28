@@ -1,0 +1,40 @@
+###############################################################################
+# Global GES parameters
+# https://all.docs.genesys.com/PEC-CAB/Current/CABPEGuide/Configure
+###############################################################################
+
+ges:
+  ingress:
+    networkPolicies: 
+      enabled: false
+    ingressint: 
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: $CERT_ISSUER
+        nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+        nginx.ingress.kubernetes.io/use-regex: 'true'
+      ingressClassName: $INGRESS_CLASS
+      hosts:
+        - ges-int.$DOMAIN
+      paths:
+        - /ges/
+      tls:
+        - hosts:
+            - ges-int.$DOMAIN     
+          secretName: ges-ingress-cert-int    
+
+    ingressext: 
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: $CERT_ISSUER        
+        nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+        nginx.ingress.kubernetes.io/use-regex: 'true'
+      ingressClassName: $INGRESS_CLASS
+      hosts:
+        - ges.$DOMAIN
+      paths:
+        - /ges/
+      tls:
+        - hosts:
+            - ges.$DOMAIN  
+          secretName: ges-ingress-cert-ext
