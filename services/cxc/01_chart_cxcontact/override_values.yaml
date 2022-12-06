@@ -73,7 +73,7 @@ gws:
       port: 80
   platform:
     ocs:
-      host: http://gws-service-proxy.gw${GAUTH_NAMESPACE}s
+      host: http://gws-service-proxy.${GWS_NAMESPACE}
       port: 80
     configuration:
       host: http://gws-service-proxy.${GWS_NAMESPACE}

@@ -6,8 +6,8 @@ grafanaDashboard:
 wwe:
   image:
     registry: $IMAGE_REGISTRY
-    repository: gws       
-    name: gws-ui-workspace
+    repository: wwe
+    name: ui
     pullPolicy: IfNotPresent
     imagePullSecrets:
       - name: pullsecret
