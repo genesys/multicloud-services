@@ -64,7 +64,7 @@ GAPOD=$(kubectl get po -n ${GAUTH_NAMESPACE}| grep gauth-auth | grep Running | g
 
 echo "*** Pre-change list of clients:"
 #curl -skL https://gauth.$domain/auth/v3/ops/clients -u $CREDS | jq .data[].client_id
-kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
     -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" | \
     jq .data[].client_id || true
 
@@ -73,7 +73,7 @@ kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
 if [ "$ACT" == "show" ]; then
     if [ "$CLN" == "all" ]; then
         echo "*** Pre-change, all existing clients:"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
             -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" | tee RSP
         [[ "$(cat RSP | jq .status.code)" != "0" ]] \
             && error_exit "Clients list not found? Failed http request to Gauth: $(cat RSP | jq .status)"
@@ -131,7 +131,7 @@ EOF
     for cl in ${CLIENTS[*]};
     do
         echo "____________________ Adding apiclient: $cl __________________________________"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
             -- bash -c "curl -s -XPOST http://gauth-auth/auth/v3/ops/clients -u $CREDS \
             -H 'Content-Type: application/json' -d '$(NEW_API_CLIENT $cl)'" | tee RSP
         sleep 5
@@ -145,7 +145,7 @@ if [ "$ACT" == "delete" ]; then
     for cl in ${CLIENTS[*]};
     do
         echo "____________________ Deleting apiclient: $cl __________________________________"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
             -- bash -c "curl -s -XDELETE http://gauth-auth/auth/v3/ops/clients/$cl -u $CREDS" | tee RSP
         echo;echo "________________________________________________________________________________"
     done
@@ -173,7 +173,7 @@ EOF
 
     for cl in ${CLIENTS[*]};do
         echo "____________________Updating apiclient: $cl __________________________________"
-        kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+        kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
             -- bash -c "curl -s -XPUT http://gauth-auth/auth/v3/ops/clients/$cl -u $CREDS \
             -H 'Content-Type: application/json' -d '$(NEW_REDURI)'" | tee RSP
         echo;echo "_____________________________________________________________________________"
@@ -188,5 +188,5 @@ fi
 
 
 echo "*** Post-change, current list of cients:"
-kubectl exec $GAPOD --container gauth -n ${GAUTH_NAMESPACE} \
+kubectl exec $GAPOD -n ${GAUTH_NAMESPACE} \
     -- bash -c "curl -s http://gauth-auth/auth/v3/ops/clients -u $CREDS" | jq .data[].client_id

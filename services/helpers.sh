@@ -52,16 +52,19 @@ function helm_repo_update {
 
 ###############################################################################
 function wait_running_status {
-    ##################################################
-    # Using: wait_running_status pod-labels [time_limit]
-    ##################################################
-    labels=$1; pod_status="Running"; time_limit=${2:-60}
+    ####################################################################
+    # Using: wait_running_status pod-labels [time_limit] [exceptions]
+    ####################################################################
+    labels=$1; time_limit=${2:-60}
+    exceptn=${3:-_some_non_existent_pattern_}
+
+    pod_status="Running"
     n=$(expr $time_limit / 5)
     print_log "Check that all pods with labels <$labels> have status <$pod_status>"
     for i in $(seq 1 $n); do
       print_log "${i}) waiting for pods to get status $pod_status ..." && sleep 5
       kubectl get pods -l $labels --no-headers 
-      PSTAT=$(kubectl get pods -l $labels --no-headers | awk '{print $3}' | sort | uniq)
+      PSTAT=$(kubectl get pods -l $labels --no-headers | grep -v "$exceptn"| awk '{print $3}' | sort | uniq)
       if [[ "$PSTAT" == "$pod_status" ]]; then
           print_log "Checking all of containers is running..."
           s=$(kubectl get pods -l $labels --no-headers | awk '{print $2}' | sort | uniq)

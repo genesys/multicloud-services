@@ -2,7 +2,7 @@
 # Addidtional Nexus parameters
 # https://all.docs.genesys.com/PEC-DC/Current/DCPEGuide/Configure
 ###############################################################################
-version: 100.0.127.4797
+version: 100.0.130.6297
 nexus:
   redis:
     enabled: true
